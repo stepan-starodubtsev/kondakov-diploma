@@ -22,7 +22,6 @@ function vehicleComponentToDto(component) {
 
     const vehicleComponentDTO = {
         id: component.id,
-        vehicleId: component.vehicleId,
         name: component.name,
         componentType: component.componentType,
         manufacturerNumber: component.manufacturerNumber,
@@ -37,6 +36,7 @@ function vehicleComponentToDto(component) {
         remainingResourceToNextRepair: component.maxResource - component.mileageAfterLastRepair,
         needsMaintenance: false,
         needsCapitalRepair: false,
+        vehicleId: component.vehicleId,
     };
     vehicleComponentDTO.needsMaintenance =
         vehicleComponentDTO.annualResourceActual > vehicleComponentDTO.annualResourceNorm;

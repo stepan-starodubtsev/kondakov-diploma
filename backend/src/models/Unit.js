@@ -6,6 +6,6 @@ const Unit = sequelize.define('Unit', {
     name: {type: DataTypes.STRING, allowNull: false}
 });
 
-Unit.belongsTo(User, {foreignKey: 'commanderId', as: 'commander'});
+Unit.belongsTo(User, {foreignKey: 'commanderId'});
 
 module.exports = Unit;

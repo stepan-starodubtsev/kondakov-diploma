@@ -4,7 +4,6 @@ function userToDto(user) {
         name: user.name,
         username: user.username,
         role: user.role,
-        unitId: user.unitId
     };
 }
 

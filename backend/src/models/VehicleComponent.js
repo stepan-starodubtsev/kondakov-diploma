@@ -11,7 +11,7 @@ const VehicleComponent = sequelize.define('VehicleComponent', {
     mileageAfterLastRepair: {type: DataTypes.FLOAT, allowNull: false},
     annualResourceNorm: {type: DataTypes.FLOAT, allowNull: false},
     maxResource: {type: DataTypes.FLOAT, allowNull: false},
-    conditionCategory: {type: DataTypes.ENUM('first', 'second', 'third', 'fourth', 'fifth'), allowNull: false}
+    conditionCategory: {type: DataTypes.ENUM('1', '2', '3', '4', '5'), allowNull: false}
 });
 
 VehicleComponent.belongsTo(Vehicle, {foreignKey: 'vehicleId'});

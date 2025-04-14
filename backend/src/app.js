@@ -23,6 +23,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+
 const swaggerDocument = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'swagger.json'), 'utf8'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -37,5 +38,12 @@ app.use('/api/vehicles', vehicleRouter);
 app.use('/api/vehicleComponents', vehicleComponentRouter);
 
 app.get('/', (req, res) => res.send('API is running...'));
+
+app.use((err, req, res, next) => {
+    const status = err.statusCode || 500;
+    res.status(status).json({
+        error: err.message || 'Internal Server Error'
+    });
+});
 
 module.exports = app;

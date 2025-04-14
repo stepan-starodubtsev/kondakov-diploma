@@ -1,5 +1,6 @@
 const AppError = require("../middlewares/AppError");
 const {getMileagesLogsByVehicleIdForThisYear} = require("../services/MileageLogService");
+const {vehicleToDto} = require("./vehicle.dto");
 
 const calculateAnnualResourceActual = (component) => {
     const logs = getMileagesLogsByVehicleIdForThisYear(component.vehicleId);
@@ -17,15 +18,9 @@ const calculateAnnualResourceActual = (component) => {
     return lastMileage - firstMileage;
 }
 
-const calculateConditionCategory = (vehicle) => {
-    if(vehicle.conditionCategory < ) {
-
-    }
-}
-
 function vehicleComponentToDto(component) {
 
-    return {
+    const vehicleComponentDTO = {
         id: component.id,
         vehicleId: component.vehicleId,
         name: component.name,
@@ -37,12 +32,21 @@ function vehicleComponentToDto(component) {
         annualResourceNorm: component.annualResourceNorm,
         annualResourceActual: calculateAnnualResourceActual(component),
         remainingAnnualResource: component.annualResourceNorm - component.annualResourceActual,
-        conditionCategory: component.conditionCategory, //todo
+        conditionCategory: component.conditionCategory,
         maxResource: component.maxResource,
         remainingResourceToNextRepair: component.maxResource - component.mileageAfterLastRepair,
-        needsRepair: component.needsRepair, //todo
-        needsRepairType: component.needsRepairType, //todo
+        needsMaintenance: false,
+        needsCapitalRepair: false,
     };
+    vehicleComponentDTO.needsMaintenance =
+        vehicleComponentDTO.annualResourceActual > vehicleComponentDTO.annualResourceNorm;
+    vehicleComponentDTO.needsCapitalRepair =
+        vehicleComponentDTO.mileageSinceManufactured > vehicleComponentDTO.maxResource;
+    if (vehicleComponentDTO.needsCapitalRepair) {
+        vehicleComponentDTO.conditionCategory = '4';
+    }
+
+    return vehicleComponentDTO;
 }
 
 

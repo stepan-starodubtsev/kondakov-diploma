@@ -1,25 +1,31 @@
 const Maintenance = require('../models/Maintenance');
 const {maintenanceToDto} = require("../dtos/maintenance.dto");
-const {getAllMaintenances, getMaintenanceById, createMaintenance, updateMaintenance, deleteMaintenance} = require("../services/MaintenanceService");
+const {
+    getAllMaintenances,
+    getMaintenanceById,
+    createMaintenance,
+    updateMaintenance,
+    deleteMaintenance
+} = require("../services/MaintenanceService");
 
 module.exports = {
     async getAll(req, res) {
-        const maintenanceDTOs = getAllMaintenances();
+        const maintenanceDTOs = await getAllMaintenances();
         res.json(maintenanceDTOs);
     },
 
     async getById(req, res) {
-        const maintenanceDTO = getMaintenanceById(req.params.id);
+        const maintenanceDTO = await getMaintenanceById(req.params.id);
         res.json(maintenanceDTO);
     },
 
     async create(req, res) {
-        const newMaintenanceDTO = createMaintenance(req.body);
+        const newMaintenanceDTO = await createMaintenance(req.body);
         res.status(201).json(newMaintenanceDTO);
     },
 
     async update(req, res) {
-        const maintenanceDTO = updateMaintenance(req.params.id, req.body);
+        const maintenanceDTO = await updateMaintenance(req.params.id, req.body);
         res.json(maintenanceToDto(maintenanceDTO));
     },
 

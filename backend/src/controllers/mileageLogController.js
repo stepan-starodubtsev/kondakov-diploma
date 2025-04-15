@@ -5,17 +5,17 @@ const {getMaintenanceById} = require("../services/MaintenanceService");
 
 module.exports = {
     async getAll(req, res) {
-        const mileageLogDTOs = getAllMileageLogs();
+        const mileageLogDTOs = await getAllMileageLogs();
         res.json(mileageLogDTOs);
     },
 
     async getById(req, res) {
-        const mileageLogDTO = getMileageLogById(req.params.id);
+        const mileageLogDTO = await getMileageLogById(req.params.id);
         res.json(mileageLogToDto(mileageLogDTO));
     },
 
     async create(req, res) {
-        const newMileageLog = createMileageLog(req.body);
+        const newMileageLog = await createMileageLog(req.body);
         res.status(201).json(newMileageLog);
     },
 

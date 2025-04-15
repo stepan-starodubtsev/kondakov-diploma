@@ -9,22 +9,22 @@ const {
 
 module.exports = {
     async getAll(req, res) {
-        const unitDTOs = getAllUnits();
+        const unitDTOs = await getAllUnits();
         res.json(unitDTOs);
     },
 
     async getById(req, res) {
-        const unitDTO = getUnitById(req.params.id);
+        const unitDTO = await getUnitById(req.params.id);
         res.json(unitToDto(unitDTO));
     },
 
     async create(req, res) {
-        const newUnit = createUnit(req.body);
+        const newUnit = await createUnit(req.body);
         res.status(201).json(newUnit);
     },
 
     async update(req, res) {
-        const unitDTO = updateUnit(req.params.id, req.body);
+        const unitDTO = await updateUnit(req.params.id, req.body);
         res.json(unitToDto(unitDTO));
     },
 

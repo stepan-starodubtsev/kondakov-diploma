@@ -9,22 +9,22 @@ const {
 
 module.exports = {
     async getAll(req, res) {
-        const vehicleComponentDTOs = getAllVehicleComponents();
+        const vehicleComponentDTOs = await getAllVehicleComponents();
         res.json(vehicleComponentDTOs);
     },
 
     async getById(req, res) {
-        const vehicleComponentDTO = getVehicleComponentById(req.params.id);
+        const vehicleComponentDTO = await getVehicleComponentById(req.params.id);
         res.json(vehicleComponentToDto(vehicleComponentDTO));
     },
 
     async create(req, res) {
-        const newVehicleComponent = createVehicleComponent(req.body);
+        const newVehicleComponent = await createVehicleComponent(req.body);
         res.status(201).json(newVehicleComponent);
     },
 
     async update(req, res) {
-        const vehicleComponentDTO = updateVehicleComponent(req.params.id, req.body);
+        const vehicleComponentDTO = await updateVehicleComponent(req.params.id, req.body);
         res.json(vehicleComponentToDto(vehicleComponentDTO));
     },
 

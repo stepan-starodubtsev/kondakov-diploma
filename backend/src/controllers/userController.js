@@ -9,22 +9,22 @@ const {
 
 module.exports = {
     async getAll(req, res) {
-        const userDTOs = getAllUsers();
+        const userDTOs = await getAllUsers();
         res.json(userDTOs);
     },
 
     async getById(req, res) {
-        const userDTO = getUserById(req.params.id);
+        const userDTO = await getUserById(req.params.id);
         res.json(userToDto(userDTO));
     },
 
     async create(req, res) {
-        const newUser = createUser(req.body);
+        const newUser = await createUser(req.body);
         res.status(201).json(newUser);
     },
 
     async update(req, res) {
-        const userDTO = updateUser(req.params.id, req.body);
+        const userDTO = await updateUser(req.params.id, req.body);
         res.json(userToDto(userDTO));
     },
 

@@ -9,22 +9,22 @@ const {
 
 module.exports = {
     async getAll(req, res) {
-        const repairDTOs = getAllRepairs();
+        const repairDTOs = await getAllRepairs();
         res.json(repairDTOs);
     },
 
     async getById(req, res) {
-        const repairDTO = getRepairById(req.params.id);
+        const repairDTO = await getRepairById(req.params.id);
         res.json(repairToDto(repairDTO));
     },
 
     async create(req, res) {
-        const newRepair = createRepair(req.body);
+        const newRepair = await createRepair(req.body);
         res.status(201).json(newRepair);
     },
 
     async update(req, res) {
-        const repairDTO = updateRepair(req.params.id, req.body);
+        const repairDTO = await updateRepair(req.params.id, req.body);
         res.json(repairToDto(repairDTO));
     },
 

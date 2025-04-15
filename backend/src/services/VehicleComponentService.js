@@ -34,6 +34,24 @@ module.exports = {
         return vehicleComponentToDto(vehicleComponents);
     },
 
+    async getVehicleComponentsByIds(ids) {
+        const t = await transaction();
+        let vehicleComponents;
+        try {
+            vehicleComponents = ids.map((id) => {
+                VehicleComponent.findByPk(id, {transaction: t})
+            });
+        } catch (e) {
+            console.error(e);
+            throw new AppError('Something was wrong when vehicle components searching', 400);
+        }
+        if (vehicleComponents.length === 0) {
+            throw new AppError(`Vehicle components not found`, 404);
+        }
+        return vehicleComponents.map(
+            vehicleComponent => vehicleComponentToDto(vehicleComponent));
+    },
+
     async getVehicleComponentById(id) {
         const vehicleComponent = await VehicleComponent.findByPk(id);
         if (!vehicleComponent) {
@@ -66,11 +84,27 @@ module.exports = {
         const t = await transaction();
         try {
             components.forEach((vehicleComponent) => {
-                this.updateVehicleComponent(vehicleComponent.id,
+                vehicleComponent.update(vehicleComponent.id,
                     {
                         mileageSinceManufactured: mileage,
                         mileageAfterLastRepair: vehicleComponent.mileageAfterLastRepair +
                             (mileage - vehicleComponent.mileageSinceManufactured),
+                    }, {transaction: t});
+            });
+        } catch (e) {
+            console.error(e);
+            throw new AppError('Something was wrong when vehicle components searching', 400);
+        }
+        return components.map(component => vehicleComponentToDto(component));
+    },
+    async updateVehicleComponentsCategory(vehicleComponentIds, newCategory) {
+        const components = this.getVehicleComponentsByIds(vehicleComponentIds);
+        const t = await transaction();
+        try {
+            components.forEach((vehicleComponent) => {
+                vehicleComponent.update(vehicleComponent.id,
+                    {
+                        category: newCategory,
                     }, {transaction: t});
             });
         } catch (e) {

@@ -1,34 +1,30 @@
 const Maintenance = require('../models/Maintenance');
 const {maintenanceToDto} = require("../dtos/maintenance.dto");
+const {getAllMaintenances, getMaintenanceById, createMaintenance, updateMaintenance, deleteMaintenance} = require("../services/MaintenanceService");
 
 module.exports = {
     async getAll(req, res) {
-        const maintenance = await Maintenance.findAll();
-        res.json(maintenance.map(maintenance => maintenanceToDto(maintenance)));
+        const maintenanceDTOs = getAllMaintenances();
+        res.json(maintenanceDTOs);
     },
 
     async getById(req, res) {
-        const maintenance = await Maintenance.findByPk(req.params.id);
-        if (!maintenance) return res.status(404).json({error: 'Maintenance not found'});
-        res.json(maintenanceToDto(maintenance));
+        const maintenanceDTO = getMaintenanceById(req.params.id);
+        res.json(maintenanceDTO);
     },
 
     async create(req, res) {
-        const newUser = await Maintenance.create(req.body);
-        res.status(201).json(maintenanceToDto(newUser));
+        const newMaintenanceDTO = createMaintenance(req.body);
+        res.status(201).json(newMaintenanceDTO);
     },
 
     async update(req, res) {
-        const maintenance = await Maintenance.findByPk(req.params.id);
-        if (!maintenance) return res.status(404).json({error: 'Maintenance not found'});
-        await maintenance.update(req.body);
-        res.json(maintenanceToDto(maintenance));
+        const maintenanceDTO = updateMaintenance(req.params.id, req.body);
+        res.json(maintenanceToDto(maintenanceDTO));
     },
 
     async delete(req, res) {
-        const maintenance = await Maintenance.findByPk(req.params.id);
-        if (!maintenance) return res.status(404).json({error: 'Maintenance not found'});
-        await maintenance.destroy();
+        await deleteMaintenance(req.params.id);
         res.status(204).send();
     }
 };

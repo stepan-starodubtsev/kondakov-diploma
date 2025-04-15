@@ -44,7 +44,7 @@ module.exports = {
     },
 
     async getRepairsByVehicleId(vehicleId) {
-        const repairs = await RepairComponent.findAll({where: vehicleId});
+        const repairs = await Repair.findAll({where: vehicleId});
         if (repairs.length === 0) {
             throw new AppError(`Repairs not found`, 404);
         }

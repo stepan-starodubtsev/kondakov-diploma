@@ -9,7 +9,6 @@ const Maintenance = sequelize.define('Maintenance', {
         allowNull: false
     },
     date: {type: DataTypes.DATEONLY, allowNull: false},
-    isNeedRepair: {type: DataTypes.BOOLEAN, allowNull: false},
     result: {type: DataTypes.TEXT, allowNull: true},
     status: {
         type: DataTypes.ENUM('EDITED', 'PENDING', 'APPROVED', 'REJECTED', 'NOT_CLOSED', 'DONE'),

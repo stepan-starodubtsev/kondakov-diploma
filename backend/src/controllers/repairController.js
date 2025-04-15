@@ -1,34 +1,35 @@
-const Repair = require('../models/Repair');
 const {repairToDto} = require("../dtos/repair.dto");
+const {
+    getAllRepairs,
+    getRepairById,
+    createRepair,
+    updateRepair,
+    deleteRepair
+} = require("../services/RepairService");
 
 module.exports = {
     async getAll(req, res) {
-        const repairs = await Repair.findAll();
-        res.json(repairs.map(repair => repairToDto(repair)));
+        const repairDTOs = getAllRepairs();
+        res.json(repairDTOs);
     },
 
     async getById(req, res) {
-        const repair = await Repair.findByPk(req.params.id);
-        if (!repair) return res.status(404).json({error: 'Repair not found'});
-        res.json(repairToDto(repair));
+        const repairDTO = getRepairById(req.params.id);
+        res.json(repairToDto(repairDTO));
     },
 
     async create(req, res) {
-        const newUser = await Repair.create(req.body);
-        res.status(201).json(repairToDto(newUser));
+        const newRepair = createRepair(req.body);
+        res.status(201).json(newRepair);
     },
 
     async update(req, res) {
-        const repair = await Repair.findByPk(req.params.id);
-        if (!repair) return res.status(404).json({error: 'Repair not found'});
-        await repair.update(req.body);
-        res.json(repairToDto(repair));
+        const repairDTO = updateRepair(req.params.id, req.body);
+        res.json(repairToDto(repairDTO));
     },
 
     async delete(req, res) {
-        const repair = await Repair.findByPk(req.params.id);
-        if (!repair) return res.status(404).json({error: 'Repair not found'});
-        await repair.destroy();
+        await deleteRepair(req.params.id);
         res.status(204).send();
     }
 };

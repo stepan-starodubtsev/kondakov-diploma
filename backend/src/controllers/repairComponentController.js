@@ -1,34 +1,35 @@
-const RepairComponent = require('../models/RepairComponent');
+const {
+    getAllRepairComponents,
+    getRepairComponentById,
+    createRepairComponent,
+    deleteRepairComponent
+} = require("../services/RepairComponentService");
+const {updateRepairComponent} = require("../services/RepairComponentService");
 const {repairComponentToDto} = require("../dtos/repairComponent.dto");
 
 module.exports = {
     async getAll(req, res) {
-        const repairComponents = await RepairComponent.findAll();
-        res.json(repairComponents.map(repairComponent => repairComponentToDto(repairComponent)));
+        const repairComponentDTOs = getAllRepairComponents();
+        res.json(repairComponentDTOs);
     },
 
     async getById(req, res) {
-        const repairComponent = await RepairComponent.findByPk(req.params.id);
-        if (!repairComponent) return res.status(404).json({error: 'RepairComponent not found'});
-        res.json(repairComponentToDto(repairComponent));
+        const repairComponentDTO = getRepairComponentById(req.params.id);
+        res.json(repairComponentToDto(repairComponentDTO));
     },
 
     async create(req, res) {
-        const newUser = await RepairComponent.create(req.body);
-        res.status(201).json(repairComponentToDto(newUser));
+        const newRepairComponent = createRepairComponent(req.body);
+        res.status(201).json(newRepairComponent);
     },
 
     async update(req, res) {
-        const repairComponent = await RepairComponent.findByPk(req.params.id);
-        if (!repairComponent) return res.status(404).json({error: 'RepairComponent not found'});
-        await repairComponent.update(req.body);
-        res.json(repairComponentToDto(repairComponent));
+        const repairComponentDTO = updateRepairComponent(req.params.id, req.body);
+        res.json(repairComponentToDto(repairComponentDTO));
     },
 
     async delete(req, res) {
-        const repairComponent = await RepairComponent.findByPk(req.params.id);
-        if (!repairComponent) return res.status(404).json({error: 'RepairComponent not found'});
-        await repairComponent.destroy();
+        await deleteRepairComponent(req.params.id);
         res.status(204).send();
     }
 };

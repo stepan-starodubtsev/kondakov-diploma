@@ -1,34 +1,36 @@
 const Vehicle = require('../models/Vehicle');
 const {vehicleToDto} = require("../dtos/vehicle.dto");
+const {
+    getAllVehicles,
+    getVehicleById,
+    createVehicle,
+    updateVehicle,
+    deleteVehicle
+} = require("../services/VehicleService");
 
 module.exports = {
     async getAll(req, res) {
-        const vehicles = await Vehicle.findAll();
-        res.json(vehicles.map(vehicle => vehicleToDto(vehicle)));
+        const vehicleDTOs = getAllVehicles();
+        res.json(vehicleDTOs);
     },
 
     async getById(req, res) {
-        const vehicle = await Vehicle.findByPk(req.params.id);
-        if (!vehicle) return res.status(404).json({error: 'Vehicle not found'});
-        res.json(vehicleToDto(vehicle));
+        const vehicleDTO = getVehicleById(req.params.id);
+        res.json(vehicleToDto(vehicleDTO));
     },
 
     async create(req, res) {
-        const newUser = await Vehicle.create(req.body);
-        res.status(201).json(vehicleToDto(newUser));
+        const newVehicle = createVehicle(req.body);
+        res.status(201).json(newVehicle);
     },
 
     async update(req, res) {
-        const vehicle = await Vehicle.findByPk(req.params.id);
-        if (!vehicle) return res.status(404).json({error: 'Vehicle not found'});
-        await vehicle.update(req.body);
-        res.json(vehicleToDto(vehicle));
+        const vehicleDTO = updateVehicle(req.params.id, req.body);
+        res.json(vehicleToDto(vehicleDTO));
     },
 
     async delete(req, res) {
-        const vehicle = await Vehicle.findByPk(req.params.id);
-        if (!vehicle) return res.status(404).json({error: 'Vehicle not found'});
-        await vehicle.destroy();
+        await deleteVehicle(req.params.id);
         res.status(204).send();
     }
 };

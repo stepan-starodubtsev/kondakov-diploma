@@ -1,34 +1,35 @@
-const User = require('../models/User');
 const {userToDto} = require("../dtos/user.dto");
+const {
+    getAllUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser
+} = require("../services/UserService");
 
 module.exports = {
     async getAll(req, res) {
-        const users = await User.findAll();
-        res.json(users.map(user => userToDto(user)));
+        const userDTOs = getAllUsers();
+        res.json(userDTOs);
     },
 
     async getById(req, res) {
-        const user = await User.findByPk(req.params.id);
-        if (!user) return res.status(404).json({error: 'User not found'});
-        res.json(userToDto(user));
+        const userDTO = getUserById(req.params.id);
+        res.json(userToDto(userDTO));
     },
 
     async create(req, res) {
-        const newUser = await User.create(req.body);
-        res.status(201).json(userToDto(newUser));
+        const newUser = createUser(req.body);
+        res.status(201).json(newUser);
     },
 
     async update(req, res) {
-        const user = await User.findByPk(req.params.id);
-        if (!user) return res.status(404).json({error: 'User not found'});
-        await user.update(req.body);
-        res.json(userToDto(user));
+        const userDTO = updateUser(req.params.id, req.body);
+        res.json(userToDto(userDTO));
     },
 
     async delete(req, res) {
-        const user = await User.findByPk(req.params.id);
-        if (!user) return res.status(404).json({error: 'User not found'});
-        await user.destroy();
+        await deleteUser(req.params.id);
         res.status(204).send();
     }
 };

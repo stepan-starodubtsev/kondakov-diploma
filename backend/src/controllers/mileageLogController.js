@@ -1,34 +1,26 @@
 const MileageLog = require('../models/MileageLog');
 const {mileageLogToDto} = require("../dtos/mileageLog.dto");
+const {getAllMileageLogs, createMileageLog, getMileageLogById, deleteMileageLog} = require("../services/MileageLogService");
+const {getMaintenanceById} = require("../services/MaintenanceService");
 
 module.exports = {
     async getAll(req, res) {
-        const mileageLogs = await MileageLog.findAll();
-        res.json(mileageLogs.map(mileageLog => mileageLogToDto(mileageLog)));
+        const mileageLogDTOs = getAllMileageLogs();
+        res.json(mileageLogDTOs);
     },
 
     async getById(req, res) {
-        const mileageLog = await MileageLog.findByPk(req.params.id);
-        if (!mileageLog) return res.status(404).json({error: 'MileageLog not found'});
-        res.json(mileageLogToDto(mileageLog));
+        const mileageLogDTO = getMileageLogById(req.params.id);
+        res.json(mileageLogToDto(mileageLogDTO));
     },
 
     async create(req, res) {
-        const newUser = await MileageLog.create(req.body);
-        res.status(201).json(mileageLogToDto(newUser));
-    },
-
-    async update(req, res) {
-        const mileageLog = await MileageLog.findByPk(req.params.id);
-        if (!mileageLog) return res.status(404).json({error: 'MileageLog not found'});
-        await mileageLog.update(req.body);
-        res.json(mileageLogToDto(mileageLog));
+        const newMileageLog = createMileageLog(req.body);
+        res.status(201).json(newMileageLog);
     },
 
     async delete(req, res) {
-        const mileageLog = await MileageLog.findByPk(req.params.id);
-        if (!mileageLog) return res.status(404).json({error: 'MileageLog not found'});
-        await mileageLog.destroy();
+        await deleteMileageLog(req.params.id);
         res.status(204).send();
     }
 };

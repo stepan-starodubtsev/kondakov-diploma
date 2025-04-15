@@ -11,13 +11,13 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 
 const Item = ({title, to, icon}) => {
     const {pathname} = useLocation();
@@ -109,20 +109,19 @@ const CustomSidebar = () => {
                     <Box pl={isCollapsed ? 0 : "10%"}>
                         <Item title="Головна" to="/" icon={<HomeOutlinedIcon/>}/>
 
-                        <Item title="Користувачі" to="/team" icon={<PeopleOutlinedIcon/>}/>
-                        <Item title="Підрозділи" to="/team" icon={<ReceiptOutlinedIcon/>}/>
+                        <Item title="Користувачі" to="/users" icon={<PeopleOutlinedIcon/>}/>
+                        <Item title="Підрозділи" to="/units" icon={<ApartmentIcon/>}/>
 
-                        <SubMenu label="Про ТЗ" icon={<BarChartOutlinedIcon/>}>
-                            <Item title="Список ТЗ" to="/team" icon={<DirectionsCarIcon/>}/>
-                            <Item title="Ремонти ТЗ" to="/team" icon={<CarRepairIcon/>}/>
-                            <Item title="ТО ТЗ" to="/team" icon={<CarRentalIcon/>}/>
+                        <SubMenu label="Про ТЗ" icon={<DirectionsCarIcon/>}>
+                            <Item title="Список ТЗ" to="/cars" icon={<DirectionsCarIcon/>}/>
+                            <Item title="Ремонти ТЗ" to="/repairs" icon={<CarRepairIcon/>}/>
+                            <Item title="ТО ТЗ" to="/maintenances" icon={<CarRentalIcon/>}/>
+                            <Item title="Облік пробігу" to="/mileage-logs" icon={<ScheduleIcon/>}/>
                         </SubMenu>
-
 
                         <Item title="Календар" to="/calendar" icon={<CalendarTodayOutlinedIcon/>}/>
                         <Item title="Профіль" to="/profile" icon={<PersonOutlinedIcon/>}/>
                         <Item title="FAQ" to="/faq" icon={<HelpOutlineOutlinedIcon/>}/>
-
 
                         <SubMenu label="Графіки" icon={<BarChartOutlinedIcon/>}>
                             <Item title="Bar" to="/bar" icon={<BarChartOutlinedIcon/>}/>

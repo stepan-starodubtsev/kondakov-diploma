@@ -12,6 +12,7 @@ const repairRouter = require('./routes/repairRouter');
 const userRouter = require('./routes/userRouter');
 const unitRouter = require('./routes/unitRouter');
 const vehicleRouter = require('./routes/vehicleRouter');
+const mileageLogRouter = require('./routes/mileageLogRouter');
 const vehicleComponentRouter = require('./routes/vehicleComponentRouter');
 
 
@@ -35,9 +36,10 @@ app.use('/api/repairs', repairRouter);
 app.use('/api/users', userRouter);
 app.use('/api/units', unitRouter);
 app.use('/api/vehicles', vehicleRouter);
-app.use('/api/vehicleComponents', vehicleComponentRouter);
+app.use('/api/mileage-logs', mileageLogRouter);
+app.use('/api/vehicle-components', vehicleComponentRouter);
 
-app.get('/', (req, res) => res.send('API is running...'));
+app.get('/api', (req, res) => res.send('API is running...'));
 
 app.use((err, req, res, next) => {
     const status = err.statusCode || 500;

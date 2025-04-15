@@ -9,6 +9,9 @@ import {
     PersonOutlined,
     SettingsOutlined
 } from '@mui/icons-material';
+import {Link} from "react-router-dom";
+import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
 const TopBar = () => {
     const theme = useTheme();
@@ -28,12 +31,16 @@ const TopBar = () => {
                     {theme.palette.mode === 'light' ?
                         <LightModeOutlined/> : <DarkModeOutlined/>}
                 </IconButton>
-                <IconButton>
-                    <NotificationsOutlined/>
-                </IconButton>
-                <IconButton>
-                    <SettingsOutlined/>
-                </IconButton>
+                <Link to={'/calendar'}>
+                    <IconButton>
+                        <CalendarTodayOutlinedIcon/>
+                    </IconButton>
+                </Link>
+                <Link to={'/cars'}>
+                    <IconButton>
+                        <DirectionsCarIcon/>
+                    </IconButton>
+                </Link>
                 <IconButton>
                     <PersonOutlined/>
                 </IconButton>

@@ -5,13 +5,12 @@ import {Route, Routes} from "react-router-dom";
 import TopBar from "./scenes/global/TopBar";
 import CustomSideBar from "./scenes/global/CustomSidebar.jsx";
 import Dashboard from "./scenes/dashboard";
-import Team from "./scenes/team";
-import Contacts from "./scenes/contacts/index.jsx";
-import Invoices from "./scenes/invoices";
+// import Team from "./scenes/team";
+// import Contacts from "./scenes/users/index.jsx";
+// import Invoices from "./scenes/invoices";
 import Calendar from "./scenes/calendar";
 import FAQ from "./scenes/faq/index.jsx";
 // import Bar from "./scenes/bar";
-// import Form from "./scenes/form";
 // import Line from "./scenes/line";
 // import Pie from "./scenes/pie";
 // import Geography from "./scenes/geography";
@@ -30,13 +29,16 @@ function App() {
                         <TopBar/>
                         <Routes>
                             <Route path="/" element={<Dashboard/>}/>
-                            <Route path="/team" element={<Team/>}/>
-                            <Route path="/contacts" element={<Contacts/>}/>
-                            <Route path="/invoices" element={<Invoices/>}/>
+                            {/*<Route path="/users" element={<Contacts/>}/>*/}
+                            {/*<Route path="/units" element={<Contacts/>}/>*/}
+                            {/*<Route path="/cars" element={<Team/>}/>*/}
+                            {/*<Route path="/repairs" element={<Invoices/>}/>*/}
+                            {/*<Route path="/maintenances" element={<Invoices/>}/>*/}
+                            {/*<Route path="/mileage-logs" element={<Invoices/>}/>*/}
                             <Route path="/calendar" element={<Calendar/>}/>
+                            {/*<Route path="/profile" element={<Calendar/>}/>*/}
                             <Route path="/faq" element={<FAQ/>}/>
                             {/*<Route path="/bar" element={<Bar/>}/>*/}
-                            {/*<Route path="/form" element={<Form/>}/>*/}
                             {/*<Route path="/line" element={<Line/>}/>*/}
                             {/*<Route path="/pie" element={<Pie/>}/>*/}
                             {/*<Route path="/geography" element={<Geography/>}/>*/}

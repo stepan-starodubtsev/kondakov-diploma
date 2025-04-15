@@ -6,8 +6,8 @@ const apiClient = axios.create({
     baseURL: BASE_URL,
     withCredentials: true, // Allows sending cookies (important for refresh tokens)
 });
-
-// Request Interceptor: Attach Authorization Token
+//
+// // Request Interceptor: Attach Authorization Token
 // apiClient.interceptors.request.use(
 //     async (config) => {
 //         if (authStore.accessToken) {
@@ -17,8 +17,8 @@ const apiClient = axios.create({
 //     },
 //     (error) => Promise.reject(error)
 // );
-
-// Response Interceptor: Handle Token Expiry & Refresh Token Flow
+//
+// // Response Interceptor: Handle Token Expiry & Refresh Token Flow
 // apiClient.interceptors.response.use(
 //     (response) => response,
 //     async (error) => {

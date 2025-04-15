@@ -1,27 +1,22 @@
 import {useState} from "react";
-import {
-    Sidebar,
-    Menu,
-    MenuItem,
-    SubMenu,
-} from "react-pro-sidebar";
+import {Menu, MenuItem, Sidebar, SubMenu,} from "react-pro-sidebar";
 import {Box, IconButton, Typography, useTheme} from "@mui/material";
 import {Link, useLocation} from "react-router-dom";
 import {tokens} from "../../theme";
 
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+import CarRentalIcon from '@mui/icons-material/CarRental';
+import CarRepairIcon from '@mui/icons-material/CarRepair';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
-import UserPhoto from "../../assets/user.png";
+import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 
 
 const Item = ({title, to, icon}) => {
@@ -97,41 +92,42 @@ const CustomSidebar = () => {
                         <Box mb="25px">
                             <Box textAlign="center">
                                 <Typography
-                                    variant="h2"
+                                    variant="h3"
                                     color={colors.grey[100]}
                                     fontWeight="bold"
                                     sx={{m: "10px 0 0 0"}}
                                 >
-                                    Ed Roh
+                                    Kyrylo Bydanov
                                 </Typography>
                                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                                    VP Fancy Admin
+                                    admin@admin.com
                                 </Typography>
                             </Box>
                         </Box>
                     )}
 
                     <Box pl={isCollapsed ? 0 : "10%"}>
-                        <Item title="Dashboard" to="/" icon={<HomeOutlinedIcon/>}/>
+                        <Item title="Головна" to="/" icon={<HomeOutlinedIcon/>}/>
 
+                        <Item title="Користувачі" to="/team" icon={<PeopleOutlinedIcon/>}/>
+                        <Item title="Підрозділи" to="/team" icon={<ReceiptOutlinedIcon/>}/>
 
-                        <SubMenu label="Data" icon={<ReceiptOutlinedIcon/>}>
-                            <Item title="Manage Team" to="/team" icon={<PeopleOutlinedIcon/>}/>
-                            <Item title="Contacts" to="/contacts" icon={<ContactsOutlinedIcon/>}/>
-                            <Item title="Invoices" to="/invoices" icon={<ReceiptOutlinedIcon/>}/>
+                        <SubMenu label="Про ТЗ" icon={<BarChartOutlinedIcon/>}>
+                            <Item title="Список ТЗ" to="/team" icon={<DirectionsCarIcon/>}/>
+                            <Item title="Ремонти ТЗ" to="/team" icon={<CarRepairIcon/>}/>
+                            <Item title="ТО ТЗ" to="/team" icon={<CarRentalIcon/>}/>
                         </SubMenu>
 
-                        <SubMenu label="Pages" icon={<PersonOutlinedIcon/>}>
-                            <Item title="Profile" to="/profile" icon={<PersonOutlinedIcon/>}/>
-                            <Item title="Calendar" to="/calendar" icon={<CalendarTodayOutlinedIcon/>}/>
-                            <Item title="FAQ" to="/faq" icon={<HelpOutlineOutlinedIcon/>}/>
-                        </SubMenu>
 
-                        <SubMenu label="Charts" icon={<BarChartOutlinedIcon/>}>
+                        <Item title="Календар" to="/calendar" icon={<CalendarTodayOutlinedIcon/>}/>
+                        <Item title="Профіль" to="/profile" icon={<PersonOutlinedIcon/>}/>
+                        <Item title="FAQ" to="/faq" icon={<HelpOutlineOutlinedIcon/>}/>
+
+
+                        <SubMenu label="Графіки" icon={<BarChartOutlinedIcon/>}>
                             <Item title="Bar" to="/bar" icon={<BarChartOutlinedIcon/>}/>
                             <Item title="Pie" to="/pie" icon={<PieChartOutlineOutlinedIcon/>}/>
                             <Item title="Line" to="/line" icon={<TimelineOutlinedIcon/>}/>
-                            <Item title="Geography" to="/geography" icon={<MapOutlinedIcon/>}/>
                         </SubMenu>
                     </Box>
                 </Menu>

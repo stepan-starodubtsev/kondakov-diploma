@@ -41,10 +41,11 @@ app.use('/api/vehicle-components', vehicleComponentRouter);
 
 app.get('/api', (req, res) => res.send('API is running...'));
 
-app.use((err, req, res, next) => {
-    const status = err.statusCode || 500;
-    res.status(status).json({
-        error: err.message || 'Internal Server Error'
+app.use((error, req, res, next) => {
+    error.statusCode = error.statusCode || 500;
+    res.status(error.statusCode).json({
+        status: error.statusCode,
+        message: error.message,
     });
 });
 

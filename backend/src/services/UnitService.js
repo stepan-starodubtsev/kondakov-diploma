@@ -1,5 +1,5 @@
 const Unit = require('../models/Unit');
-const AppError = require("../middlewares/AppError");
+const AppError = require("../errors/AppError");
 const { unitToDto } = require("../dtos/unit.dto");
 
 module.exports = {

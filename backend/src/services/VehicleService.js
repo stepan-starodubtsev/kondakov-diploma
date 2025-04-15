@@ -1,5 +1,5 @@
 const Vehicle = require('../models/Vehicle');
-const AppError = require("../middlewares/AppError");
+const AppError = require("../errors/AppError");
 const {vehicleToDto} = require("../dtos/vehicle.dto");
 const {updateVehicleComponentsMileage} = require("./VehicleComponentService");
 

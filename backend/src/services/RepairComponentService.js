@@ -1,5 +1,5 @@
 const RepairComponent = require('../models/RepairComponent');
-const AppError = require("../middlewares/AppError");
+const AppError = require("../errors/AppError");
 const { repairComponentToDto } = require("../dtos/repairComponent.dto");
 const VehicleComponent = require("../models/VehicleComponent");
 

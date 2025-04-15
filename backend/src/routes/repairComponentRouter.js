@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const RepairComponentController = require('../controllers/repairComponentController');
+const catchErrorsAsync = require('../middlewares/catchErrorAsync');
 
-router.get('/', RepairComponentController.getAll);
-router.get('/:id', RepairComponentController.getById);
-router.post('/', RepairComponentController.create);
-router.put('/:id', RepairComponentController.update);
-router.delete('/:id', RepairComponentController.delete);
+router.get('/', catchErrorsAsync(RepairComponentController.getAll));
+router.get('/:id', catchErrorsAsync(RepairComponentController.getById));
+router.post('/', catchErrorsAsync(RepairComponentController.create));
+router.put('/:id', catchErrorsAsync(RepairComponentController.update));
+router.delete('/:id', catchErrorsAsync(RepairComponentController.delete));
 
 module.exports = router;

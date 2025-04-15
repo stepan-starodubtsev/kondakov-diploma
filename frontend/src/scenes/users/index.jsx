@@ -1,29 +1,58 @@
 import Header from "../../components/Header.jsx";
-import {Box, useTheme} from "@mui/material";
+import {Box, Button, Typography, useTheme} from "@mui/material";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import BadgeIcon from '@mui/icons-material/Badge';
 import {DataGrid, GridToolbar} from '@mui/x-data-grid';
 import {tokens} from "../../theme.js";
-import {mockDataContacts} from "../../data/mockData";
+import {useEffect, useState} from "react";
+import {fetchUsers} from "../../services/UserService.jsx";
 
-const Contacts = () => {
+const Team = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const [usersData, setUsersData] = useState([]);
 
     const columns = [
-        {field: 'id', headerName: 'ID', flex: 0.5},
-        {field: 'registrarId', headerName: 'Registrar ID', flex: 1},
-        {field: 'name', headerName: 'Name', flex: 1, cellClassName: "name-column--cell"},
-        {field: 'email', headerName: 'Email', flex: 1},
-        {field: 'age', headerName: 'Age', type: "number", headerAlign: "left", align: "left"},
-        {field: 'phone', headerName: 'Phone', flex: 1},
-        {field: 'address', headerName: 'Address', flex: 1},
-        {field: 'city', headerName: 'City', flex: 1},
-        {field: 'zipCode', headerName: 'ZipCode', flex: 1},
+        {field: 'id', headerName: 'ID'},
+        {field: 'name', headerName: 'ПІБ', flex: 1, cellClassName: "name-column--cell"},
+        {field: 'username', headerName: 'Логін', flex: 1},
+        {
+            field: 'role', headerName: 'Рівень доступу', flex: 1, renderCell: ({row: {access}}) => {
+                return (
+                    <Button
+                        color={
+                            access === "admin"
+                                ? colors.greenAccent[600]
+                                : access === "mainCommander"
+                                    ? colors.greenAccent[700]
+                                    : colors.greenAccent[700]
+                        }
+                    >
+                        {access === "admin" && <AdminPanelSettingsOutlinedIcon/>}
+                        {access === "mainCommander" && <AccountBoxIcon/>}
+                        {access === "commander" && <BadgeIcon/>}
+                        <Typography color={colors.grey[100]} sx={{ml: "5px"}}>
+                            {access}
+                        </Typography>
+                    </Button>
+                );
+            },
+        },
     ]
+
+    useEffect(() => {
+        handleUsersData();
+    }, [])
+
+    const handleUsersData = async () => {
+        setUsersData(await fetchUsers());
+    }
 
     return (
         <Box m={"20px"}>
             <Box>
-                <Header title={"CONTACTS"} subtitle={"List of Contacts for Future Reference"}/>
+                <Header title={"КОРИСТУВАЧІ"} subtitle={"Керування користувачами"}/>
                 <Box>
                     <DataGrid
                         sx={{
@@ -33,7 +62,8 @@ const Contacts = () => {
                                 },
                             },
                         }}
-                        rows={mockDataContacts}
+
+                        rows={usersData}
                         columns={columns}
                         slots={{toolbar: GridToolbar}}
                         disableRowSelectionOnClick>
@@ -45,4 +75,4 @@ const Contacts = () => {
         ;
 }
 
-export default Contacts;
+export default Team;

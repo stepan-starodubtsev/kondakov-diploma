@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const MaintenanceController = require('../controllers/maintenanceController');
+const catchErrorsAsync = require('../middlewares/catchErrorAsync');
 
-router.get('/', MaintenanceController.getAll);
-router.get('/:id', MaintenanceController.getById);
-router.post('/', MaintenanceController.create);
-router.put('/:id', MaintenanceController.update);
-router.delete('/:id', MaintenanceController.delete);
+
+router.get('/', catchErrorsAsync(MaintenanceController.getAll));
+router.get('/:id', catchErrorsAsync(MaintenanceController.getById));
+router.post('/', catchErrorsAsync(MaintenanceController.create));
+router.put('/:id', catchErrorsAsync(MaintenanceController.update));
+router.delete('/:id', catchErrorsAsync(MaintenanceController.delete));
 
 module.exports = router;

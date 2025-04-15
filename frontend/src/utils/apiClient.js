@@ -1,5 +1,5 @@
 import axios from "axios";
-import { authStore } from "../stores/authStore";
+// import { authStore } from "../stores/authStore";
 import {BASE_URL} from "./constants.js"; // Import the authentication store
 
 const apiClient = axios.create({

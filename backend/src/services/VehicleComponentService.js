@@ -1,5 +1,5 @@
 const VehicleComponent = require('../models/VehicleComponent');
-const AppError = require("../middlewares/AppError");
+const AppError = require("../errors/AppError");
 const {vehicleComponentToDto} = require("../dtos/vehicleComponent.dto");
 const {transaction} = require("../settings/settingsDB");
 
@@ -31,7 +31,8 @@ module.exports = {
         if (vehicleComponents.length === 0) {
             throw new AppError(`Vehicle components with vehicle ID ${id} not found`, 404);
         }
-        return vehicleComponentToDto(vehicleComponents);
+        return vehicleComponents.map(
+            vehicleComponent => vehicleComponentToDto(vehicleComponent));
     },
 
     async getVehicleComponentsByIds(ids) {

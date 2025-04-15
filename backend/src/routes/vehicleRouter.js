@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const VehicleController = require('../controllers/vehicleController');
+const catchErrorsAsync = require('../middlewares/catchErrorAsync');
 
-
-router.get('/', VehicleController.getAll);
-router.get('/:id', VehicleController.getById);
-router.post('/', VehicleController.create);
-router.put('/:id', VehicleController.update);
-router.delete('/:id', VehicleController.delete);
+router.get('/', catchErrorsAsync(VehicleController.getAll));
+router.get('/:id', catchErrorsAsync(VehicleController.getById));
+router.post('/', catchErrorsAsync(VehicleController.create));
+router.put('/:id', catchErrorsAsync(VehicleController.update));
+router.delete('/:id', catchErrorsAsync(VehicleController.delete));
 
 module.exports = router;

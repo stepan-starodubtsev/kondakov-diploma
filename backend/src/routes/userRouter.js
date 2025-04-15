@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/userController');
+const catchErrorsAsync = require('../middlewares/catchErrorAsync');
 
-router.get('/', UserController.getAll);
-router.get('/:id', UserController.getById);
-router.post('/', UserController.create);
-router.put('/:id', UserController.update);
-router.delete('/:id', UserController.delete);
+router.get('/', catchErrorsAsync(UserController.getAll));
+router.get('/:id', catchErrorsAsync(UserController.getById));
+router.post('/', catchErrorsAsync(UserController.create));
+router.put('/:id', catchErrorsAsync(UserController.update));
+router.delete('/:id', catchErrorsAsync(UserController.delete));
 
 module.exports = router;

@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const VehicleComponentController = require('../controllers/vehicleComponentController');
+const catchErrorsAsync = require('../middlewares/catchErrorAsync');
 
-router.get('/', VehicleComponentController.getAll);
-router.get('/:id', VehicleComponentController.getById);
-router.post('/', VehicleComponentController.create);
-router.put('/:id', VehicleComponentController.update);
-router.delete('/:id', VehicleComponentController.delete);
+router.get('/', catchErrorsAsync(VehicleComponentController.getAll));
+router.get('/:id', catchErrorsAsync(VehicleComponentController.getById));
+router.post('/', catchErrorsAsync(VehicleComponentController.create));
+router.put('/:id', catchErrorsAsync(VehicleComponentController.update));
+router.delete('/:id', catchErrorsAsync(VehicleComponentController.delete));
 
 module.exports = router;

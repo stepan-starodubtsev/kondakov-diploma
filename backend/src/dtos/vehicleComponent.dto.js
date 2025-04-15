@@ -1,4 +1,4 @@
-const AppError = require("../middlewares/AppError");
+const AppError = require("../errors/AppError");
 const {getMileagesLogsByVehicleIdForThisYear} = require("../services/MileageLogService");
 const {vehicleToDto} = require("./vehicle.dto");
 

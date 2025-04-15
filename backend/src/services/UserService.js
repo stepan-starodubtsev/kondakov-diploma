@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require("bcryptjs");
-const AppError = require("../middlewares/AppError");
+const AppError = require("../errors/AppError");
 const { userToDto } = require("../dtos/user.dto");
 
 module.exports = {

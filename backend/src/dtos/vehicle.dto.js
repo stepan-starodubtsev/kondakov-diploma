@@ -1,6 +1,6 @@
-const {getVehicleComponentsByVehicleId, getAllVehicleComponents} = require("../services/VehicleComponentService");
+const {getVehicleComponentsByVehicleId} = require("../services/VehicleComponentService");
 const {getMileagesLogsByVehicleIdForThisYear} = require("../services/MileageLogService");
-const AppError = require("../middlewares/AppError");
+const AppError = require("../errors/AppError");
 
 const calculateAnnualResourceActual = (vehicle) => {
     const logs = getMileagesLogsByVehicleIdForThisYear(vehicle.id);

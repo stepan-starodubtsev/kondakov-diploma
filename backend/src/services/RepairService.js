@@ -30,7 +30,7 @@ module.exports = {
     async getAllRepairs() {
         const repairs = await Repair.findAll();
         if (repairs.length === 0) {
-            throw new AppError(`Repairs not found`, 404);
+            return null;
         }
         return repairs.map(repair => repairToDto(repair));
     },
@@ -46,7 +46,7 @@ module.exports = {
     async getRepairsByVehicleId(vehicleId) {
         const repairs = await Repair.findAll({where: vehicleId});
         if (repairs.length === 0) {
-            throw new AppError(`Repairs not found`, 404);
+            return null;
         }
         return repairs.map(repair => repairToDto(repair));
     },

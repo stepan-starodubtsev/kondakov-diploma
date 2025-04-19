@@ -18,7 +18,7 @@ module.exports = {
     async getAllVehicles() { //todo create prepareVehicleDTO
         const vehicles = await Vehicle.findAll();
         if (vehicles.length === 0) {
-            throw new AppError(`Vehicles not found`, 404);
+            return null;
         }
         return vehicles.map(vehicle => vehicleToDto(vehicle));
     },

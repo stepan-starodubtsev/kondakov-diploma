@@ -24,7 +24,7 @@ module.exports = {
     async getAllUsers() {
         const users = await User.findAll();
         if (users.length === 0) {
-            throw new AppError(`Users not found`, 404);
+            return null;
         }
         return users.map(user => userToDto(user));
     },

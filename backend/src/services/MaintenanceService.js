@@ -20,7 +20,7 @@ module.exports = {
     async getAllMaintenances() {
         const maintenances = await Maintenance.findAll();
         if (maintenances.length === 0) {
-            throw new AppError(`Maintenances not found`, 404);
+            return null;
         }
         return maintenances.map(maintenance => maintenanceToDto(maintenance));
     },
@@ -36,7 +36,7 @@ module.exports = {
     async getMaintenancesByVehicleId(vehicleId) {
         const maintenances = await Maintenance.findAll({where: vehicleId});
         if (maintenances.length === 0) {
-            throw new AppError(`Maintenances not found`, 404);
+            return null;
         }
         return maintenances.map(maintenance => maintenanceToDto(maintenance));
     },

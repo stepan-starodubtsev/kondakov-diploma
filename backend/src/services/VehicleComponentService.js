@@ -19,7 +19,7 @@ module.exports = {
     async getAllVehicleComponents() {
         const vehicleComponents = await VehicleComponent.findAll();
         if (vehicleComponents.length === 0) {
-            throw new AppError(`Vehicle components not found`, 404);
+            return null;
         }
 
         return vehicleComponents.map(
@@ -29,7 +29,7 @@ module.exports = {
     async getVehicleComponentsByVehicleId(vehicleId) {
         const vehicleComponents = await VehicleComponent.findAll({where: {vehicleId: vehicleId}});
         if (vehicleComponents.length === 0) {
-            throw new AppError(`Vehicle components with vehicle ID ${id} not found`, 404);
+            return null;
         }
         return vehicleComponents.map(
             vehicleComponent => vehicleComponentToDto(vehicleComponent));
@@ -47,7 +47,7 @@ module.exports = {
             throw new AppError('Something was wrong when vehicle components searching', 400);
         }
         if (vehicleComponents.length === 0) {
-            throw new AppError(`Vehicle components not found`, 404);
+            return null;
         }
         return vehicleComponents.map(
             vehicleComponent => vehicleComponentToDto(vehicleComponent));

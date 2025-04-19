@@ -14,7 +14,7 @@ module.exports = {
     async getAllMileageLogs() {
         const mileageLogs = await MileageLog.findAll();
         if (mileageLogs.length === 0) {
-            throw new AppError(`MileageLogs not found`, 404);
+            return null;
         }
         return mileageLogs.map(mileageLog => mileageLogToDto(mileageLog));
     },
@@ -31,7 +31,7 @@ module.exports = {
             order: [['createdAt', 'ASC']],
         });
         if (mileageLogs.length === 0) {
-            throw new AppError(`MileageLogs not found`, 404);
+            return null;
         }
         return mileageLogs.map(mileageLog => mileageLogToDto(mileageLog));
     },

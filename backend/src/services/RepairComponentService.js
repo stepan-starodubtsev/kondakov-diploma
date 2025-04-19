@@ -18,7 +18,7 @@ module.exports = {
     async getAllRepairComponents() {
         const repairComponents = await RepairComponent.findAll();
         if (repairComponents.length === 0) {
-            throw new AppError(`Repair components not found`, 404);
+            return null;
         }
         return repairComponents.map(repairComponent => repairComponentToDto(repairComponent));
     },
@@ -34,7 +34,7 @@ module.exports = {
     async getRepairComponentsByRepairId(repairId) {
         const repairComponents = await RepairComponent.findAll({where: repairId});
         if (repairComponents.length === 0) {
-            throw new AppError(`Repair components not found`, 404);
+            return null;
         }
         return repairComponents.map(repairComponent => repairComponentToDto(repairComponent));
     },

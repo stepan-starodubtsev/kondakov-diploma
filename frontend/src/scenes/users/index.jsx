@@ -1,78 +1,45 @@
 import Header from "../../components/Header.jsx";
-import {Box, Button, Typography, useTheme} from "@mui/material";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import BadgeIcon from '@mui/icons-material/Badge';
-import {DataGrid, GridToolbar} from '@mui/x-data-grid';
+import {Box, useTheme} from "@mui/material";
 import {tokens} from "../../theme.js";
-import {useEffect, useState} from "react";
-import {fetchUsers} from "../../services/UserService.jsx";
+import * as React from "react";
+import {UserRoles} from "../../utils/constants.js";
+import usersStore from "../../stores/usersStore.js";
+import {observer} from "mobx-react-lite";
+import useError from "../../utils/useError.js";
+import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
 
-const Team = () => {
+const Users = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const [usersData, setUsersData] = useState([]);
-
     const columns = [
         {field: 'id', headerName: 'ID'},
         {field: 'name', headerName: 'ПІБ', flex: 1, cellClassName: "name-column--cell"},
         {field: 'username', headerName: 'Логін', flex: 1},
         {
-            field: 'role', headerName: 'Рівень доступу', flex: 1, renderCell: ({row: {access}}) => {
-                return (
-                    <Button
-                        color={
-                            access === "admin"
-                                ? colors.greenAccent[600]
-                                : access === "mainCommander"
-                                    ? colors.greenAccent[700]
-                                    : colors.greenAccent[700]
-                        }
-                    >
-                        {access === "admin" && <AdminPanelSettingsOutlinedIcon/>}
-                        {access === "mainCommander" && <AccountBoxIcon/>}
-                        {access === "commander" && <BadgeIcon/>}
-                        <Typography color={colors.grey[100]} sx={{ml: "5px"}}>
-                            {access}
-                        </Typography>
-                    </Button>
-                );
-            },
+            field: 'role', headerName: 'Рівень доступу', flex: 1,
+            type: 'singleSelect', valueOptions: UserRoles,
         },
-    ]
+    ];
 
-    useEffect(() => {
-        handleUsersData();
-    }, [])
-
-    const handleUsersData = async () => {
-        setUsersData(await fetchUsers());
-    }
+    useError();
 
     return (
         <Box m={"20px"}>
             <Box>
                 <Header title={"КОРИСТУВАЧІ"} subtitle={"Керування користувачами"}/>
                 <Box>
-                    <DataGrid
-                        sx={{
-                            '& .MuiDataGrid-toolbarContainer': {
-                                '& .MuiButton-root': {
-                                    color: colors.grey[100],
-                                },
-                            },
-                        }}
+                    <CustomDataGrid columns={columns}
+                                    rows={usersStore.users}
+                                    addEntityUrl={"/users/createUser"}
+                                    editEntityUrl={"/users/editUser"}
+                                    deleteHandler={usersStore.removeUser.bind(usersStore)}
 
-                        rows={usersData}
-                        columns={columns}
-                        slots={{toolbar: GridToolbar}}
-                        disableRowSelectionOnClick>
-                    </DataGrid>
-                </Box>
+                    ></CustomDataGrid>
             </Box>
         </Box>
-    )
-        ;
+</Box>
+)
+    ;
 }
 
-export default Team;
+export default observer(Users);

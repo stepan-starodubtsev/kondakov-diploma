@@ -17,7 +17,7 @@ module.exports = {
     async getAllUnits() {
         const units = await Unit.findAll();
         if (units.length === 0) {
-            throw new AppError(`Units not found`, 404);
+            return null;
         }
         return units.map(unit => unitToDto(unit));
     },

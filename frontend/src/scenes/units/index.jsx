@@ -3,27 +3,27 @@ import {Box, useTheme} from "@mui/material";
 import {DataGrid, GridToolbar} from '@mui/x-data-grid';
 import {tokens} from "../../theme.js";
 import {mockDataContacts} from "../../data/mockData";
+import {ukUA} from "@mui/x-data-grid/locales";
+import {fetchUserById} from "../../services/UserService.js";
 
-const Contacts = () => {
+const Units = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
     const columns = [
         {field: 'id', headerName: 'ID', flex: 0.5},
-        {field: 'registrarId', headerName: 'Registrar ID', flex: 1},
-        {field: 'name', headerName: 'Name', flex: 1, cellClassName: "name-column--cell"},
-        {field: 'email', headerName: 'Email', flex: 1},
-        {field: 'age', headerName: 'Age', type: "number", headerAlign: "left", align: "left"},
-        {field: 'phone', headerName: 'Phone', flex: 1},
-        {field: 'address', headerName: 'Address', flex: 1},
-        {field: 'city', headerName: 'City', flex: 1},
-        {field: 'zipCode', headerName: 'ZipCode', flex: 1},
+        {field: 'name', headerName: 'Назва підрозділу', flex: 1},
+        {
+            field: 'commanderId', headerName: 'Командир підрозділу', flex: 1, renderCell: ({row: {commanderId}}) => {
+                return fetchUserById(commanderId);
+            }
+        },
     ]
 
     return (
         <Box m={"20px"}>
             <Box>
-                <Header title={"CONTACTS"} subtitle={"List of Contacts for Future Reference"}/>
+                <Header title={"ПІДРОЗДІЛИ"} subtitle={"Список підпорядкованих підрозділів"}/>
                 <Box>
                     <DataGrid
                         sx={{
@@ -36,6 +36,7 @@ const Contacts = () => {
                         rows={mockDataContacts}
                         columns={columns}
                         slots={{toolbar: GridToolbar}}
+                        localeText={ukUA.components.MuiDataGrid.defaultProps.localeText}
                         disableRowSelectionOnClick>
                     </DataGrid>
                 </Box>
@@ -45,4 +46,4 @@ const Contacts = () => {
         ;
 }
 
-export default Contacts;
+export default Units;

@@ -6,8 +6,10 @@ import TopBar from "./scenes/global/TopBar";
 import CustomSideBar from "./scenes/global/CustomSidebar.jsx";
 import Dashboard from "./scenes/dashboard";
 import Users from "./scenes/users";
+import UserForm from "./scenes/users/UserForm.jsx";
 import Calendar from "./scenes/calendar";
 import FAQ from "./scenes/faq/index.jsx";
+import Units from "./scenes/units/index.jsx";
 // import Bar from "./scenes/bar";
 // import Line from "./scenes/line";
 // import Pie from "./scenes/pie";
@@ -27,8 +29,16 @@ function App() {
                         <TopBar/>
                         <Routes>
                             <Route path="/" element={<Dashboard/>}/>
-                            {/*<Route path="/units" element={<Contacts/>}/>*/}
-                            <Route path="/users" element={<Users/>}/>
+                            <Route path="/units">
+                                <Route index element={<Units/>}/>
+                                {/*<Route path="/createUnit" element={<UnitForm/>}/>*/}
+                                {/*<Route path="/editUnit/:unitId" element={<UnitForm/>}/>*/}
+                            </Route>
+                            <Route path="/users">
+                                <Route index element={<Users/>}/>
+                                <Route path="createUser" element={<UserForm/>}/>
+                                <Route path="editUser/:userId" element={<UserForm/>}/>
+                            </Route>
                             {/*<Route path="/cars" element={<Team/>}/>*/}
                             {/*<Route path="/repairs" element={<Invoices/>}/>*/}
                             {/*<Route path="/maintenances" element={<Invoices/>}/>*/}

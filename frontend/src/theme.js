@@ -140,6 +140,10 @@ export const themeSettings = (mode) => {
                     },
                     background: {
                         default: colors.primary[500],
+                    },
+                    action: {
+                        selected: colors.primary[700],
+                        hover: colors.primary[600],
                     }
                 } : {
                     primary: {
@@ -155,7 +159,7 @@ export const themeSettings = (mode) => {
                     },
                     background: {
                         default: "#fcfcfc",
-                    }
+                    },
                 })
         },
         typography: {

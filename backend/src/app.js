@@ -42,6 +42,7 @@ app.use('/api/vehicle-components', vehicleComponentRouter);
 app.get('/api', (req, res) => res.send('API is running...'));
 
 app.use((error, req, res, next) => {
+    console.error(error);
     error.statusCode = error.statusCode || 500;
     res.status(error.statusCode).json({
         status: error.statusCode,

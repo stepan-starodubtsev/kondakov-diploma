@@ -1,4 +1,4 @@
-import {Box, IconButton, InputBase, useTheme} from "@mui/material";
+import {Box, IconButton, InputBase, Tooltip, useTheme} from "@mui/material";
 import {ColorModeContext, tokens} from "../../theme.js";
 import {useContext} from "react";
 import SearchIcon from '@mui/icons-material/Search';
@@ -27,25 +27,34 @@ const TopBar = () => {
                 </IconButton>
             </Box>
             <Box display="flex">
-                <IconButton onClick={colorMode.toggleColorMode}>
-                    {theme.palette.mode === 'light' ?
-                        <LightModeOutlined/> : <DarkModeOutlined/>}
-                </IconButton>
-                <Link to={'/calendar'}>
-                    <IconButton>
-                        <CalendarTodayOutlinedIcon/>
+                <Tooltip title={'Змінити тему'}>
+                    <IconButton onClick={colorMode.toggleColorMode}>
+                        {theme.palette.mode === 'light' ?
+                            <LightModeOutlined/> : <DarkModeOutlined/>}
                     </IconButton>
-                </Link>
-                <Link to={'/cars'}>
+                </Tooltip>
+                <Tooltip title={'Календаря'}>
+                    <Link to={'/calendar'}>
+                        <IconButton>
+                            <CalendarTodayOutlinedIcon/>
+                        </IconButton>
+                    </Link>
+                </Tooltip>
+                <Tooltip title={'Список ТЗ'}>
+                    <Link to={'/cars'}>
+                        <IconButton>
+                            <DirectionsCarIcon/>
+                        </IconButton>
+                    </Link>
+                </Tooltip>
+                <Tooltip title={'Профіль'}>
                     <IconButton>
-                        <DirectionsCarIcon/>
+                        <PersonOutlined/>
                     </IconButton>
-                </Link>
-                <IconButton>
-                    <PersonOutlined/>
-                </IconButton>
+                </Tooltip>
             </Box>
-        </Box>);
+        </Box>
+    );
 }
 
 export default TopBar;

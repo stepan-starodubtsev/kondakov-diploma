@@ -3,10 +3,13 @@ import {Box, Typography, useTheme} from "@mui/material";
 import {DataGrid, GridToolbar} from '@mui/x-data-grid';
 import {tokens} from "../../theme.js";
 import {mockDataInvoices} from "../../data/mockData";
+import {ukUA} from "@mui/x-data-grid/locales";
+import {useState} from "react";
 
 const Invoices = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const [selectedRowId, setSelectedRowId] = useState([]);
 
     const columns = [
         {field: 'id', headerName: 'ID', flex: 0.5},
@@ -25,7 +28,9 @@ const Invoices = () => {
         {field: 'phone', headerName: 'Phone', flex: 1},
         {field: 'date', headerName: 'Date', flex: 1},
     ]
-
+    const handleRowSelection = (newSelection) => {
+        setSelectedRowId(newSelection);
+    };
     return (
         <Box m={"20px"}>
             <Box>
@@ -44,12 +49,25 @@ const Invoices = () => {
                                     color: colors.grey[100],
                                 },
                             },
+                            '& .MuiDataGrid-cell:focus, & .MuiDataGrid-columnHeader:focus': {
+                                outline: 'none',
+                            },
+                            '& .MuiDataGrid-row.Mui-selected': {
+                                backgroundColor: theme.palette.action.selected,
+                            },
+                            '& .MuiDataGrid-cell.Mui-selected': {
+                                backgroundColor: theme.palette.action.selected,
+                            },
+                            '& .MuiDataGrid-cell:hover': {
+                                backgroundColor: theme.palette.action.hover,
+                            },
                         }}
                         rows={mockDataInvoices}
                         columns={columns}
-                        checkboxSelection
                         slots={{toolbar: GridToolbar}}
-                        disableRowSelectionOnClick>
+                        localeText={ukUA.components.MuiDataGrid.defaultProps.localeText}
+                        rowSelectionModel={selectedRowId}
+                        onRowSelectionModelChange={handleRowSelection}>
                     </DataGrid>
                 </Box>
             </Box>

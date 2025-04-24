@@ -4,7 +4,7 @@ import {BASE_URL} from "./constants.js"; // Import the authentication store
 
 const apiClient = axios.create({
     baseURL: BASE_URL,
-    withCredentials: true, // Allows sending cookies (important for refresh tokens)
+    withCredentials: false, // Allows sending cookies (important for refresh tokens)
 });
 //
 // // Request Interceptor: Attach Authorization Token

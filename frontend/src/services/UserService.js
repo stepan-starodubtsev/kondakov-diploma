@@ -1,6 +1,6 @@
 import apiClient from "../utils/apiClient.js";
 
-export async function fetchUsers() {
+export async function getUsers() {
     try {
         const response = await apiClient.get('/users');
         return response.data;
@@ -9,7 +9,7 @@ export async function fetchUsers() {
     }
 }
 
-export async function fetchUserById(userId) {
+export async function getUserById(userId) {
     try {
         const response = await apiClient.get('/users/' + userId);
         return response.data;

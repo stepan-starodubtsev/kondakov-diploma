@@ -4,7 +4,20 @@ const Vehicle = require('./Vehicle');
 
 const VehicleComponent = sequelize.define('VehicleComponent', {
     name: {type: DataTypes.STRING, allowNull: false},
-    componentType: {type: DataTypes.ENUM('engine', 'gearbox', 'transfer_case'), allowNull: false},
+    componentType: {
+        type: DataTypes.ENUM(
+            'ENGINE',
+            'GEARBOX',
+            'TRANSMISSION',
+            'CHASSIS',
+            'BODY',
+            'POWER_SYSTEM',
+            'COOLING_SYSTEM',
+            'BRAKE_SYSTEM',
+            'MONITORING_SYSTEM',
+            'FUEL_SYSTEM'),
+        allowNull: false
+    },
     manufacturerNumber: {type: DataTypes.STRING, allowNull: false},
     manufacturedAt: {type: DataTypes.DATEONLY, allowNull: false},
     mileageSinceManufactured: {type: DataTypes.FLOAT, allowNull: false},

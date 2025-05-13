@@ -1,30 +1,30 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import {
-    getUsers,
-    getUserById,
-    createUser,
-    updateUser,
-    deleteUser,
-} from '../services/userService';
+    getUnits,
+    getUnitById,
+    createUnit,
+    updateUnit,
+    deleteUnit,
+} from '../services/unitService';
 
-class UsersStore {
-    users = [];
-    selectedUser = null;
+class UnitsStore {
+    units = [];
+    selectedUnit = null;
     loading = false;
     error = null;
 
     constructor() {
         makeAutoObservable(this);
-        this.loadUsers()
+        this.loadUnits()
     }
 
-    async loadUsers() {
+    async loadUnits() {
         this.loading = true;
         try {
-            const data = await getUsers();
+            const data = await getUnits();
             if (data) {
                 runInAction(() => {
-                    this.users = data;
+                    this.units = data;
                 });
             }
         } catch (error) {
@@ -36,34 +36,34 @@ class UsersStore {
         }
     }
 
-    async loadUserById(userId) {
+    async loadUnitById(unitId) {
         try {
-            const user = await getUserById(userId);
+            const unit = await getUnitById(unitId);
             runInAction(() => {
-                this.selectedUser = user;
+                this.selectedUnit = unit;
             });
         } catch (error) {
             this.error = error;
         }
     }
 
-    async addUser(newUser) {
+    async addUnit(newUnit) {
         try {
-            const created = await createUser(newUser);
+            const created = await createUnit(newUnit);
             runInAction(() => {
-                this.users.push(created);
+                this.units.push(created);
             });
         } catch (error) {
             this.error = error;
         }
     }
 
-    async updateUser(userId, updatedUser) {
+    async updateUnit(unitId, updatedUnit) {
         try {
-            const updated = await updateUser(userId, updatedUser);
+            const updated = await updateUnit(unitId, updatedUnit);
             runInAction(() => {
-                this.users = this.users.map((u) =>
-                    u.id === userId ? updated : u
+                this.units = this.units.map((u) =>
+                    u.id === unitId ? updated : u
                 );
             });
         } catch (error) {
@@ -71,11 +71,11 @@ class UsersStore {
         }
     }
 
-    async removeUser(userId) {
+    async removeUnit(unitId) {
         try {
-            await deleteUser(userId);
+            await deleteUnit(unitId);
             runInAction(() => {
-                this.users = this.users.filter((u) => u.id !== userId);
+                this.units = this.units.filter((u) => u.id !== unitId);
             });
         } catch (error) {
             this.error = error;
@@ -83,5 +83,5 @@ class UsersStore {
     }
 }
 
-const usersStore = new UsersStore();
-export default usersStore;
+const unitsStore = new UnitsStore();
+export default unitsStore;

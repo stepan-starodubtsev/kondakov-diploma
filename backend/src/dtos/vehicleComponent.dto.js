@@ -1,24 +1,24 @@
-const AppError = require("../errors/AppError");
 const {getMileagesLogsByVehicleIdForThisYear} = require("../services/MileageLogService");
-const {vehicleToDto} = require("./vehicle.dto");
 
-const calculateAnnualResourceActual = (component) => {
-    const logs = getMileagesLogsByVehicleIdForThisYear(component.vehicleId);
-    if (logs.length < 2) {
-        if (logs.length === 1) {
-            return logs[0];
-        } else {
-            throw new AppError(`Mileages logs not found`, 404);
-        }
+const calculateAnnualResourceActual = async (component) => {
+    const logs = await getMileagesLogsByVehicleIdForThisYear(component.vehicleId);
+
+    if (!logs || logs.length === 0) {
+        return 0;
+    }
+
+    if (logs.length === 1) {
+        return logs[0].mileage;
     }
 
     const firstMileage = logs[0].mileage;
     const lastMileage = logs[logs.length - 1].mileage;
 
     return lastMileage - firstMileage;
-}
+};
 
-function vehicleComponentToDto(component) {
+
+async function vehicleComponentToDto(component) {
 
     const vehicleComponentDTO = {
         id: component.id,
@@ -29,15 +29,18 @@ function vehicleComponentToDto(component) {
         mileageSinceManufactured: component.mileageSinceManufactured,
         mileageAfterLastRepair: component.mileageAfterLastRepair,
         annualResourceNorm: component.annualResourceNorm,
-        annualResourceActual: calculateAnnualResourceActual(component),
-        remainingAnnualResource: component.annualResourceNorm - component.annualResourceActual,
+        annualResourceActual: null,
+        remainingAnnualResource: null,
+        remainingResourceToNextRepair: null,
         conditionCategory: component.conditionCategory,
         maxResource: component.maxResource,
-        remainingResourceToNextRepair: component.maxResource - component.mileageAfterLastRepair,
         needsMaintenance: false,
         needsCapitalRepair: false,
         vehicleId: component.vehicleId,
     };
+    vehicleComponentDTO.annualResourceActual = await calculateAnnualResourceActual(component);
+    vehicleComponentDTO.remainingAnnualResource = vehicleComponentDTO.annualResourceNorm - vehicleComponentDTO.annualResourceActual;
+    vehicleComponentDTO.remainingResourceToNextRepair = vehicleComponentDTO.maxResource - vehicleComponentDTO.mileageAfterLastRepair;
     vehicleComponentDTO.needsMaintenance =
         vehicleComponentDTO.annualResourceActual > vehicleComponentDTO.annualResourceNorm;
     vehicleComponentDTO.needsCapitalRepair =

@@ -1,6 +1,5 @@
 const VehicleComponent = require('../models/VehicleComponent');
 const AppError = require("../errors/AppError");
-const {vehicleComponentToDto} = require("../dtos/vehicleComponent.dto");
 const {transaction} = require("../settings/settingsDB");
 
 module.exports = {
@@ -11,9 +10,7 @@ module.exports = {
             throw new AppError(`This vehicle component manufacturer number is already in use`, 400);
         }
 
-        const vehicleComponent = await VehicleComponent.create(vehicleComponentData);
-
-        return vehicleComponentToDto(vehicleComponent);
+        return await VehicleComponent.create(vehicleComponentData);
     },
 
     async getAllVehicleComponents() {
@@ -22,8 +19,7 @@ module.exports = {
             return null;
         }
 
-        return vehicleComponents.map(
-            vehicleComponent => vehicleComponentToDto(vehicleComponent));
+        return vehicleComponents;
     },
 
     async getVehicleComponentsByVehicleId(vehicleId) {
@@ -31,8 +27,7 @@ module.exports = {
         if (vehicleComponents.length === 0) {
             return null;
         }
-        return vehicleComponents.map(
-            vehicleComponent => vehicleComponentToDto(vehicleComponent));
+        return vehicleComponents;
     },
 
     async getVehicleComponentsByIds(ids) {
@@ -49,8 +44,7 @@ module.exports = {
         if (vehicleComponents.length === 0) {
             return null;
         }
-        return vehicleComponents.map(
-            vehicleComponent => vehicleComponentToDto(vehicleComponent));
+        return vehicleComponents;
     },
 
     async getVehicleComponentById(id) {
@@ -58,7 +52,7 @@ module.exports = {
         if (!vehicleComponent) {
             throw new AppError(`Vehicle component with ID ${id} not found`, 404);
         }
-        return vehicleComponentToDto(vehicleComponent);
+        return vehicleComponent;
     },
 
     async updateVehicleComponent(id, updateData) {
@@ -68,7 +62,7 @@ module.exports = {
         }
 
         await vehicleComponent.update(updateData);
-        return vehicleComponentToDto(vehicleComponent);
+        return vehicleComponent;
     },
 
     async deleteVehicleComponent(id) {
@@ -96,7 +90,7 @@ module.exports = {
             console.error(e);
             throw new AppError('Something was wrong when vehicle components searching', 400);
         }
-        return components.map(component => vehicleComponentToDto(component));
+        return components;
     },
     async updateVehicleComponentsCategory(vehicleComponentIds, newCategory) {
         const components = this.getVehicleComponentsByIds(vehicleComponentIds);
@@ -112,6 +106,6 @@ module.exports = {
             console.error(e);
             throw new AppError('Something was wrong when vehicle components searching', 400);
         }
-        return components.map(component => vehicleComponentToDto(component));
+        return components;
     },
 };

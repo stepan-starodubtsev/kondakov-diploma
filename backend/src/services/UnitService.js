@@ -1,6 +1,5 @@
 const Unit = require('../models/Unit');
 const AppError = require("../errors/AppError");
-const { unitToDto } = require("../dtos/unit.dto");
 
 module.exports = {
     async createUnit(unitData) {
@@ -9,9 +8,7 @@ module.exports = {
             throw new AppError(`This unit name is already in use`, 400);
         }
 
-        const unit = await Unit.create(unitData);
-
-        return unitToDto(unit);
+        return await Unit.create(unitData);
     },
 
     async getAllUnits() {
@@ -19,7 +16,7 @@ module.exports = {
         if (units.length === 0) {
             return null;
         }
-        return units.map(unit => unitToDto(unit));
+        return units;
     },
 
     async getUnitById(id) {
@@ -27,7 +24,7 @@ module.exports = {
         if (!unit) {
             throw new AppError(`Unit with ID ${id} not found`, 404);
         }
-        return unitToDto(unit);
+        return unit;
     },
 
     async updateUnit(id, updateData) {
@@ -37,7 +34,7 @@ module.exports = {
         }
 
         await unit.update(updateData);
-        return unitToDto(unit);
+        return unit;
     },
 
     async deleteUnit(id) {

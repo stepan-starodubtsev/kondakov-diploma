@@ -1,34 +1,38 @@
 import apiClient from "../utils/apiClient.js";
 
-export async function fetchUnits() {
+export async function getUnits() {
     try {
         const response = await apiClient.get('/units');
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
+    }
+}
+
+export async function getUnitById(unitId) {
+    try {
+        const response = await apiClient.get('/units/' + unitId);
+        return response.data;
+    } catch (error) {
+        throw error;
     }
 }
 
 export async function createUnit(unit) {
-    const unitData = { name: unit.name };
     try {
-        const response = await apiClient.post(`/users`, unitData);
+        const response = await apiClient.post(`/units`, unit);
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
     }
 }
 
 export async function updateUnit(unitId, unit) {
-    const unitData = { name: unit.name };
     try {
-        const response = await apiClient.put(`/users/${unitId}`, unitData);
+        const response = await apiClient.put(`/units/${unitId}`, unit);
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
     }
 }
 
@@ -36,6 +40,6 @@ export async function deleteUnit(unitId) {
     try {
         await apiClient.delete(`/units/${unitId}`);
     } catch (error) {
-        console.error(error);
+        throw error;
     }
 }

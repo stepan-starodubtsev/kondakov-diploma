@@ -11,10 +11,11 @@ const Vehicle = sequelize.define('Vehicle', {
     operationGroup: {type: DataTypes.ENUM('COMBAT', 'DRILL', 'TRAINING', 'RESERVE'), allowNull: false},
     mileageSinceManufactured: {type: DataTypes.FLOAT, allowNull: false},
     annualResourceNorm: {type: DataTypes.FLOAT, allowNull: false},
-    conditionCategory: {type: DataTypes.ENUM('1', '2', '3', '4', '5'), allowNull: false},
-    fuelType: {type: DataTypes.ENUM('A-80','A-92', 'A-95', 'A-98' , 'DIESEL'), allowNull: false},
-    oilType: {type: DataTypes.ENUM(
-        'М-10Г2к', 'М-8Г2к/М-10Г2к', 'М-10Г2к/М-10ДМ', '10W-40', '15W-40'), allowNull: false}
+    fuelType: {type: DataTypes.ENUM('A-80', 'A-92', 'A-95', 'A-98', 'DIESEL'), allowNull: false},
+    oilType: {
+        type: DataTypes.ENUM(
+            'M-10G2k', 'M-8G2k/M-10G2k', 'M-10G2k/M-10DM', '10W-40', '15W-40'), allowNull: false
+    }
 });
 
 Vehicle.belongsTo(Unit, {foreignKey: 'unitId'});

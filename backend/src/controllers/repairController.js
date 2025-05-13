@@ -9,18 +9,28 @@ const {
 
 module.exports = {
     async getAll(req, res) {
-        const repairDTOs = await getAllRepairs();
-        res.json(repairDTOs);
+        const repairs = await getAllRepairs();
+        if (!repairs) {
+            res.status(404).send({});
+        } else {
+            res.json(repairs.map(repair => {
+                repairToDto(repair)
+            }));
+        }
     },
 
     async getById(req, res) {
         const repairDTO = await getRepairById(req.params.id);
-        res.json(repairToDto(repairDTO));
+        if (!repairDTO) {
+            res.status(404).send({});
+        } else {
+            res.json(repairToDto(repairDTO));
+        }
     },
 
     async create(req, res) {
         const newRepair = await createRepair(req.body);
-        res.status(201).json(newRepair);
+        res.status(201).json(repairToDto(newRepair));
     },
 
     async update(req, res) {

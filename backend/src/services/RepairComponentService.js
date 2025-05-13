@@ -1,7 +1,6 @@
 const RepairComponent = require('../models/RepairComponent');
 const AppError = require("../errors/AppError");
 const { repairComponentToDto } = require("../dtos/repairComponent.dto");
-const VehicleComponent = require("../models/VehicleComponent");
 
 module.exports = {
     async createRepairComponent(repairComponentData) {
@@ -10,9 +9,7 @@ module.exports = {
             throw new AppError(`This repair component is already in use in this repair`, 400);
         }
 
-        const repairComponent = await RepairComponent.create(repairComponentData);
-
-        return repairComponentToDto(repairComponent);
+        return await RepairComponent.create(repairComponentData);
     },
 
     async getAllRepairComponents() {
@@ -20,7 +17,7 @@ module.exports = {
         if (repairComponents.length === 0) {
             return null;
         }
-        return repairComponents.map(repairComponent => repairComponentToDto(repairComponent));
+        return repairComponents;
     },
 
     async getRepairComponentById(id) {
@@ -28,7 +25,7 @@ module.exports = {
         if (!repairComponent) {
             throw new AppError(`Repair component with ID ${id} not found`, 404);
         }
-        return repairComponentToDto(repairComponent);
+        return repairComponent;
     },
 
     async getRepairComponentsByRepairId(repairId) {
@@ -36,7 +33,7 @@ module.exports = {
         if (repairComponents.length === 0) {
             return null;
         }
-        return repairComponents.map(repairComponent => repairComponentToDto(repairComponent));
+        return repairComponents;
     },
 
     async updateRepairComponent(id, updateData) {
@@ -46,7 +43,7 @@ module.exports = {
         }
 
         await repairComponent.update(updateData);
-        return repairComponentToDto(repairComponent);
+        return repairComponent;
     },
 
     async deleteRepairComponent(id) {

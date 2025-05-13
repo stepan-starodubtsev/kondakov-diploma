@@ -1,12 +1,4 @@
 const sequelize = require('./settings/settingsDB');
-// const Vehicle = require('./models/Vehicle');
-// const User = require('./models/User');
-// const Unit = require('./models/Unit');
-// const VehicleComponent = require('./models/VehicleComponent');
-// const Repair = require('./models/Repair');
-// const RepairComponent = require('./models/RepairComponent');
-// const Maintenance = require('./models/Maintenance');
-// const LogEntry = require('./models/LogEntry');
 
 
 

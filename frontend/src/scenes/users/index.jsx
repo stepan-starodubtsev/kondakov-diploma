@@ -30,8 +30,8 @@ const Users = () => {
                 <Box>
                     <CustomDataGrid columns={columns}
                                     rows={usersStore.users}
-                                    addEntityUrl={"/users/createUser"}
-                                    editEntityUrl={"/users/editUser"}
+                                    addEntityUrl={"/users/create-user"}
+                                    editEntityUrl={"/users/edit-user"}
                                     deleteHandler={usersStore.removeUser.bind(usersStore)}
 
                     ></CustomDataGrid>

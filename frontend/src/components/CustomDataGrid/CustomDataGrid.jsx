@@ -7,6 +7,7 @@ import {useTheme} from "@mui/material";
 import {tokens} from "../../theme.js";
 import {useNavigate} from "react-router-dom";
 import AlertDialog from "../AlertDialog.jsx";
+import {autoWidthColumns} from "../../utils/autoWidthColumns.js";
 
 const CustomDataGrid = ({
                             rows,
@@ -64,6 +65,14 @@ const CustomDataGrid = ({
                             color: colors.grey[100],
                         },
                     },
+                    '& .MuiDataGrid-virtualScroller': {
+                        overflowX: 'auto',
+                    },
+                    '& .MuiDataGrid-cell': {
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    },
                     '& .MuiDataGrid-cell:focus, & .MuiDataGrid-columnHeader:focus': {
                         outline: 'none',
                     },
@@ -80,7 +89,7 @@ const CustomDataGrid = ({
 
                 key={rows.length}
                 rows={rows}
-                columns={columns}
+                columns={autoWidthColumns(columns)}
                 localeText={ukUA.components.MuiDataGrid.defaultProps.localeText}
                 rowSelectionModel={selectedRowId}
                 onRowSelectionModelChange={handleRowSelection}

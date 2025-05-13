@@ -1,7 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require("bcryptjs");
 const AppError = require("../errors/AppError");
-const { userToDto } = require("../dtos/user.dto");
 
 module.exports = {
     async createUser(userData) {
@@ -18,7 +17,7 @@ module.exports = {
             role: userData.role
         });
 
-        return userToDto(user);
+        return user;
     },
 
     async getAllUsers() {
@@ -26,7 +25,7 @@ module.exports = {
         if (users.length === 0) {
             return null;
         }
-        return users.map(user => userToDto(user));
+        return users;
     },
 
     async getUserById(id) {
@@ -34,7 +33,7 @@ module.exports = {
         if (!user) {
             throw new AppError(`User with ID ${id} not found`, 404);
         }
-        return userToDto(user);
+        return user;
     },
 
     async updateUser(id, updateData) {
@@ -54,7 +53,7 @@ module.exports = {
         }
 
         await user.update(updateData);
-        return userToDto(user);
+        return user;
     },
 
     async deleteUser(id) {

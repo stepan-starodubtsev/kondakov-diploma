@@ -1,34 +1,38 @@
 import apiClient from "../utils/apiClient.js";
 
-export async function fetchMileageLogs() {
+export async function getMileageLogs() {
     try {
         const response = await apiClient.get('/mileage-logs');
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
+    }
+}
+
+export async function getMileageLogById(mileageLogId) {
+    try {
+        const response = await apiClient.get('/mileage-logs/' + mileageLogId);
+        return response.data;
+    } catch (error) {
+        throw error;
     }
 }
 
 export async function createMileageLog(mileageLog) {
-    const mileageLogData = { name: mileageLog.name };
     try {
-        const response = await apiClient.post(`/users`, mileageLogData);
+        const response = await apiClient.post(`/mileage-logs`, mileageLog);
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
     }
 }
 
 export async function updateMileageLog(mileageLogId, mileageLog) {
-    const mileageLogData = { name: mileageLog.name };
     try {
-        const response = await apiClient.put(`/users/${mileageLogId}`, mileageLogData);
+        const response = await apiClient.put(`/mileage-logs/${mileageLogId}`, mileageLog);
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
     }
 }
 
@@ -36,6 +40,6 @@ export async function deleteMileageLog(mileageLogId) {
     try {
         await apiClient.delete(`/mileage-logs/${mileageLogId}`);
     } catch (error) {
-        console.error(error);
+        throw error;
     }
 }

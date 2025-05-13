@@ -45,6 +45,7 @@ const CustomSidebar = () => {
                 rootStyles={{
                     height: "100%",
                     border: "none",
+                    minHeight: "100%",
                 }}
             >
                 <Menu
@@ -113,7 +114,7 @@ const CustomSidebar = () => {
                         <Item title="Підрозділи" to="/units" icon={<ApartmentIcon/>}/>
 
                         <SubMenu label="Про ТЗ" icon={<DirectionsCarIcon/>}>
-                            <Item title="Список ТЗ" to="/cars" icon={<DirectionsCarIcon/>}/>
+                            <Item title="Список ТЗ" to="/vehicles" icon={<DirectionsCarIcon/>}/>
                             <Item title="Ремонти ТЗ" to="/repairs" icon={<CarRepairIcon/>}/>
                             <Item title="ТО ТЗ" to="/maintenances" icon={<CarRentalIcon/>}/>
                             <Item title="Облік пробігу" to="/mileage-logs" icon={<ScheduleIcon/>}/>

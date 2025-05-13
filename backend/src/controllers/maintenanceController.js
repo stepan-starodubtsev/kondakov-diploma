@@ -10,18 +10,26 @@ const {
 
 module.exports = {
     async getAll(req, res) {
-        const maintenanceDTOs = await getAllMaintenances();
-        res.json(maintenanceDTOs);
+        const maintenances = await getAllMaintenances();
+        if (!maintenances) {
+            res.status(404).send({})
+        } else {
+            res.json(maintenances.map(maintenance => maintenanceToDto(maintenance)));
+        }
     },
 
     async getById(req, res) {
-        const maintenanceDTO = await getMaintenanceById(req.params.id);
-        res.json(maintenanceDTO);
+        const maintenance = await getMaintenanceById(req.params.id);
+        if (!maintenance) {
+            res.status(404).send({})
+        } else {
+            res.json(maintenanceToDto(maintenance));
+        }
     },
 
     async create(req, res) {
-        const newMaintenanceDTO = await createMaintenance(req.body);
-        res.status(201).json(newMaintenanceDTO);
+        const newMaintenance = await createMaintenance(req.body);
+        res.status(201).json(maintenanceToDto(newMaintenance));
     },
 
     async update(req, res) {

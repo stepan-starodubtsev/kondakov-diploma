@@ -1,7 +1,5 @@
 const Repair = require('../models/Repair');
 const AppError = require("../errors/AppError");
-const RepairComponent = require("../models/RepairComponent");
-const {repairToDto} = require("../dtos/repair.dto");
 const {updateVehicleComponentsCategory} = require("./VehicleComponentService");
 const {getRepairComponentsByRepairId} = require("./RepairComponentService");
 
@@ -22,9 +20,7 @@ module.exports = {
         }
         await updateVehicleComponentsCategory(componentIds, newCategory);
 
-        const repair = await Repair.create(repairData);
-
-        return repairToDto(repair);
+        return await Repair.create(repairData);
     },
 
     async getAllRepairs() {
@@ -32,7 +28,7 @@ module.exports = {
         if (repairs.length === 0) {
             return null;
         }
-        return repairs.map(repair => repairToDto(repair));
+        return repairs;
     },
 
     async getRepairById(id) {
@@ -40,7 +36,7 @@ module.exports = {
         if (!repair) {
             throw new AppError(`Repair with ID ${id} not found`, 404);
         }
-        return repairToDto(repair);
+        return repair;
     },
 
     async getRepairsByVehicleId(vehicleId) {
@@ -48,7 +44,7 @@ module.exports = {
         if (repairs.length === 0) {
             return null;
         }
-        return repairs.map(repair => repairToDto(repair));
+        return repairs;
     },
 
     async updateRepair(id, updateData) {
@@ -58,7 +54,7 @@ module.exports = {
         }
 
         await repair.update(updateData);
-        return repairToDto(repair);
+        return repair;
     },
 
     async deleteRepair(id) {

@@ -1,4 +1,3 @@
-const Vehicle = require('../models/Vehicle');
 const {vehicleToDto} = require("../dtos/vehicle.dto");
 const {
     getAllVehicles,
@@ -10,18 +9,29 @@ const {
 
 module.exports = {
     async getAll(req, res) {
-        const vehicleDTOs = await getAllVehicles();
-        res.json(vehicleDTOs);
+        const vehicles = await getAllVehicles();
+        if (!vehicles) {
+            res.status(404).send();
+        } else {
+            const vehiclesDTO = await Promise.all(
+                vehicles.map(vehicle => vehicleToDto(vehicle))
+            );
+            res.json(vehiclesDTO);
+        }
     },
 
     async getById(req, res) {
         const vehicleDTO = await getVehicleById(req.params.id);
-        res.json(vehicleToDto(vehicleDTO));
+        if (!vehicleDTO) {
+            res.status(404).send();
+        } else {
+            res.json(vehicleToDto(vehicleDTO));
+        }
     },
 
     async create(req, res) {
         const newVehicle = await createVehicle(req.body);
-        res.status(201).json(newVehicle);
+        res.status(201).json(vehicleToDto(newVehicle));
     },
 
     async update(req, res) {

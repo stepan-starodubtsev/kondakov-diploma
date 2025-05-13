@@ -1,6 +1,5 @@
 const Maintenance = require('../models/Maintenance');
 const AppError = require("../errors/AppError");
-const {maintenanceToDto} = require("../dtos/maintenance.dto");
 const {updateVehicleComponentsCategory} = require("./VehicleComponentService");
 
 module.exports = {
@@ -12,9 +11,7 @@ module.exports = {
              at ${maintenanceData.date}`, 400);
         }
 
-        const maintenance = await Maintenance.create(maintenanceData);
-
-        return maintenanceToDto(maintenance);
+        return await Maintenance.create(maintenanceData);
     },
 
     async getAllMaintenances() {
@@ -22,7 +19,7 @@ module.exports = {
         if (maintenances.length === 0) {
             return null;
         }
-        return maintenances.map(maintenance => maintenanceToDto(maintenance));
+        return maintenances;
     },
 
     async getMaintenanceById(id) {
@@ -30,7 +27,7 @@ module.exports = {
         if (!maintenance) {
             throw new AppError(`Maintenance with ID ${id} not found`, 404);
         }
-        return maintenanceToDto(maintenance);
+        return maintenance;
     },
 
     async getMaintenancesByVehicleId(vehicleId) {
@@ -38,7 +35,7 @@ module.exports = {
         if (maintenances.length === 0) {
             return null;
         }
-        return maintenances.map(maintenance => maintenanceToDto(maintenance));
+        return maintenances;
     },
 
     async updateMaintenance(id, updateData) {
@@ -48,7 +45,7 @@ module.exports = {
         }
 
         await maintenance.update(updateData);
-        return maintenanceToDto(maintenance);
+        return maintenance;
     },
 
     async deleteMaintenance(id) {

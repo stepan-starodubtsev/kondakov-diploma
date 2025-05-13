@@ -9,18 +9,26 @@ const {
 
 module.exports = {
     async getAll(req, res) {
-        const userDTOs = await getAllUsers();
-        res.json(userDTOs);
+        const users = await getAllUsers();
+        if (!users) {
+            res.status(404).send({});
+        } else {
+            res.json(users.map(user => userToDto(user)));
+        }
     },
 
     async getById(req, res) {
         const userDTO = await getUserById(req.params.id);
-        res.json(userToDto(userDTO));
+        if (!userDTO) {
+            res.status(404).send({});
+        } else {
+            res.json(userToDto(userDTO));
+        }
     },
 
     async create(req, res) {
         const newUser = await createUser(req.body);
-        res.status(201).json(newUser);
+        res.status(201).json(userToDto(newUser));
     },
 
     async update(req, res) {

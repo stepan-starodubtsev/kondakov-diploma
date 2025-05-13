@@ -1,5 +1,4 @@
 const AppError = require("../errors/AppError");
-const { mileageLogToDto } = require("../dtos/mileageLog.dto");
 const MileageLog = require("../models/MileageLog");
 const {updateVehicleMileage} = require("./VehicleService");
 const {Op} = require("sequelize");
@@ -8,7 +7,7 @@ module.exports = {
     async createMileageLog(mileageLogData) {
         const mileageLog = await MileageLog.create(mileageLogData);
         updateVehicleMileage(mileageLogData.vehicleId, mileageLogData.mileage);
-        return mileageLogToDto(mileageLog);
+        return mileageLog;
     },
 
     async getAllMileageLogs() {
@@ -16,7 +15,7 @@ module.exports = {
         if (mileageLogs.length === 0) {
             return null;
         }
-        return mileageLogs.map(mileageLog => mileageLogToDto(mileageLog));
+        return mileageLogs;
     },
 
     async getMileagesLogsByVehicleIdForThisYear(vehicleId) {
@@ -33,7 +32,7 @@ module.exports = {
         if (mileageLogs.length === 0) {
             return null;
         }
-        return mileageLogs.map(mileageLog => mileageLogToDto(mileageLog));
+        return mileageLogs;
     },
 
     async getMileageLogById(id) {
@@ -41,7 +40,7 @@ module.exports = {
         if (!mileageLog) {
             throw new AppError(`MileageLog with ID ${id} not found`, 404);
         }
-        return mileageLogToDto(mileageLog);
+        return mileageLog;
     },
 
 

@@ -9,8 +9,12 @@ const {repairComponentToDto} = require("../dtos/repairComponent.dto");
 
 module.exports = {
     async getAll(req, res) {
-        const repairComponentDTOs = await getAllRepairComponents();
-        res.json(repairComponentDTOs);
+        const repairComponents = await getAllRepairComponents();
+        if (!repairComponents) {
+            return res.status(404).send({})
+        } else {
+            res.json(repairComponents.map(repairComponent => repairComponentToDto(repairComponent)));
+        }
     },
 
     async getById(req, res) {
@@ -20,7 +24,7 @@ module.exports = {
 
     async create(req, res) {
         const newRepairComponent = await createRepairComponent(req.body);
-        res.status(201).json(newRepairComponent);
+        res.status(201).json(repairComponentToDto(newRepairComponent));
     },
 
     async update(req, res) {

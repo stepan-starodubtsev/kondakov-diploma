@@ -1,34 +1,38 @@
 import apiClient from "../utils/apiClient.js";
 
-export async function fetchRepairComponents() {
+export async function getRepairComponents() {
     try {
-        const response = await apiClient.get('/repair-components');
+        const response = await apiClient.get('/repairComponents');
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
+    }
+}
+
+export async function getRepairComponentById(repairComponentId) {
+    try {
+        const response = await apiClient.get('/repair-components/' + repairComponentId);
+        return response.data;
+    } catch (error) {
+        throw error;
     }
 }
 
 export async function createRepairComponent(repairComponent) {
-    const repairComponentData = { name: repairComponent.name };
     try {
-        const response = await apiClient.post(`/repair-components`, repairComponentData);
+        const response = await apiClient.post(`/repair-components`, repairComponent);
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
     }
 }
 
 export async function updateRepairComponent(repairComponentId, repairComponent) {
-    const repairComponentData = { name: repairComponent.name };
     try {
-        const response = await apiClient.put(`/repair-components/${repairComponentId}`, repairComponentData);
+        const response = await apiClient.put(`/repair-components/${repairComponentId}`, repairComponent);
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
     }
 }
 
@@ -36,6 +40,6 @@ export async function deleteRepairComponent(repairComponentId) {
     try {
         await apiClient.delete(`/repair-components/${repairComponentId}`);
     } catch (error) {
-        console.error(error);
+        throw error;
     }
 }

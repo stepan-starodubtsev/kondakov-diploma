@@ -1,34 +1,39 @@
 import apiClient from "../utils/apiClient.js";
 
-export async function fetchVehicles() {
+export async function getVehicles() {
     try {
         const response = await apiClient.get('/vehicles');
+        console.log(response);
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
+    }
+}
+
+export async function getVehicleById(vehicleId) {
+    try {
+        const response = await apiClient.get('/vehicles/' + vehicleId);
+        return response.data;
+    } catch (error) {
+        throw error;
     }
 }
 
 export async function createVehicle(vehicle) {
-    const vehicleData = { name: vehicle.name };
     try {
-        const response = await apiClient.post(`/vehicles`, vehicleData);
+        const response = await apiClient.post(`/vehicles`, vehicle);
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
     }
 }
 
 export async function updateVehicle(vehicleId, vehicle) {
-    const vehicleData = { name: vehicle.name };
     try {
-        const response = await apiClient.put(`/vehicles/${vehicleId}`, vehicleData);
+        const response = await apiClient.put(`/vehicles/${vehicleId}`, vehicle);
         return response.data;
     } catch (error) {
-        console.error(error);
-        return null;
+        throw error;
     }
 }
 
@@ -36,6 +41,6 @@ export async function deleteVehicle(vehicleId) {
     try {
         await apiClient.delete(`/vehicles/${vehicleId}`);
     } catch (error) {
-        console.error(error);
+        throw error;
     }
 }

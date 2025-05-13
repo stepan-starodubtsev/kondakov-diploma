@@ -9,18 +9,26 @@ const {
 
 module.exports = {
     async getAll(req, res) {
-        const unitDTOs = await getAllUnits();
-        res.json(unitDTOs);
+        const units = await getAllUnits();
+        if (!units) {
+            res.status(404).send({});
+        } else {
+            res.json(units.map(unit => unitToDto(unit)));
+        }
     },
 
     async getById(req, res) {
         const unitDTO = await getUnitById(req.params.id);
-        res.json(unitToDto(unitDTO));
+        if (!unitDTO) {
+            res.status(404).send({});
+        } else {
+            res.json(unitToDto(unitDTO));
+        }
     },
 
     async create(req, res) {
         const newUnit = await createUnit(req.body);
-        res.status(201).json(newUnit);
+        res.status(201).json(unitToDto(newUnit));
     },
 
     async update(req, res) {

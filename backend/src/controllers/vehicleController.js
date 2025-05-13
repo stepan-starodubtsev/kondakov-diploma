@@ -34,7 +34,7 @@ module.exports = {
         res.status(201).json(await vehicleToDto(newVehicle));
     },
 
-    async update(req, res) { // todo подивитися трабл з vehicleID
+    async update(req, res) {
         const vehicleDTO = await updateVehicle(req.params.id, req.body);
         res.json(await vehicleToDto(vehicleDTO));
     },

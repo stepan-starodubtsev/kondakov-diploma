@@ -3,7 +3,7 @@ const VehicleComponent = require('../models/VehicleComponent');
 const AppError = require("../errors/AppError");
 const {
     updateVehicleComponentsMileage,
-    getVehicleComponentsByVehicleId, updateVehicleComponent, getAllVehicleComponents
+    getVehicleComponentsByVehicleId, updateVehicleComponent
 } = require("./VehicleComponentService");
 const sequelize = require("../settings/settingsDB");
 

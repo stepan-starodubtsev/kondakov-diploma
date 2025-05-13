@@ -45,10 +45,7 @@ class VehiclesStore {
 
     async addVehicle() {
         try {
-            console.log('addVehicle: ', this.tempVehicle);
-            console.log('addVehicle prepared: ', this.prepareTempVehicleToSending(this.tempVehicle));
             const created = await createVehicle(this.prepareTempVehicleToSending(this.tempVehicle));
-            console.log('created: ', created);
             runInAction(() => {
                 this.vehicles.push(created);
             });
@@ -59,8 +56,9 @@ class VehiclesStore {
 
     async updateVehicle(vehicleId) {
         try {
-            const updated = await updateVehicle(vehicleId,
-                this.prepareTempVehicleToSending(this.tempVehicle));
+            const {conditionCategory, ...newVehicle} = this.tempVehicle;
+            const updated = await updateVehicle(vehicleId, newVehicle);
+            console.log('updated: ', updated);
             runInAction(() => {
                 this.vehicles = this.vehicles.map((u) =>
                     u.id === vehicleId ? updated : u
@@ -93,6 +91,16 @@ class VehiclesStore {
         runInAction(() => {
             this.tempVehicle = vehicle;
         });
+    }
+
+    findComponentById(vehicleComponentId) {
+        return vehiclesStore.tempVehicle.components
+            .find(vehicleComponent => vehicleComponent.id === parseInt(vehicleComponentId));
+    }
+
+    indexOfComponentById(vehicleComponentId) {
+        return vehiclesStore.tempVehicle.components
+            .findIndex((component) => component.id === parseInt(vehicleComponentId));
     }
 
     clearTempVehicle() {

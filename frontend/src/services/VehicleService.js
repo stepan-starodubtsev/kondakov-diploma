@@ -3,7 +3,6 @@ import apiClient from "../utils/apiClient.js";
 export async function getVehicles() {
     try {
         const response = await apiClient.get('/vehicles');
-        console.log(response);
         return response.data;
     } catch (error) {
         throw error;

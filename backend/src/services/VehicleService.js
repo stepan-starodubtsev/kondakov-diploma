@@ -34,7 +34,7 @@ module.exports = {
 
             await transaction.commit();
 
-            return { components, ...newVehicle.get({ plain: true }) };
+            return newVehicle;
         } catch (error) {
             await transaction.rollback();
             throw error;
@@ -66,10 +66,10 @@ module.exports = {
 
         let {components, ...vehicle} = updateData;
         const newVehicle = await foundedVehicle.update(vehicle);
-        components = components.forEach(component => {
+        components = components.map(component => {
             updateVehicleComponent(component.id, component);
         });
-        return {components, ...newVehicle};
+        return newVehicle;
     },
 
     async deleteVehicle(id) {

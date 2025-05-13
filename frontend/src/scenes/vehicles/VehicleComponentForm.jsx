@@ -44,8 +44,10 @@ const VehicleForm = () => {
         if (validateForm()) {
             setError("");
         }
+        console.log(vehicleComponent);
         if (vehicleComponentId) {
-            vehiclesStore.tempVehicle.components[parseInt(vehicleComponentId) - 1] = vehicleComponent;
+            vehiclesStore.tempVehicle.components[
+                vehiclesStore.indexOfComponentById(vehicleComponentId)] = vehicleComponent;
             setVehicleConditionCategory();
             navigate(getUrlParentPath(3, location.pathname));
         } else {
@@ -82,9 +84,7 @@ const VehicleForm = () => {
 
     useEffect(() => {
         if (vehicleComponentId) {
-            const foundedVehicleComponent = vehiclesStore.tempVehicle.components
-                .find(vehicleComponent => vehicleComponent.id === parseInt(vehicleComponentId));
-            setVehicleComponent(foundedVehicleComponent);
+            setVehicleComponent(vehiclesStore.findComponentById(vehicleComponentId));
         }
     }, []);
 

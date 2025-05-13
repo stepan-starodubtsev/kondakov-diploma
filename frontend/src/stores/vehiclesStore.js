@@ -45,7 +45,10 @@ class VehiclesStore {
 
     async addVehicle() {
         try {
-            const created = await createVehicle(this.tempVehicle); //todo delete conditionCategory and components id
+            console.log('addVehicle: ', this.tempVehicle);
+            console.log('addVehicle prepared: ', this.prepareTempVehicleToSending(this.tempVehicle));
+            const created = await createVehicle(this.prepareTempVehicleToSending(this.tempVehicle));
+            console.log('created: ', created);
             runInAction(() => {
                 this.vehicles.push(created);
             });
@@ -56,7 +59,8 @@ class VehiclesStore {
 
     async updateVehicle(vehicleId) {
         try {
-            const updated = await updateVehicle(vehicleId, this.tempVehicle);
+            const updated = await updateVehicle(vehicleId,
+                this.prepareTempVehicleToSending(this.tempVehicle));
             runInAction(() => {
                 this.vehicles = this.vehicles.map((u) =>
                     u.id === vehicleId ? updated : u
@@ -107,6 +111,15 @@ class VehiclesStore {
             components: [],
             unitId: '',
         };
+    }
+
+    prepareTempVehicleToSending(vehicle) {
+        const {conditionCategory, ...newVehicle} = vehicle
+        newVehicle.components = newVehicle.components.map((component) => {
+            const {id, ...newComponent} = component;
+            return newComponent;
+        })
+        return newVehicle;
     }
 }
 

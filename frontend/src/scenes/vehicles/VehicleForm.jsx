@@ -82,7 +82,6 @@ const VehicleForm = () => {
         }
         if (vehicleId) {
             await vehiclesStore.updateVehicle(parseInt(vehicleId));
-
         } else {
             await vehiclesStore.addVehicle();
         }

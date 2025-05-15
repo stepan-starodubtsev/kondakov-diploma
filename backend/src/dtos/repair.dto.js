@@ -6,7 +6,6 @@ function repairToDto(repair) {
         date: repair.date,
         comment: repair.comment,
         workDescription: repair.workDescription,
-        status: repair.status,
         editedByUserId: repair.editedByUserId,
         createdByUserId: repair.createdByUserId
     };

@@ -10,10 +10,6 @@ const Maintenance = sequelize.define('Maintenance', {
     },
     date: {type: DataTypes.DATEONLY, allowNull: false},
     result: {type: DataTypes.TEXT, allowNull: true},
-    status: {
-        type: DataTypes.ENUM('EDITED', 'PENDING', 'APPROVED', 'REJECTED', 'NOT_CLOSED', 'DONE'),
-        allowNull: false
-    }
 });
 
 Maintenance.belongsTo(Vehicle, {foreignKey: 'vehicleId'});

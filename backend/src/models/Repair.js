@@ -11,10 +11,6 @@ const Repair = sequelize.define('Repair', {
     date: {type: DataTypes.DATEONLY, allowNull: false},
     comment: {type: DataTypes.TEXT, allowNull: true},
     workDescription: {type: DataTypes.TEXT, allowNull: true},
-    status: {
-        type: DataTypes.ENUM('EDITED', 'PENDING', 'APPROVED', 'REJECTED', 'NOT_CLOSED', 'DONE'),
-        allowNull: false
-    }
 });
 
 Repair.belongsTo(Vehicle, {foreignKey: 'vehicleId'});

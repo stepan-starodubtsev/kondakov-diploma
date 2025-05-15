@@ -9,7 +9,7 @@ const Repair = sequelize.define('Repair', {
         allowNull: false
     },
     date: {type: DataTypes.DATEONLY, allowNull: false},
-    comment: {type: DataTypes.TEXT, allowNull: true},
+    repairReasonText: {type: DataTypes.TEXT, allowNull: true},
     workDescription: {type: DataTypes.TEXT, allowNull: true},
 });
 

@@ -4,7 +4,7 @@ function repairToDto(repair) {
         vehicleId: repair.vehicleId,
         type: repair.type,
         date: repair.date,
-        comment: repair.comment,
+        repairReasonText: repair.repairReasonText,
         workDescription: repair.workDescription,
         editedByUserId: repair.editedByUserId,
         createdByUserId: repair.createdByUserId

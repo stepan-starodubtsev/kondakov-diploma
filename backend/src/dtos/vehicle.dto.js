@@ -7,17 +7,16 @@ const calculateAnnualResourceActual = async (vehicle) => {
     if (logs) {
         if (logs.length < 2) {
             if (logs.length === 1) {
-                return logs[0].mileage;
+                return logs[0].mileageDifference;
             }
         }
     } else {
         return 0;
     }
 
-    const firstMileage = logs[0].mileage;
-    const lastMileage = logs[logs.length - 1].mileage;
-
-    return lastMileage - firstMileage;
+    return logs.reduce((accumulator, currentLog) => {
+        return accumulator + currentLog.mileageDifference;
+    }, 0);
 }
 
 const getVehicleComponents = async (vehicleDTO) => {

@@ -58,7 +58,7 @@ const VehicleForm = () => {
         {field: 'annualResourceNorm', headerName: 'Річна норма ресурсу'},
         {field: 'annualResourceActual', headerName: 'Використано ресурсу в цьому році'},
         {field: 'remainingAnnualResource', headerName: 'Залишилося ресурсу в цьому році'},
-        {field: 'remainingResourceToNextRepair', headerName: 'Залишилося ресурсу до наступного ремонту'},
+        {field: 'remainingResourceToNextRepair', headerName: 'Залишилося ресурсу до наступного капітального ремонту'},
         {field: 'maxResource', headerName: 'Максимальний можливий ресурс'},
         {field: 'needsMaintenance', headerName: 'Потребує поточного ремонту', type: 'boolean'},
         {field: 'needsCapitalRepair', headerName: 'Потребує капітального ремонту', type: 'boolean'},

@@ -74,23 +74,32 @@ async function deleteVehicleComponent(id) {
     return {message: `Vehicle component with ID ${id} deleted`};
 }
 
-async function updateVehicleComponentsMileage(vehicleId, mileage) {
-    const components = this.getVehicleComponentsByVehicleId(vehicleId);
+async function updateVehicleComponentsMileage(vehicleId, mileage, mileageDifference) {
+    const components = await getVehicleComponentsByVehicleId(vehicleId);
     const t = await sequelize.transaction();
+    let updatedComponents;
     try {
-        components.forEach((vehicleComponent) => {
-            vehicleComponent.update(vehicleComponent.id,
+        updatedComponents = await Promise.all(components.map(async (vehicleComponent) => {
+            const newMileageSinceManufactured = (vehicleComponent.mileageSinceManufactured || 0) + mileageDifference;
+            const newMileageAfterLastRepair = (vehicleComponent.mileageAfterLastRepair || 0) + mileageDifference;
+
+            return await vehicleComponent.update(
                 {
-                    mileageSinceManufactured: mileage,
-                    mileageAfterLastRepair: vehicleComponent.mileageAfterLastRepair +
-                        (mileage - vehicleComponent.mileageSinceManufactured),
-                }, {transaction: t});
-        });
+                    mileageSinceManufactured: newMileageSinceManufactured,
+                    mileageAfterLastRepair: newMileageAfterLastRepair,
+                },
+                {transaction: t}
+            );
+        }));
+        await t.commit();
     } catch (e) {
-        console.error(e);
-        throw new AppError('Something was wrong when vehicle components searching', 400);
+        if (t) {
+            await t.rollback();
+        }
+        throw new AppError(`Error updating vehicle components mileage for vehicleId: ${vehicleId}`, 500);
     }
-    return components;
+
+    return updatedComponents;
 }
 
 async function updateVehicleComponentsCategory(vehicleComponentIds, newCategory) {
@@ -99,8 +108,8 @@ async function updateVehicleComponentsCategory(vehicleComponentIds, newCategory)
     try {
         components = await Promise.all(components.map(async (vehicleComponent) => {
             await vehicleComponent.update(
-                { conditionCategory: newCategory },
-                { transaction: t }
+                {conditionCategory: newCategory},
+                {transaction: t}
             );
         }));
         await t.commit();
@@ -115,7 +124,6 @@ module.exports = {
     createVehicleComponent,
     getAllVehicleComponents,
     getVehicleComponentsByVehicleId,
-    getVehicleComponentsByIds,
     getVehicleComponentById,
     updateVehicleComponent,
     deleteVehicleComponent,

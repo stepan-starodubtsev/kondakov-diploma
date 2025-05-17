@@ -47,7 +47,6 @@ class RepairsStore {
     async addRepair() {
         try {
             const created = await createRepair(this.prepareTempRepairToSending(this.tempRepair));
-            console.log("created: ", created);
             runInAction(() => {
                 this.repairs.push(created);
                 this.tempRepair = created;
@@ -134,6 +133,10 @@ class RepairsStore {
                 newCategory = '4';
             } else {
                 newCategory = '3';
+            }
+
+            if (this.tempRepair.workDescription !== ''){
+                newCategory = '2';
             }
 
             vehiclesStore.updateComponentConditionCategory(this.tempRepair.vehicleId,

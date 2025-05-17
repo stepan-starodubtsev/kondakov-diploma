@@ -64,6 +64,10 @@ module.exports = {
             newCategory = '3';
         }
 
+        if (repair.workDescription !== ''){
+            newCategory = '2';
+        }
+
         const componentRepairsIds = componentRepairs.map(componentRepairs => componentRepairs.vehicleComponentId);
         await updateVehicleComponentsCategory(componentRepairsIds, newCategory);
     }

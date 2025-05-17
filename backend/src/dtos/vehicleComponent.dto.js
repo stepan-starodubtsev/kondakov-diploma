@@ -8,13 +8,12 @@ const calculateAnnualResourceActual = async (component) => {
     }
 
     if (logs.length === 1) {
-        return logs[0].mileage;
+        return logs[0].mileageDifference;
     }
 
-    const firstMileage = logs[0].mileage;
-    const lastMileage = logs[logs.length - 1].mileage;
-
-    return lastMileage - firstMileage;
+    return logs.reduce((accumulator, currentLog) => {
+        return accumulator + currentLog.mileageDifference;
+    }, 0);
 };
 
 

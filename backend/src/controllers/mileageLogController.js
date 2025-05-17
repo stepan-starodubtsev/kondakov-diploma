@@ -1,4 +1,3 @@
-const MileageLog = require('../models/MileageLog');
 const {mileageLogToDto} = require("../dtos/mileageLog.dto");
 const {
     getAllMileageLogs,
@@ -6,7 +5,6 @@ const {
     getMileageLogById,
     deleteMileageLog
 } = require("../services/MileageLogService");
-const {getMaintenanceById} = require("../services/MaintenanceService");
 
 module.exports = {
     async getAll(req, res) {

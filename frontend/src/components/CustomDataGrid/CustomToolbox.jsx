@@ -5,7 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import * as React from "react";
 
-const CustomToolbar = ({handleAddButtonClick, handleEditButtonClick, handleDeleteButtonClick}) => {
+const CustomToolbar = ({handleAddButtonClick, handleEditButtonClick, handleDeleteButtonClick, withoutEdit}) => {
     return (
         <Toolbar>
             <GridToolbar/>
@@ -18,14 +18,15 @@ const CustomToolbar = ({handleAddButtonClick, handleEditButtonClick, handleDelet
                         <AddIcon/>
                     </IconButton>
                 </Tooltip>
-                <Tooltip title={'Редагувати'}>
-                    <IconButton
-                        onClick={handleEditButtonClick}
-                        sx={{mr: 2}}
-                    >
-                        <EditIcon/>
-                    </IconButton>
-                </Tooltip>
+                {!withoutEdit &&
+                    (<Tooltip title={'Редагувати'}>
+                        <IconButton
+                            onClick={handleEditButtonClick}
+                            sx={{mr: 2}}
+                        >
+                            <EditIcon/>
+                        </IconButton>
+                    </Tooltip>)}
                 <Tooltip title={'Видалити'}>
                     <IconButton
                         onClick={handleDeleteButtonClick}

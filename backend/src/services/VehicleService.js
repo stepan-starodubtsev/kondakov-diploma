@@ -2,13 +2,11 @@ const Vehicle = require('../models/Vehicle');
 const VehicleComponent = require('../models/VehicleComponent');
 const AppError = require("../errors/AppError");
 const {
-    updateVehicleComponentsMileage,
-    getVehicleComponentsByVehicleId, updateVehicleComponent
+    getVehicleComponentsByVehicleId, updateVehicleComponent, updateVehicleComponentsMileage
 } = require("./VehicleComponentService");
 const sequelize = require("../settings/settingsDB");
 
-module.exports = {
-    async createVehicle(vehicleData) {
+    async function createVehicle(vehicleData) {
         const transaction = await  sequelize.transaction();
 
         try {
@@ -39,26 +37,26 @@ module.exports = {
             await transaction.rollback();
             throw error;
         }
-    },
+    }
 
-    async getAllVehicles() {
+    async function getAllVehicles() {
         const vehicles = await Vehicle.findAll();
         if (vehicles.length === 0) {
             return null;
         }
         return vehicles;
-    },
+    }
 
-    async getVehicleById(id) {
+    async function getVehicleById(id) {
         const vehicle = await Vehicle.findByPk(id);
         if (!vehicle) {
             throw new AppError(`Vehicle with ID ${id} not found`, 404);
         }
         vehicle.components = getVehicleComponentsByVehicleId(vehicle.id);
         return vehicle;
-    },
+    }
 
-    async updateVehicle(id, updateData) {
+    async function updateVehicle(id, updateData) {
         const foundedVehicle = await Vehicle.findByPk(id);
         if (!foundedVehicle) {
             throw new AppError(`Vehicle with ID ${id} not found`, 404);
@@ -66,13 +64,15 @@ module.exports = {
 
         let {components, ...vehicle} = updateData;
         const newVehicle = await foundedVehicle.update(vehicle);
-        components = components.map(component => {
-            updateVehicleComponent(component.id, component);
-        });
+        if (components){
+            components = await Promise.all(components.map(async (component) => {
+                return await updateVehicleComponent(component.id, component);
+            }));
+        }
         return newVehicle;
-    },
+    }
 
-    async deleteVehicle(id) {
+    async function deleteVehicle(id) {
         const vehicle = await Vehicle.findByPk(id);
         if (!vehicle) {
             throw new AppError(`Vehicle with ID ${id} not found`, 404);
@@ -80,10 +80,18 @@ module.exports = {
         (await getVehicleComponentsByVehicleId(vehicle.id)).forEach(component => component.destroy());
         await vehicle.destroy();
         return {message: `Vehicle with ID ${id} deleted`};
-    },
-
-    updateVehicleMileage(vehicleId, mileage) {
-        updateVehicleComponentsMileage(vehicleId, mileage);
-        return this.updateVehicle(vehicleId, {mileageSinceManufactured: mileage});
     }
+
+    async function updateVehicleMileage(vehicleId, mileage, mileageDifference) {
+        await updateVehicleComponentsMileage(vehicleId, mileage, mileageDifference);
+        return await updateVehicle(vehicleId, {mileageSinceManufactured: mileage});
+    }
+    
+module.exports = {
+    createVehicle,
+    getAllVehicles,
+    getVehicleById,
+    updateVehicle,
+    deleteVehicle,
+    updateVehicleMileage,
 };

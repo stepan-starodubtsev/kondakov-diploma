@@ -5,9 +5,8 @@ const {Op} = require("sequelize");
 
 module.exports = {
     async createMileageLog(mileageLogData) {
-        const mileageLog = await MileageLog.create(mileageLogData);
-        updateVehicleMileage(mileageLogData.vehicleId, mileageLogData.mileage);
-        return mileageLog;
+        await updateVehicleMileage(mileageLogData.vehicleId, mileageLogData.mileage, mileageLogData.mileageDifference);
+        return await MileageLog.create(mileageLogData);
     },
 
     async getAllMileageLogs() {
@@ -44,14 +43,15 @@ module.exports = {
     },
 
 
-
-
     async deleteMileageLog(id) {
         const mileageLog = await MileageLog.findByPk(id);
         if (!mileageLog) {
             throw new AppError(`MileageLog with ID ${id} not found`, 404);
         }
+        const newMileage = mileageLog.mileage - mileageLog.mileageDifference;
+        const newMileageDifference = -(mileageLog.mileageDifference);
         await mileageLog.destroy();
-        return { message: `MileageLog with ID ${id} deleted` };
+        await updateVehicleMileage(mileageLog.vehicleId, newMileage, newMileageDifference);
+        return {message: `MileageLog with ID ${id} deleted`};
     }
 };

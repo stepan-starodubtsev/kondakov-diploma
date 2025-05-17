@@ -96,7 +96,8 @@ const CustomDataGrid = ({
                 slots={{
                     toolbar: () => (<CustomToolbar handleAddButtonClick={handleAddButtonClick}
                                                    handleEditButtonClick={handleEditButtonClick}
-                                                   handleDeleteButtonClick={handleDeleteButtonClick}/>),
+                                                   handleDeleteButtonClick={handleDeleteButtonClick}
+                                                   withoutEdit={!editEntityUrl}/>),
                 }}
             />
             <AlertDialog dialogText={`Видалити №${selectedRowId}?`} isOpen={open} onClose={handleCancelDelete}

@@ -4,6 +4,7 @@ function mileageLogToDto(mileageLog) {
         vehicleId: mileageLog.vehicleId,
         date: mileageLog.date,
         mileage: mileageLog.mileage,
+        mileageDifference: mileageLog.mileageDifference,
     };
 }
 

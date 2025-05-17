@@ -109,6 +109,11 @@ class VehiclesStore {
             .findIndex((component) => component.id === parseInt(vehicleComponentId));
     }
 
+    indexOfVehicleById(vehicleId) {
+        return vehiclesStore.vehicles
+            .findIndex((vehicle)=> vehicle.id === parseInt(vehicleId));
+    }
+
     clearTempVehicle() {
         this.tempVehicle = {
             name: '',

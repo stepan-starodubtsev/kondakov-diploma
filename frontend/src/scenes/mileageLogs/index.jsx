@@ -21,6 +21,7 @@ const MileageLogs = () => {
         },
         {field: 'date', headerName: 'Дата проведення ТО'},
         {field: 'mileage', headerName: 'Пробіг на момент запису'},
+        {field: 'mileageDifference', headerName: 'Використаний ресурс'},
     ];
 
     useError();
@@ -33,7 +34,6 @@ const MileageLogs = () => {
                     <CustomDataGrid columns={columns}
                                     rows={mileageLogsStore.mileageLogs}
                                     addEntityUrl={"/mileage-logs/create-mileage-log"}
-                                    editEntityUrl={"/mileage-logs/edit-mileage-log"}
                                     deleteHandler={mileageLogsStore.removeMileageLog.bind(mileageLogsStore)}
 
                     ></CustomDataGrid>

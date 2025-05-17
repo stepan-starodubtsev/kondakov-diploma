@@ -28,11 +28,9 @@ const UnitForm = () => {
             setError("");
         }
         if (unitId) {
-            unitsStore.updateUnit(parseInt(unitId), unit);
+           await unitsStore.updateUnit(parseInt(unitId), unit);
         } else {
-            console.log(unit);
-            unitsStore.addUnit(unit);
-            console.log(unitsStore.units.length);
+            await unitsStore.addUnit(unit);
         }
         navigate('/units');
     };

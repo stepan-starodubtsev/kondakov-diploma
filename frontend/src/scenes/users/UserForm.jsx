@@ -42,11 +42,9 @@ const UserForm = () => {
             setError("");
         }
         if (userId) {
-            usersStore.updateUser(parseInt(userId), user);
+            await usersStore.updateUser(parseInt(userId), user);
         } else {
-            console.log(user);
-            usersStore.addUser(user);
-            console.log(usersStore.users.length);
+            await usersStore.addUser(user);
         }
         navigate('/users');
     };

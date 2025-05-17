@@ -60,3 +60,9 @@ export const RepairTypes = [
     {label: 'Середній', value: 'medium'},
     {label: 'Капітальний', value: 'capital'},
 ]
+
+export const MaintenanceTypes = [
+    {label: 'TO1', value: 'TO1'},
+    {label: 'TO2', value: 'TO2'},
+    {label: 'Сезонне', value: 'SO'},
+]

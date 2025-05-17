@@ -17,6 +17,8 @@ import VehicleComponentForm from "./scenes/vehicles/VehicleComponentForm.jsx";
 import Repairs from "./scenes/repairs/index.jsx";
 import RepairComponentForm from "./scenes/repairs/RepairComponentForm.jsx";
 import RepairForm from "./scenes/repairs/RepairForm.jsx";
+import Maintenances from "./scenes/maintenances/index.jsx";
+import MaintenanceForm from "./scenes/maintenances/MaintenanceForm.jsx";
 
 
 function App() {
@@ -75,6 +77,11 @@ function App() {
                                     <Route path="repair-components/edit-repair/:repairComponentId"
                                            element={<RepairComponentForm/>}/>
                                 </Route>
+                            </Route>
+                            <Route path="/maintenances">
+                                <Route index element={<Maintenances/>}/>
+                                <Route path="create-maintenance" element={<MaintenanceForm/>}/>
+                                <Route path="edit-maintenance/:maintenanceId" element={<MaintenanceForm/>}/>
                             </Route>
 
                             {/*<Route path="/maintenances" element={<Invoices/>}/>*/}

@@ -30,7 +30,7 @@ const Units = () => {
     return (
         <Box m={"20px"}>
             <Box>
-                <Header title={"ПіДРОЗДІЛИ"} subtitle={"Керування підрозділами"}/>
+                <Header title={"ПІДРОЗДІЛИ"} subtitle={"Керування підрозділами"}/>
                 <Box>
                     <CustomDataGrid columns={columns}
                                     rows={unitsStore.units}

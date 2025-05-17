@@ -50,7 +50,7 @@ const MaintenanceForm = () => {
         if (maintenanceId) {
             await maintenancesStore.updateMaintenance(parseInt(maintenanceId), maintenance);
         } else {
-            await  maintenancesStore.addMaintenance(maintenance);
+            await maintenancesStore.addMaintenance(maintenance);
         }
         navigate('/maintenances');
     };
@@ -112,10 +112,10 @@ const MaintenanceForm = () => {
                                         label="Дата проведення"
                                         value={maintenance.date ? dayjs(maintenance.date) : null}
                                         onChange={(newDate) => {
-                                            maintenance = {
+                                            setMaintenance({
                                                 ...maintenance,
                                                 date: newDate ? newDate.toISOString() : null,
-                                            };
+                                            });
                                         }}
                                         name="date"
                                         format="DD-MM-YYYY"
@@ -170,7 +170,8 @@ const MaintenanceForm = () => {
                                         fontSize: 16,
                                         width: "100%",
                                         height: "100px",
-                                        marginTop: '5px'}}
+                                        marginTop: '5px'
+                                    }}
                                 />
                             </Grid>
                         </Grid>

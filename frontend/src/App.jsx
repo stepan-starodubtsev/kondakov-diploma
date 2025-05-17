@@ -14,10 +14,9 @@ import UnitForm from "./scenes/units/UnitForm.jsx";
 import Vehicles from "./scenes/vehicles/index.jsx";
 import VehicleForm from "./scenes/vehicles/VehicleForm.jsx";
 import VehicleComponentForm from "./scenes/vehicles/VehicleComponentForm.jsx";
-// import Bar from "./scenes/bar";
-// import Line from "./scenes/line";
-// import Pie from "./scenes/pie";
-// import Geography from "./scenes/geography";
+import Repairs from "./scenes/repairs/index.jsx";
+import RepairComponentForm from "./scenes/repairs/RepairComponentForm.jsx";
+import RepairForm from "./scenes/repairs/RepairForm.jsx";
 
 
 function App() {
@@ -60,10 +59,24 @@ function App() {
                                            element={<VehicleComponentForm/>}/>
                                 </Route>
                             </Route>
+                            <Route path="/repairs">
+                                <Route index element={<Repairs/>}/>
+                                <Route path="create-repair">
+                                    <Route index element={<RepairForm/>}/>
+                                    <Route path="repair-components/create-repair"
+                                           element={<RepairComponentForm/>}/>
+                                    <Route path="repair-components/edit-repair/:repairComponentId"
+                                           element={<RepairComponentForm/>}/>
+                                </Route>
+                                <Route path="edit-repair/:repairId">
+                                    <Route index element={<RepairForm/>}/>
+                                    <Route path="repair-components/create-repair"
+                                           element={<RepairComponentForm/>}/>
+                                    <Route path="repair-components/edit-repair/:repairComponentId"
+                                           element={<RepairComponentForm/>}/>
+                                </Route>
+                            </Route>
 
-
-                            {/*<Route path="/cars" element={<Team/>}/>*/}
-                            {/*<Route path="/repairs" element={<Invoices/>}/>*/}
                             {/*<Route path="/maintenances" element={<Invoices/>}/>*/}
                             {/*<Route path="/mileage-logs" element={<Invoices/>}/>*/}
                             <Route path="/calendar" element={<Calendar/>}/>

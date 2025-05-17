@@ -14,7 +14,5 @@ const Repair = sequelize.define('Repair', {
 });
 
 Repair.belongsTo(Vehicle, {foreignKey: 'vehicleId'});
-Repair.belongsTo(User, {foreignKey: 'createdByUserId', as: 'createdBy'});
-Repair.belongsTo(User, {foreignKey: 'editedByUserId', as: 'editedBy'});
 
 module.exports = Repair;

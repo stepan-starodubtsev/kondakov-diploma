@@ -1,28 +1,12 @@
 const Repair = require('../models/Repair');
 const AppError = require("../errors/AppError");
-const {updateVehicleComponentsCategory} = require("./VehicleComponentService");
-const {getRepairComponentsByRepairId} = require("./RepairComponentService");
+const {getRepairComponentsByRepairId, updateRepairComponent, updateRepairComponentsCategory} = require("./RepairComponentService");
+const sequelize = require("../settings/settingsDB");
+const RepairComponent = require("../models/RepairComponent");
+const Vehicle = require("../models/Vehicle");
+const {getVehicleComponentsByVehicleId} = require("./VehicleComponentService");
 
 module.exports = {
-    async createRepair(repairData) {
-        const foundedRepair = await Repair.findOne({where: {vehicleId: repairData.vehicleId}});
-        if (foundedRepair) {
-            throw new AppError(`This repair is already in use by vehicle with id ${repairData.vehicleId}`, 400);
-        }
-
-        const componentIds = getRepairComponentsByRepairId(repairData.id)
-            .map((repairComponent) => repairComponent.vehicleComponentId);
-        let newCategory;
-        if (repairData.type === 'capital') {
-            newCategory = '4';
-        } else {
-            newCategory = '3';
-        }
-        await updateVehicleComponentsCategory(componentIds, newCategory);
-
-        return await Repair.create(repairData);
-    },
-
     async getAllRepairs() {
         const repairs = await Repair.findAll();
         if (repairs.length === 0) {
@@ -47,14 +31,50 @@ module.exports = {
         return repairs;
     },
 
+    async createRepair(repairData) {
+        const transaction = await  sequelize.transaction();
+        let newRepair;
+        let componentRepairs;
+        try {
+            const existingRepair = await Repair.findOne({where: {vehicleId: repairData.vehicleId}});
+            if (existingRepair) {
+                throw new AppError(`This repair is already in use by vehicle with id ${repairData.vehicleId}`, 400);
+            }
+
+            let { componentRepairs: componentRepairsTemp, ...repair } = repairData;
+
+            newRepair = await Repair.create(repair, { transaction });
+
+            componentRepairsTemp = await Promise.all(
+                componentRepairsTemp.map(componentRepair => {
+                    componentRepair.repairId = newRepair.id;
+                    return RepairComponent.create(componentRepair, { transaction });
+                })
+            );
+            componentRepairs = componentRepairsTemp;
+            await transaction.commit();
+        } catch (error) {
+            await transaction.rollback();
+            throw error;
+        }
+        await updateRepairComponentsCategory(newRepair, componentRepairs);
+        return newRepair;
+    },
+
     async updateRepair(id, updateData) {
-        const repair = await Repair.findByPk(id);
-        if (!repair) {
+        const existingRepair = await Repair.findByPk(id);
+        if (!existingRepair) {
             throw new AppError(`Repair with ID ${id} not found`, 404);
         }
 
-        await repair.update(updateData);
-        return repair;
+        let {componentRepairs, ...repair} = updateData;
+        const newRepair = await existingRepair.update(repair);
+        componentRepairs = await Promise.all(componentRepairs.map(componentRepairs => {
+            return updateRepairComponent(componentRepairs.id, componentRepairs);
+        }));
+
+        await updateRepairComponentsCategory(newRepair, componentRepairs);
+        return newRepair;
     },
 
     async deleteRepair(id) {
@@ -62,7 +82,8 @@ module.exports = {
         if (!repair) {
             throw new AppError(`Repair with ID ${id} not found`, 404);
         }
+        (await getRepairComponentsByRepairId(repair.id)).forEach(repairComponent => repairComponent.destroy());
         await repair.destroy();
         return {message: `Repair with ID ${id} deleted`};
-    }
+    },
 };

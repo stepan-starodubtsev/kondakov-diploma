@@ -57,9 +57,11 @@ class VehiclesStore {
     async updateVehicle(vehicleId) {
         try {
             const {conditionCategory, ...newVehicle} = this.tempVehicle;
+            console.log('newVehicle: ', newVehicle);
             const updated = await updateVehicle(vehicleId, newVehicle);
             console.log('updated: ', updated);
             runInAction(() => {
+                updated.conditionCategory = conditionCategory;
                 this.vehicles = this.vehicles.map((u) =>
                     u.id === vehicleId ? updated : u
                 );
@@ -98,6 +100,10 @@ class VehiclesStore {
             .find(vehicleComponent => vehicleComponent.id === parseInt(vehicleComponentId));
     }
 
+    findVehicleById(vehicleId) {
+        return vehiclesStore.vehicles.find(vehicle => vehicle.id === parseInt(vehicleId));
+    }
+
     indexOfComponentById(vehicleComponentId) {
         return vehiclesStore.tempVehicle.components
             .findIndex((component) => component.id === parseInt(vehicleComponentId));
@@ -119,6 +125,19 @@ class VehiclesStore {
             components: [],
             unitId: '',
         };
+    }
+
+    updateComponentConditionCategory(vehicleId, vehicleComponentId, conditionCategory) {
+        runInAction(() => {
+            const vehicle = this.findVehicleById(vehicleId);
+            if (vehicle.conditionCategory !== conditionCategory) {
+                vehicle.conditionCategory = conditionCategory;
+            }
+            const vehicleComponent = vehicle.components
+                .find((component) => component.id === parseInt(vehicleComponentId));
+            vehicleComponent.conditionCategory = conditionCategory;
+            console.log(vehicleComponent);
+        });
     }
 
     prepareTempVehicleToSending(vehicle) {

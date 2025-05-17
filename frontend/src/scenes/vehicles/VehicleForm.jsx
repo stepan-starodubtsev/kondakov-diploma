@@ -259,7 +259,7 @@ const VehicleForm = () => {
                             </Grid>
                             <Grid item size={4}>
                                 <TextField
-                                    readOnly={true}
+                                    disabled
                                     onChange={handleChange}
                                     sx={{marginTop: '5px'}}
                                     label="Категорія ТЗ"

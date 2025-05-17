@@ -13,9 +13,10 @@ module.exports = {
         if (!repairs) {
             res.status(404).send({});
         } else {
-            res.json(repairs.map(repair => {
-                repairToDto(repair)
-            }));
+            const repairsDTO = await Promise.all(
+                repairs.map(repair => repairToDto(repair))
+            );
+            res.json(repairsDTO);
         }
     },
 
@@ -24,18 +25,18 @@ module.exports = {
         if (!repairDTO) {
             res.status(404).send({});
         } else {
-            res.json(repairToDto(repairDTO));
+            res.json(await repairToDto(repairDTO));
         }
     },
 
     async create(req, res) {
         const newRepair = await createRepair(req.body);
-        res.status(201).json(repairToDto(newRepair));
+        res.status(201).json(await repairToDto(newRepair));
     },
 
     async update(req, res) {
         const repairDTO = await updateRepair(req.params.id, req.body);
-        res.json(repairToDto(repairDTO));
+        res.json(await repairToDto(repairDTO));
     },
 
     async delete(req, res) {

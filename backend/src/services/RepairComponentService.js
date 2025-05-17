@@ -1,6 +1,7 @@
 const RepairComponent = require('../models/RepairComponent');
 const AppError = require("../errors/AppError");
 const { repairComponentToDto } = require("../dtos/repairComponent.dto");
+const {updateVehicleComponentsCategory} = require("./VehicleComponentService");
 
 module.exports = {
     async createRepairComponent(repairComponentData) {
@@ -29,7 +30,7 @@ module.exports = {
     },
 
     async getRepairComponentsByRepairId(repairId) {
-        const repairComponents = await RepairComponent.findAll({where: repairId});
+        const repairComponents = await RepairComponent.findAll({where: { repairId: repairId }});
         if (repairComponents.length === 0) {
             return null;
         }
@@ -54,4 +55,16 @@ module.exports = {
         await repairComponent.destroy();
         return { message: `RepairComponent with ID ${id} deleted` };
     },
+
+    async updateRepairComponentsCategory(repair, componentRepairs) {
+        let newCategory;
+        if (repair.type === 'capital') {
+            newCategory = '4';
+        } else {
+            newCategory = '3';
+        }
+
+        const componentRepairsIds = componentRepairs.map(componentRepairs => componentRepairs.vehicleComponentId);
+        await updateVehicleComponentsCategory(componentRepairsIds, newCategory);
+    }
 };

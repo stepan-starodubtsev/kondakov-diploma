@@ -53,3 +53,10 @@ export const VehicleComponentTypes = [
     {label: 'Технічні системи контролю та моніторингу', value: 'MONITORING_SYSTEM'},
     {label: 'Паливна система', value: 'FUEL_SYSTEM'},
 ]
+
+export const RepairTypes = [
+    {label: 'Незапланований', value: 'unplanned'},
+    {label: 'Поточний', value: 'current'},
+    {label: 'Середній', value: 'medium'},
+    {label: 'Капітальний', value: 'capital'},
+]

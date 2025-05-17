@@ -5,8 +5,6 @@ function maintenanceToDto(maintenance) {
         type: maintenance.type,
         date: maintenance.date,
         result: maintenance.result,
-        editedByUserId: maintenance.editedByUserId,
-        createdByUserId: maintenance.createdByUserId
     };
 }
 

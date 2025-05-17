@@ -1,14 +1,25 @@
-function repairToDto(repair) {
-    return {
+const {getRepairComponentsByRepairId} = require("../services/RepairComponentService");
+const {repairComponentToDto} = require("./repairComponent.dto");
+
+const getRepairComponents = async (repairDTO) => {
+    const repairComponents = await getRepairComponentsByRepairId(repairDTO.id);
+    return await Promise.all(
+        repairComponents.map((repairComponent) => repairComponentToDto(repairComponent))
+    );
+}
+
+async function repairToDto(repair) {
+    const repairDTO = {
         id: repair.id,
-        vehicleId: repair.vehicleId,
         type: repair.type,
         date: repair.date,
         repairReasonText: repair.repairReasonText,
         workDescription: repair.workDescription,
-        editedByUserId: repair.editedByUserId,
-        createdByUserId: repair.createdByUserId
+        vehicleId: repair.vehicleId,
+        componentRepairs: [],
     };
+    repairDTO.componentRepairs = await getRepairComponents(repairDTO);
+    return repairDTO;
 }
 
-module.exports = { repairToDto };
+module.exports = {repairToDto};

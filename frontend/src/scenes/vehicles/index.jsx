@@ -40,10 +40,10 @@ const Vehicles = () => {
         {field: 'manufacturedAt', headerName: 'Дата виготовлення'},
         {field: 'mileageSinceManufactured', headerName: 'Пробіг з виготовлення'},
         {field: 'annualResourceNorm', headerName: 'Річна норма ресурсу'},
-        {field: 'annualResourceActual', headerName: 'Ресурсу в цьому році'},
+        {field: 'annualResourceActual', headerName: 'Використано ресурсу в цьому році'},
         {field: 'remainingAnnualResource', headerName: 'Залишилося ресурсу в цьому році'},
         {field: 'remainingResourceToNextRepair', headerName: 'Залишилося ресурсу до наступного ремонту'},
-        {field: 'needsMaintenance', headerName: 'Потребує потічного ремонту', type: 'boolean'},
+        {field: 'needsMaintenance', headerName: 'Потребує поточного ремонту', type: 'boolean'},
         {field: 'needsCapitalRepair', headerName: 'Потребує капітального ремонту', type: 'boolean'},
         {
             field: 'unitId', headerName: 'Підрозділ', renderCell: (params) => {

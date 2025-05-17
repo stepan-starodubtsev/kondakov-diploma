@@ -56,11 +56,11 @@ const VehicleForm = () => {
         {field: 'mileageSinceManufactured', headerName: 'Пробіг з виготовлення'},
         {field: 'mileageAfterLastRepair', headerName: 'Пробіг з останнього ремонту'},
         {field: 'annualResourceNorm', headerName: 'Річна норма ресурсу'},
-        {field: 'annualResourceActual', headerName: 'Ресурсу в цьому році'},
+        {field: 'annualResourceActual', headerName: 'Використано ресурсу в цьому році'},
         {field: 'remainingAnnualResource', headerName: 'Залишилося ресурсу в цьому році'},
         {field: 'remainingResourceToNextRepair', headerName: 'Залишилося ресурсу до наступного ремонту'},
         {field: 'maxResource', headerName: 'Максимальний можливий ресурс'},
-        {field: 'needsMaintenance', headerName: 'Потребує потічного ремонту', type: 'boolean'},
+        {field: 'needsMaintenance', headerName: 'Потребує поточного ремонту', type: 'boolean'},
         {field: 'needsCapitalRepair', headerName: 'Потребує капітального ремонту', type: 'boolean'},
         {
             field: 'vehicleId', headerName: 'Транспортний засіб', renderCell: () => {

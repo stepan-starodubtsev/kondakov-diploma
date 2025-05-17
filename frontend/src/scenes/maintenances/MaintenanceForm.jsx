@@ -74,8 +74,9 @@ const MaintenanceForm = () => {
     return (
         <Box m={"20px"}>
             <Box>
-                {maintenanceId ? (<Header title={`ПІДРОЗДІЛ №${maintenanceId}`} subtitle={"Редагування підрозділу"}/>) :
-                    (<Header title={`НОВИЙ ПІДРОЗДІЛ`} subtitle={"Створення підрозділу"}/>)
+                {maintenanceId ? (<Header title={`ТЕХНІЧНЕ ОБСЛУГОВУВАННЯ №${maintenanceId}`}
+                                          subtitle={"Редагування ТО"}/>) :
+                    (<Header title={`НОВЕ ТЕХНІЧНЕ ОБСЛУГОВУВАННЯ`} subtitle={"Створення ТО"}/>)
                 }
                 <Box>
                     <Stack component="form" onSubmit={handleSubmit}

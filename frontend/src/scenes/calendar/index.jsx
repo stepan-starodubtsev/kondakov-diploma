@@ -13,6 +13,7 @@ import maintenancesStore from '../../stores/maintenancesStore';
 import vehiclesStore from '../../stores/vehiclesStore';
 import dayjs from 'dayjs';
 import 'dayjs/locale/uk';
+import TopBar from "../global/TopBar.jsx";
 
 dayjs.locale('uk');
 
@@ -136,7 +137,9 @@ const CalendarPage = observer(() => {
 
     return (
         <Box m="20px">
-            <Header title="Календар" subtitle="Огляд Ремонтів та Технічних Обслуговувань"/>
+            <TopBar headerBox={(
+                <Header title="Календар" subtitle="Огляд Ремонтів та Технічних Обслуговувань"/>
+            )}/>
             <Box display="flex" justifyContent="space-between">
                 <CalendarViewComponent
                     events={calendarEvents}

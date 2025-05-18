@@ -33,6 +33,7 @@ import dayjs from "dayjs";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
 import vehiclesStore from "../../stores/vehiclesStore.js";
+import TopBar from "../global/TopBar.jsx";
 
 const VehicleForm = () => {
     const theme = useTheme();
@@ -119,243 +120,245 @@ const VehicleForm = () => {
 
     return (
         <Box sx={{maxWidth: "81vw", m: "20px"}}>
+            <TopBar headerBox={(
+                <>
+                    {vehicleId ? (<Header title={`ТРАНСПОРТНИЙ ЗАСІБ №${vehicleId}`}
+                                          subtitle={"Редагування транспортного засобу"}/>) :
+                        (<Header title={`НОВИЙ ТРАНСПОРТНИЙ ЗАСІБ`} subtitle={"Створення транспортного засобу"}/>)
+                    }
+                </>
+            )}/>
             <Box>
-                {vehicleId ? (<Header title={`ТРАНСПОРТНИЙ ЗАСІБ №${vehicleId}`}
-                                      subtitle={"Редагування транспортного засобу"}/>) :
-                    (<Header title={`НОВИЙ ТРАНСПОРТНИЙ ЗАСІБ`} subtitle={"Створення транспортного засобу"}/>)
-                }
-                <Box>
-                    <Stack spacing={2} component="form" onSubmit={handleSubmit}
-                           sx={{
-                               '& label.Mui-focused': {
-                                   color: colors.grey[200],
-                               },
-                               '& .MuiOutlinedInput-root.Mui-focused fieldset': {
-                                   borderColor: colors.grey[200],
-                               },
-                           }}>
-                        <Grid container spacing={2}>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Назва ТЗ"
-                                    autoComplete="name"
-                                    name="name"
-                                    value={vehiclesStore.tempVehicle?.name || ''}
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Тип ТЗ"
-                                    name="type"
-                                    select
-                                    fullWidth
-                                    value={vehiclesStore.tempVehicle?.type || ''}
-                                >
-                                    {VehicleTypes.map((type) => (
-                                        <MenuItem key={type.value} value={type.value}>
-                                            {type.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Дорожній номер"
-                                    autoComplete="licensePlate"
-                                    name="licensePlate"
-                                    value={vehiclesStore.tempVehicle?.licensePlate || ''}
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Індивідуальний номер виробника"
-                                    autoComplete="manufacturerNumber"
-                                    name="manufacturerNumber"
-                                    value={vehiclesStore.tempVehicle?.manufacturerNumber || ''}
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item size={4}>
-                                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="uk">
-                                    <DatePicker
-                                        label="Дата випуску"
-                                        value={vehiclesStore.tempVehicle?.manufacturedAt ? dayjs(vehiclesStore.tempVehicle.manufacturedAt) : null}
-                                        onChange={(newDate) => {
-                                            vehiclesStore.tempVehicle = {
-                                                ...vehiclesStore.tempVehicle,
-                                                manufacturedAt: newDate ? newDate.toISOString() : null,
-                                            };
-                                        }}
-                                        name="manufacturedAt"
-                                        format="DD-MM-YYYY"
-                                        slotProps={{
-                                            textField: {
-                                                fullWidth: true,
-                                                sx: {
-                                                    marginTop: '5px',
-                                                    '& .MuiPickersInputBase-root': {
-                                                        '& .Mui-focused': {
-                                                            borderColor: colors.grey[200],
-                                                            color: colors.grey[200],
-                                                        },
-                                                        '&:hover .MuiPickersOutlinedInput-notchedOutline': {
-                                                            borderColor: colors.grey[200],
-                                                        },
+                <Stack spacing={2} component="form" onSubmit={handleSubmit}
+                       sx={{
+                           '& label.Mui-focused': {
+                               color: colors.grey[200],
+                           },
+                           '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+                               borderColor: colors.grey[200],
+                           },
+                       }}>
+                    <Grid container spacing={2}>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Назва ТЗ"
+                                autoComplete="name"
+                                name="name"
+                                value={vehiclesStore.tempVehicle?.name || ''}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Тип ТЗ"
+                                name="type"
+                                select
+                                fullWidth
+                                value={vehiclesStore.tempVehicle?.type || ''}
+                            >
+                                {VehicleTypes.map((type) => (
+                                    <MenuItem key={type.value} value={type.value}>
+                                        {type.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Дорожній номер"
+                                autoComplete="licensePlate"
+                                name="licensePlate"
+                                value={vehiclesStore.tempVehicle?.licensePlate || ''}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Індивідуальний номер виробника"
+                                autoComplete="manufacturerNumber"
+                                name="manufacturerNumber"
+                                value={vehiclesStore.tempVehicle?.manufacturerNumber || ''}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item size={4}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="uk">
+                                <DatePicker
+                                    label="Дата випуску"
+                                    value={vehiclesStore.tempVehicle?.manufacturedAt ? dayjs(vehiclesStore.tempVehicle.manufacturedAt) : null}
+                                    onChange={(newDate) => {
+                                        vehiclesStore.tempVehicle = {
+                                            ...vehiclesStore.tempVehicle,
+                                            manufacturedAt: newDate ? newDate.toISOString() : null,
+                                        };
+                                    }}
+                                    name="manufacturedAt"
+                                    format="DD-MM-YYYY"
+                                    slotProps={{
+                                        textField: {
+                                            fullWidth: true,
+                                            sx: {
+                                                marginTop: '5px',
+                                                '& .MuiPickersInputBase-root': {
+                                                    '& .Mui-focused': {
+                                                        borderColor: colors.grey[200],
+                                                        color: colors.grey[200],
+                                                    },
+                                                    '&:hover .MuiPickersOutlinedInput-notchedOutline': {
+                                                        borderColor: colors.grey[200],
                                                     },
                                                 },
-                                            }
-                                        }}
-                                    />
-                                </LocalizationProvider>
-                            </Grid>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Група експлуатації"
-                                    name="operationGroup"
-                                    select
-                                    fullWidth
-                                    value={vehiclesStore.tempVehicle?.operationGroup || ''}
-                                >
-                                    {OperationGroups.map((group) => (
-                                        <MenuItem key={group.value} value={group.value}>
-                                            {group.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Пробіг з випуску"
-                                    autoComplete="mileageSinceManufactured"
-                                    name="mileageSinceManufactured"
-                                    value={vehiclesStore.tempVehicle?.mileageSinceManufactured || ''}
-                                    fullWidth
+                                            },
+                                        }
+                                    }}
                                 />
-                            </Grid>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Річна норма роботи, км"
-                                    autoComplete="annualResourceNorm"
-                                    name="annualResourceNorm"
-                                    value={vehiclesStore.tempVehicle?.annualResourceNorm || ''}
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item size={4}>
-                                <TextField
-                                    disabled
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Категорія ТЗ"
-                                    name="conditionCategory"
-                                    select
-                                    fullWidth
-                                    value={vehiclesStore.tempVehicle?.conditionCategory || ''}
-                                >
-                                    {ConditionCategories.map((category) => (
-                                        <MenuItem key={category.value} value={category.value}>
-                                            {category.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Тип пального"
-                                    name="fuelType"
-                                    select
-                                    fullWidth
-                                    value={vehiclesStore.tempVehicle?.fuelType || ''}
-                                >
-                                    {FuelTypes.map((fuelType) => (
-                                        <MenuItem key={fuelType.value} value={fuelType.value}>
-                                            {fuelType.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Тип мастила"
-                                    name="oilType"
-                                    select
-                                    fullWidth
-                                    value={vehiclesStore.tempVehicle?.oilType || ''}
-                                >
-                                    {OilTypes.map((oilType) => (
-                                        <MenuItem key={oilType.value} value={oilType.value}>
-                                            {oilType.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Підрозділ"
-                                    name="unitId"
-                                    select
-                                    fullWidth
-                                    value={vehiclesStore.tempVehicle?.unitId || ''}
-                                >
-                                    {unitsStore.units.map((unit) => (
-                                        <MenuItem key={unit.id} value={unit.id}>
-                                            {unit.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item size={12}>
-                                <Accordion sx={{
-                                    bgcolor: colors.primary[500],
-                                }}>
-                                    <AccordionSummary expandIcon={<ExpandMore/>}>
-                                        <Typography color={colors.grey[200]} variant={"h5"}>
-                                            Агрегати транспортного засобу
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <CustomDataGrid columns={vehicleComponentsColumns}
-                                                        rows={vehiclesStore.tempVehicle.components}
-                                                        addEntityUrl={"vehicle-components/create-component"}
-                                                        editEntityUrl={"vehicle-components/edit-component"}
-                                                        deleteHandler={vehiclesStore.removeVehicleComponent
-                                                            .bind(vehiclesStore)}
-                                        ></CustomDataGrid>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </Grid>
+                            </LocalizationProvider>
                         </Grid>
-                        {error && <Typography color="error">{error}</Typography>}
-                        <Box display={"flex"} justifyContent={'end'}>
-                            <Button type="submit" color={colors.primary[400]} variant="outlined"
-                                    disabled={validateForm()}>
-                                Зберегти
-                            </Button>
-                        </Box>
-                    </Stack>
-                </Box>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Група експлуатації"
+                                name="operationGroup"
+                                select
+                                fullWidth
+                                value={vehiclesStore.tempVehicle?.operationGroup || ''}
+                            >
+                                {OperationGroups.map((group) => (
+                                    <MenuItem key={group.value} value={group.value}>
+                                        {group.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Пробіг з випуску"
+                                autoComplete="mileageSinceManufactured"
+                                name="mileageSinceManufactured"
+                                value={vehiclesStore.tempVehicle?.mileageSinceManufactured || ''}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Річна норма роботи, км"
+                                autoComplete="annualResourceNorm"
+                                name="annualResourceNorm"
+                                value={vehiclesStore.tempVehicle?.annualResourceNorm || ''}
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item size={4}>
+                            <TextField
+                                disabled
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Категорія ТЗ"
+                                name="conditionCategory"
+                                select
+                                fullWidth
+                                value={vehiclesStore.tempVehicle?.conditionCategory || ''}
+                            >
+                                {ConditionCategories.map((category) => (
+                                    <MenuItem key={category.value} value={category.value}>
+                                        {category.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Тип пального"
+                                name="fuelType"
+                                select
+                                fullWidth
+                                value={vehiclesStore.tempVehicle?.fuelType || ''}
+                            >
+                                {FuelTypes.map((fuelType) => (
+                                    <MenuItem key={fuelType.value} value={fuelType.value}>
+                                        {fuelType.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Тип мастила"
+                                name="oilType"
+                                select
+                                fullWidth
+                                value={vehiclesStore.tempVehicle?.oilType || ''}
+                            >
+                                {OilTypes.map((oilType) => (
+                                    <MenuItem key={oilType.value} value={oilType.value}>
+                                        {oilType.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Підрозділ"
+                                name="unitId"
+                                select
+                                fullWidth
+                                value={vehiclesStore.tempVehicle?.unitId || ''}
+                            >
+                                {unitsStore.units.map((unit) => (
+                                    <MenuItem key={unit.id} value={unit.id}>
+                                        {unit.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item size={12}>
+                            <Accordion sx={{
+                                bgcolor: colors.primary[500],
+                            }}>
+                                <AccordionSummary expandIcon={<ExpandMore/>}>
+                                    <Typography color={colors.grey[200]} variant={"h5"}>
+                                        Агрегати транспортного засобу
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <CustomDataGrid columns={vehicleComponentsColumns}
+                                                    rows={vehiclesStore.tempVehicle.components}
+                                                    addEntityUrl={"vehicle-components/create-component"}
+                                                    editEntityUrl={"vehicle-components/edit-component"}
+                                                    deleteHandler={vehiclesStore.removeVehicleComponent
+                                                        .bind(vehiclesStore)}
+                                    ></CustomDataGrid>
+                                </AccordionDetails>
+                            </Accordion>
+                        </Grid>
+                    </Grid>
+                    {error && <Typography color="error">{error}</Typography>}
+                    <Box display={"flex"} justifyContent={'end'}>
+                        <Button type="submit" color={colors.primary[400]} variant="outlined"
+                                disabled={validateForm()}>
+                            Зберегти
+                        </Button>
+                    </Box>
+                </Stack>
             </Box>
         </Box>
     );

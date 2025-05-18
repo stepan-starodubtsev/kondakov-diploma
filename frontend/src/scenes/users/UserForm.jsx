@@ -22,6 +22,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {UserRoles} from "../../utils/constants.js";
 import usersStore from "../../stores/usersStore.js";
 import useError from "../../utils/useError.js";
+import TopBar from "../global/TopBar.jsx";
 
 const UserForm = () => {
     const theme = useTheme();
@@ -71,82 +72,84 @@ const UserForm = () => {
 
     return (
         <Box m={"20px"}>
+            <TopBar headerBox={(
+                <>
+                    {userId ? (<Header title={`КОРИСТУВАЧ №${userId}`} subtitle={"Редагування користувача"}/>) :
+                        (<Header title={`НОВИЙ КОРИСТУВАЧ`} subtitle={"Створення користувача"}/>)
+                    }
+                </>
+            )}/>
             <Box>
-                {userId ? (<Header title={`КОРИСТУВАЧ №${userId}`} subtitle={"Редагування користувача"}/>) :
-                    (<Header title={`НОВИЙ КОРИСТУВАЧ`} subtitle={"Створення користувача"}/>)
-                }
-                <Box>
-                    <Stack component="form" onSubmit={handleSubmit}
-                           sx={{
-                               '& label.Mui-focused': {
-                                   color: colors.grey[200],
-                               },
-                               '& .MuiOutlinedInput-root.Mui-focused fieldset': {
-                                   borderColor: colors.grey[200],
-                               },
-                           }}>
-                        <TextField
+                <Stack component="form" onSubmit={handleSubmit}
+                       sx={{
+                           '& label.Mui-focused': {
+                               color: colors.grey[200],
+                           },
+                           '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+                               borderColor: colors.grey[200],
+                           },
+                       }}>
+                    <TextField
+                        onChange={handleChange}
+                        sx={{marginTop: '5px'}}
+                        label="ПІБ"
+                        autoComplete="name"
+                        name="name"
+                        value={user?.name || ''}
+                    />
+                    <TextField
+                        onChange={handleChange}
+                        sx={{marginTop: '5px'}}
+                        label="Роль"
+                        name="role"
+                        select
+                        fullWidth
+                        value={user?.role || ''}
+                    >
+                        {UserRoles.map((role) => (
+                            <MenuItem key={role.value} value={role.value}>
+                                {role.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        onChange={handleChange}
+                        sx={{marginTop: '5px'}}
+                        label="Логін"
+                        autoComplete="username"
+                        name="username"
+                        value={user?.username || ''}
+                    />
+                    <FormControl sx={{margin: '20px 0'}} variant="outlined">
+                        <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-password"
+                            label="Пароль"
+                            autoComplete="current-password"
                             onChange={handleChange}
-                            sx={{marginTop: '5px'}}
-                            label="ПІБ"
-                            autoComplete="name"
-                            name="name"
-                            value={user?.name || ''}
+                            name="password"
+                            type={showPassword ? 'text' : 'password'}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label={showPassword ? 'hide the password' : 'display the password'}
+                                        onClick={togglePasswordVisibility}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOffIcon/> : <VisibilityOnIcon/>}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
                         />
-                        <TextField
-                            onChange={handleChange}
-                            sx={{marginTop: '5px'}}
-                            label="Роль"
-                            name="role"
-                            select
-                            fullWidth
-                            value={user?.role || ''}
-                        >
-                            {UserRoles.map((role) => (
-                                <MenuItem key={role.value} value={role.value}>
-                                    {role.label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        <TextField
-                            onChange={handleChange}
-                            sx={{marginTop: '5px'}}
-                            label="Логін"
-                            autoComplete="username"
-                            name="username"
-                            value={user?.username || ''}
-                        />
-                        <FormControl sx={{margin: '20px 0'}} variant="outlined">
-                            <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-password"
-                                label="Пароль"
-                                autoComplete="current-password"
-                                onChange={handleChange}
-                                name="password"
-                                type={showPassword ? 'text' : 'password'}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label={showPassword ? 'hide the password' : 'display the password'}
-                                            onClick={togglePasswordVisibility}
-                                            edge="end"
-                                        >
-                                            {showPassword ? <VisibilityOffIcon/> : <VisibilityOnIcon/>}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                            />
-                        </FormControl>
-                        {error && <Typography color="error">{error}</Typography>}
-                        <div>
-                            <Button type="submit" color={colors.primary[400]} variant="outlined"
-                                    disabled={validateForm()}>
-                                Зберегти
-                            </Button>
-                        </div>
-                    </Stack>
-                </Box>
+                    </FormControl>
+                    {error && <Typography color="error">{error}</Typography>}
+                    <div>
+                        <Button type="submit" color={colors.primary[400]} variant="outlined"
+                                disabled={validateForm()}>
+                            Зберегти
+                        </Button>
+                    </div>
+                </Stack>
             </Box>
         </Box>
     );

@@ -8,6 +8,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import mileageLogsStore from "../../stores/mileageLogsStore.js";
 import useError from "../../utils/useError.js";
 import vehiclesStore from "../../stores/vehiclesStore.js";
+import TopBar from "../global/TopBar.jsx";
 
 const MileageLogForm = () => {
     const theme = useTheme();
@@ -56,58 +57,60 @@ const MileageLogForm = () => {
 
     return (
         <Box m={"20px"}>
+            <TopBar headerBox={
+                <>
+                    {mileageLogId ? (
+                            <Header title={`ПІДРОЗДІЛ №${mileageLogId}`} subtitle={"Редагування підрозділу"}/>) :
+                        (<Header title={`НОВИЙ ПІДРОЗДІЛ`} subtitle={"Створення підрозділу"}/>)
+                    }
+                </>}/>
             <Box>
-                {mileageLogId ? (<Header title={`ПІДРОЗДІЛ №${mileageLogId}`} subtitle={"Редагування підрозділу"}/>) :
-                    (<Header title={`НОВИЙ ПІДРОЗДІЛ`} subtitle={"Створення підрозділу"}/>)
-                }
-                <Box>
-                    <Stack component="form" onSubmit={handleSubmit}
-                           sx={{
-                               '& label.Mui-focused': {
-                                   color: colors.grey[200],
-                               },
-                               '& .MuiOutlinedInput-root.Mui-focused fieldset': {
-                                   borderColor: colors.grey[200],
-                               },
-                           }}>
-                        <Grid container spacing={2}>
-                            <Grid item size={6}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Пробіг"
-                                    name="mileage"
-                                    fullWidth
-                                    value={mileageLog.mileage || ''}
-                                />
-                            </Grid>
-                            <Grid item size={6}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Транспортний засіб"
-                                    name="vehicleId"
-                                    select
-                                    fullWidth
-                                    value={mileageLog.vehicleId || ''}
-                                >
-                                    {vehiclesStore.vehicles.map((vehicles) => (
-                                        <MenuItem key={vehicles.id} value={vehicles.id}>
-                                            {vehicles.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
+                <Stack component="form" onSubmit={handleSubmit}
+                       sx={{
+                           '& label.Mui-focused': {
+                               color: colors.grey[200],
+                           },
+                           '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+                               borderColor: colors.grey[200],
+                           },
+                       }}>
+                    <Grid container spacing={2}>
+                        <Grid item size={6}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Пробіг"
+                                name="mileage"
+                                fullWidth
+                                value={mileageLog.mileage || ''}
+                            />
                         </Grid>
-                        {error && <Typography color="error">{error}</Typography>}
-                        <Box display={"flex"} justifyContent={'end'} sx={{mt: 2}}>
-                            <Button type="submit" color={colors.primary[400]} variant="outlined"
-                                    disabled={validateForm()}>
-                                Зберегти
-                            </Button>
-                        </Box>
-                    </Stack>
-                </Box>
+                        <Grid item size={6}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Транспортний засіб"
+                                name="vehicleId"
+                                select
+                                fullWidth
+                                value={mileageLog.vehicleId || ''}
+                            >
+                                {vehiclesStore.vehicles.map((vehicles) => (
+                                    <MenuItem key={vehicles.id} value={vehicles.id}>
+                                        {vehicles.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                    </Grid>
+                    {error && <Typography color="error">{error}</Typography>}
+                    <Box display={"flex"} justifyContent={'end'} sx={{mt: 2}}>
+                        <Button type="submit" color={colors.primary[400]} variant="outlined"
+                                disabled={validateForm()}>
+                            Зберегти
+                        </Button>
+                    </Box>
+                </Stack>
             </Box>
         </Box>
     );

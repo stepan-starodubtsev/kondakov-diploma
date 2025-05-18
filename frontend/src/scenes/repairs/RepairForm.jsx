@@ -29,6 +29,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
 import repairsStore from "../../stores/repairsStore.js";
 import vehiclesStore from "../../stores/vehiclesStore.js";
+import TopBar from "../global/TopBar.jsx";
 
 const RepairForm = () => {
     const theme = useTheme();
@@ -89,153 +90,157 @@ const RepairForm = () => {
 
     return (
         <Box sx={{maxWidth: "81vw", m: "20px"}}>
+            <TopBar headerBox={(
+                <>
+                    {repairId ? (<Header title={`РЕМОНТ №${repairId}`}
+                                         subtitle={"Редагування ремонту"}/>) :
+                        (<Header title={`НОВИЙ РЕМОНТ`} subtitle={"Створення ремонту"}/>)
+                    }
+                </>
+            )}/>
             <Box>
-                {repairId ? (<Header title={`РЕМОНТ №${repairId}`}
-                                     subtitle={"Редагування ремонту"}/>) :
-                    (<Header title={`НОВИЙ РЕМОНТ`} subtitle={"Створення ремонту"}/>)
-                }
-                <Box>
-                    <Stack spacing={2} component="form" onSubmit={handleSubmit}
-                           sx={{
-                               '& label.Mui-focused': {
-                                   color: colors.grey[200],
-                               },
-                               '& .MuiOutlinedInput-root.Mui-focused fieldset': {
-                                   borderColor: colors.grey[200],
-                               },
-                           }}>
-                        <Grid container spacing={2}>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Тип ремонту"
-                                    name="type"
-                                    select
-                                    fullWidth
-                                    value={repairsStore.tempRepair?.type || ''}
-                                >
-                                    {RepairTypes.map((type) => (
-                                        <MenuItem key={type.value} value={type.value}>
-                                            {type.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item size={4}>
-                                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="uk">
-                                    <DatePicker
-                                        label="Дата проведення"
-                                        value={repairsStore.tempRepair?.date ? dayjs(repairsStore.tempRepair.date) : null}
-                                        onChange={(newDate) => {
-                                            repairsStore.tempRepair = {
-                                                ...repairsStore.tempRepair,
-                                                date: newDate ? newDate.toISOString() : null,
-                                            };
-                                        }}
-                                        name="date"
-                                        format="DD-MM-YYYY"
-                                        slotProps={{
-                                            textField: {
-                                                fullWidth: true,
-                                                sx: {
-                                                    marginTop: '5px',
-                                                    '& .MuiPickersInputBase-root': {
-                                                        '& .Mui-focused': {
-                                                            borderColor: colors.grey[200],
-                                                            color: colors.grey[200],
-                                                        },
-                                                        '&:hover .MuiPickersOutlinedInput-notchedOutline': {
-                                                            borderColor: colors.grey[200],
-                                                        },
+                <Stack spacing={2} component="form" onSubmit={handleSubmit}
+                       sx={{
+                           '& label.Mui-focused': {
+                               color: colors.grey[200],
+                           },
+                           '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+                               borderColor: colors.grey[200],
+                           },
+                       }}>
+                    <Grid container spacing={2}>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Тип ремонту"
+                                name="type"
+                                select
+                                fullWidth
+                                value={repairsStore.tempRepair?.type || ''}
+                            >
+                                {RepairTypes.map((type) => (
+                                    <MenuItem key={type.value} value={type.value}>
+                                        {type.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item size={4}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="uk">
+                                <DatePicker
+                                    label="Дата проведення"
+                                    value={repairsStore.tempRepair?.date ? dayjs(repairsStore.tempRepair.date) : null}
+                                    onChange={(newDate) => {
+                                        repairsStore.tempRepair = {
+                                            ...repairsStore.tempRepair,
+                                            date: newDate ? newDate.toISOString() : null,
+                                        };
+                                    }}
+                                    name="date"
+                                    format="DD-MM-YYYY"
+                                    slotProps={{
+                                        textField: {
+                                            fullWidth: true,
+                                            sx: {
+                                                marginTop: '5px',
+                                                '& .MuiPickersInputBase-root': {
+                                                    '& .Mui-focused': {
+                                                        borderColor: colors.grey[200],
+                                                        color: colors.grey[200],
+                                                    },
+                                                    '&:hover .MuiPickersOutlinedInput-notchedOutline': {
+                                                        borderColor: colors.grey[200],
                                                     },
                                                 },
-                                            }
-                                        }}
-                                    />
-                                </LocalizationProvider>
-                            </Grid>
-                            <Grid item size={4}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Транспортний засіб"
-                                    name="vehicleId"
-                                    select
-                                    fullWidth
-                                    value={repairsStore.tempRepair?.vehicleId || ''}
-                                >
-                                    {vehiclesStore.vehicles.map((vehicles) => (
-                                        <MenuItem key={vehicles.id} value={vehicles.id}>
-                                            {vehicles.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item size={6}>
-                                <TextareaAutosize
-                                    onChange={handleChange}
-                                    maxRows={4}
-                                    placeholder="Причина ремонту"
-                                    value={repairsStore.tempRepair?.repairReasonText || ''}
-                                    name="repairReasonText"
-                                    style={{
-                                        backgroundColor: colors.primary[500],
-                                        borderColor: colors.grey[600],
-                                        color: colors.grey[100],
-                                        fontSize: 16,
-                                        width: "100%",
-                                        height: "100px",
-                                        marginTop: '5px'}}
+                                            },
+                                        }
+                                    }}
                                 />
-                            </Grid>
-                            <Grid item size={6}>
-                                <TextareaAutosize
-                                    onChange={handleChange}
-                                    maxRows={4}
-                                    placeholder="Опис проведеної роботи ремонту"
-                                    value={repairsStore.tempRepair?.workDescription || ''}
-                                    name="workDescription"
-                                    style={{
-                                        backgroundColor: colors.primary[500],
-                                        borderColor: colors.grey[600],
-                                        color: colors.grey[100],
-                                        fontSize: 16,
-                                        width: "100%",
-                                        height: "100px",
-                                        marginTop: '5px'}}
-                                />
-                            </Grid>
-                            <Grid item size={12}>
-                                <Accordion sx={{
-                                    bgcolor: colors.primary[500],
-                                }}>
-                                    <AccordionSummary expandIcon={<ExpandMore/>}>
-                                        <Typography color={colors.grey[200]} variant={"h5"}>
-                                            Агрегати, що підлягають ремонту
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <CustomDataGrid columns={repairComponentsColumns}
-                                                        rows={repairsStore.tempRepair.componentRepairs}
-                                                        addEntityUrl={"repair-components/create-repair"}
-                                                        editEntityUrl={"repair-components/edit-repair"}
-                                                        deleteHandler={repairsStore.removeRepairComponent
-                                                            .bind(repairsStore)}
-                                        ></CustomDataGrid>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </Grid>
+                            </LocalizationProvider>
                         </Grid>
-                        {error && <Typography color="error">{error}</Typography>}
-                        <Box display={"flex"} justifyContent={'end'}>
-                            <Button type="submit" color={colors.primary[400]} variant="outlined"
-                                    disabled={validateForm()}>
-                                Зберегти
-                            </Button>
-                        </Box>
-                    </Stack>
-                </Box>
+                        <Grid item size={4}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Транспортний засіб"
+                                name="vehicleId"
+                                select
+                                fullWidth
+                                value={repairsStore.tempRepair?.vehicleId || ''}
+                            >
+                                {vehiclesStore.vehicles.map((vehicles) => (
+                                    <MenuItem key={vehicles.id} value={vehicles.id}>
+                                        {vehicles.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item size={6}>
+                            <TextareaAutosize
+                                onChange={handleChange}
+                                maxRows={4}
+                                placeholder="Причина ремонту"
+                                value={repairsStore.tempRepair?.repairReasonText || ''}
+                                name="repairReasonText"
+                                style={{
+                                    backgroundColor: colors.primary[500],
+                                    borderColor: colors.grey[600],
+                                    color: colors.grey[100],
+                                    fontSize: 16,
+                                    width: "100%",
+                                    height: "100px",
+                                    marginTop: '5px'
+                                }}
+                            />
+                        </Grid>
+                        <Grid item size={6}>
+                            <TextareaAutosize
+                                onChange={handleChange}
+                                maxRows={4}
+                                placeholder="Опис проведеної роботи ремонту"
+                                value={repairsStore.tempRepair?.workDescription || ''}
+                                name="workDescription"
+                                style={{
+                                    backgroundColor: colors.primary[500],
+                                    borderColor: colors.grey[600],
+                                    color: colors.grey[100],
+                                    fontSize: 16,
+                                    width: "100%",
+                                    height: "100px",
+                                    marginTop: '5px'
+                                }}
+                            />
+                        </Grid>
+                        <Grid item size={12}>
+                            <Accordion sx={{
+                                bgcolor: colors.primary[500],
+                            }}>
+                                <AccordionSummary expandIcon={<ExpandMore/>}>
+                                    <Typography color={colors.grey[200]} variant={"h5"}>
+                                        Агрегати, що підлягають ремонту
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <CustomDataGrid columns={repairComponentsColumns}
+                                                    rows={repairsStore.tempRepair.componentRepairs}
+                                                    addEntityUrl={"repair-components/create-repair"}
+                                                    editEntityUrl={"repair-components/edit-repair"}
+                                                    deleteHandler={repairsStore.removeRepairComponent
+                                                        .bind(repairsStore)}
+                                    ></CustomDataGrid>
+                                </AccordionDetails>
+                            </Accordion>
+                        </Grid>
+                    </Grid>
+                    {error && <Typography color="error">{error}</Typography>}
+                    <Box display={"flex"} justifyContent={'end'}>
+                        <Button type="submit" color={colors.primary[400]} variant="outlined"
+                                disabled={validateForm()}>
+                            Зберегти
+                        </Button>
+                    </Box>
+                </Stack>
             </Box>
         </Box>
     );

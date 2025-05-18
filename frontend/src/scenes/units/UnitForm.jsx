@@ -8,6 +8,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import unitsStore from "../../stores/unitsStore.js";
 import useError from "../../utils/useError.js";
 import usersStore from "../../stores/usersStore.js";
+import TopBar from "../global/TopBar.jsx";
 
 const UnitForm = () => {
     const theme = useTheme();
@@ -28,7 +29,7 @@ const UnitForm = () => {
             setError("");
         }
         if (unitId) {
-           await unitsStore.updateUnit(parseInt(unitId), unit);
+            await unitsStore.updateUnit(parseInt(unitId), unit);
         } else {
             await unitsStore.addUnit(unit);
         }
@@ -52,52 +53,54 @@ const UnitForm = () => {
 
     return (
         <Box m={"20px"}>
+            <TopBar headerBox={(
+                <>
+                    {unitId ? (<Header title={`ПІДРОЗДІЛ №${unitId}`} subtitle={"Редагування підрозділу"}/>) :
+                        (<Header title={`НОВИЙ ПІДРОЗДІЛ`} subtitle={"Створення підрозділу"}/>)
+                    }
+                </>
+            )}/>
             <Box>
-                {unitId ? (<Header title={`ПІДРОЗДІЛ №${unitId}`} subtitle={"Редагування підрозділу"}/>) :
-                    (<Header title={`НОВИЙ ПІДРОЗДІЛ`} subtitle={"Створення підрозділу"}/>)
-                }
-                <Box>
-                    <Stack component="form" onSubmit={handleSubmit}
-                           sx={{
-                               '& label.Mui-focused': {
-                                   color: colors.grey[200],
-                               },
-                               '& .MuiOutlinedInput-root.Mui-focused fieldset': {
-                                   borderColor: colors.grey[200],
-                               },
-                           }}>
-                        <TextField
-                            onChange={handleChange}
-                            sx={{marginTop: '5px'}}
-                            label="Назва підрозділу"
-                            autoComplete="name"
-                            name="name"
-                            value={unit?.name || ''}
-                        />
-                        <TextField
-                            onChange={handleChange}
-                            sx={{mt: 2, mb: 2}}
-                            label="Командир"
-                            name="commanderId"
-                            select
-                            fullWidth
-                            value={unit?.commanderId || ''}
-                        >
-                            {unitCommanders.map((commander) => (
-                                <MenuItem key={commander.id} value={commander.id}>
-                                    {commander.name}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                        {error && <Typography color="error">{error}</Typography>}
-                        <div>
-                            <Button type="submit" color={colors.primary[400]} variant="outlined"
-                                    disabled={validateForm()}>
-                                Зберегти
-                            </Button>
-                        </div>
-                    </Stack>
-                </Box>
+                <Stack component="form" onSubmit={handleSubmit}
+                       sx={{
+                           '& label.Mui-focused': {
+                               color: colors.grey[200],
+                           },
+                           '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+                               borderColor: colors.grey[200],
+                           },
+                       }}>
+                    <TextField
+                        onChange={handleChange}
+                        sx={{marginTop: '5px'}}
+                        label="Назва підрозділу"
+                        autoComplete="name"
+                        name="name"
+                        value={unit?.name || ''}
+                    />
+                    <TextField
+                        onChange={handleChange}
+                        sx={{mt: 2, mb: 2}}
+                        label="Командир"
+                        name="commanderId"
+                        select
+                        fullWidth
+                        value={unit?.commanderId || ''}
+                    >
+                        {unitCommanders.map((commander) => (
+                            <MenuItem key={commander.id} value={commander.id}>
+                                {commander.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    {error && <Typography color="error">{error}</Typography>}
+                    <div>
+                        <Button type="submit" color={colors.primary[400]} variant="outlined"
+                                disabled={validateForm()}>
+                            Зберегти
+                        </Button>
+                    </div>
+                </Stack>
             </Box>
         </Box>
     );

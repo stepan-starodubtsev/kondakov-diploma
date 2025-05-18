@@ -8,6 +8,7 @@ import {observer} from "mobx-react-lite";
 import useError from "../../utils/useError.js";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
 import vehiclesStore from "../../stores/vehiclesStore.js";
+import TopBar from "../global/TopBar.jsx";
 
 const Repairs = () => {
     const theme = useTheme();
@@ -33,17 +34,17 @@ const Repairs = () => {
 
     return (
         <Box sx={{maxWidth: "81vw", m: "20px"}}>
-            <Box>
+            <TopBar headerBox={(
                 <Header title={"РЕМОНТИ ТРАНСПОРТНИХ ЗАСОБІВ"} subtitle={"Керування ремонтами"}/>
-                <Box>
-                    <CustomDataGrid columns={columns}
-                                    rows={repairsStore.repairs}
-                                    addEntityUrl={"/repairs/create-repair"}
-                                    editEntityUrl={"/repairs/edit-repair"}
-                                    deleteHandler={repairsStore.removeRepair.bind(repairsStore)}
+            )}/>
+            <Box>
+                <CustomDataGrid columns={columns}
+                                rows={repairsStore.repairs}
+                                addEntityUrl={"/repairs/create-repair"}
+                                editEntityUrl={"/repairs/edit-repair"}
+                                deleteHandler={repairsStore.removeRepair.bind(repairsStore)}
 
-                    ></CustomDataGrid>
-                </Box>
+                ></CustomDataGrid>
             </Box>
         </Box>
     )

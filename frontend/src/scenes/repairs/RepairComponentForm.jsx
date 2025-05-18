@@ -9,6 +9,7 @@ import useError from "../../utils/useError.js";
 import vehiclesStore from "../../stores/vehiclesStore.js";
 import getUrlParentPath from "../../utils/getUrlParentPath.js";
 import repairsStore from "../../stores/repairsStore.js";
+import TopBar from "../global/TopBar.jsx";
 
 const VehicleForm = () => {
     const theme = useTheme();
@@ -59,7 +60,7 @@ const VehicleForm = () => {
         if (repairComponentId) {
             setRepairComponent(repairsStore.findComponentRepairById(repairComponentId));
         }
-        if (repairsStore.tempRepair.vehicleId !== ''){
+        if (repairsStore.tempRepair.vehicleId !== '') {
             setVehicle(vehiclesStore.findVehicleById(repairsStore.tempRepair.vehicleId));
         }
     }, []);
@@ -68,84 +69,86 @@ const VehicleForm = () => {
 
     return (
         <Box m={"20px"}>
+            <TopBar headerBox={(<>
+                    {
+                        repairComponentId ? (<Header title={`РЕМОНТ АГРЕГАТА №${repairComponentId}`}
+                                                     subtitle={"Редагування ремонту агрегату"}/>) :
+                            (<Header title={`НОВИЙ РЕМОНТ АГРЕГАТА`} subtitle={"Створення ремонту агрегату"}/>)
+                    }
+                </>
+            )}/>
             <Box>
-                {repairComponentId ? (<Header title={`РЕМОНТ АГРЕГАТА №${repairComponentId}`}
-                                               subtitle={"Редагування ремонту агрегату"}/>) :
-                    (<Header title={`НОВИЙ РЕМОНТ АГРЕГАТА`} subtitle={"Створення ремонту агрегату"}/>)
-                }
-                <Box>
-                    <Stack spacing={2} component="form" onSubmit={handleSubmit}
-                           sx={{
-                               '& label.Mui-focused': {
-                                   color: colors.grey[200],
-                               },
-                               '& .MuiOutlinedInput-root.Mui-focused fieldset': {
-                                   borderColor: colors.grey[200],
-                               },
-                           }}>
-                        <Grid container spacing={2}>
-                            <Grid item size={6}>
-                                <TextField
-                                    onChange={handleChangeVehicle}
-                                    sx={{marginTop: '5px'}}
-                                    label="Транспортний засіб"
-                                    name="vehicleId"
-                                    select
-                                    fullWidth
-                                    value={vehicle?.id || ''}
-                                >
-                                    {vehiclesStore.vehicles.map((vehicles) => (
-                                        <MenuItem key={vehicles.id} value={vehicles.id}>
-                                            {vehicles.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item size={6}>
-                                <TextField
-                                    onChange={handleChange}
-                                    sx={{marginTop: '5px'}}
-                                    label="Агрегат транспортного засобу"
-                                    name="vehicleComponentId"
-                                    select
-                                    fullWidth
-                                    value={repairComponent?.vehicleComponentId || ''}
-                                >
-                                    {vehicle?.components.map((vehicleComponent) => (
-                                        <MenuItem key={vehicleComponent.id} value={vehicleComponent.id}>
-                                            {vehicleComponent.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item size={12}>
-                                <TextareaAutosize
-                                    onChange={handleChange}
-                                    maxRows={4}
-                                    placeholder="Опис проведеної роботи ремонту"
-                                    value={repairComponent?.workDescription || ''}
-                                    name="workDescription"
-                                    style={{
-                                        backgroundColor: colors.primary[500],
-                                        borderColor: colors.grey[600],
-                                        color: colors.grey[100],
-                                        fontSize: 16,
-                                        width: "100%",
-                                        height: "100px",
-                                        marginTop: '5px'
-                                    }}
-                                />
-                            </Grid>
+                <Stack spacing={2} component="form" onSubmit={handleSubmit}
+                       sx={{
+                           '& label.Mui-focused': {
+                               color: colors.grey[200],
+                           },
+                           '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+                               borderColor: colors.grey[200],
+                           },
+                       }}>
+                    <Grid container spacing={2}>
+                        <Grid item size={6}>
+                            <TextField
+                                onChange={handleChangeVehicle}
+                                sx={{marginTop: '5px'}}
+                                label="Транспортний засіб"
+                                name="vehicleId"
+                                select
+                                fullWidth
+                                value={vehicle?.id || ''}
+                            >
+                                {vehiclesStore.vehicles.map((vehicles) => (
+                                    <MenuItem key={vehicles.id} value={vehicles.id}>
+                                        {vehicles.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         </Grid>
-                        {error && <Typography color="error">{error}</Typography>}
-                        <Box display={"flex"} justifyContent={'end'}>
-                            <Button type="submit" color={colors.primary[400]} variant="outlined"
-                                    disabled={validateForm()}>
-                                Зберегти
-                            </Button>
-                        </Box>
-                    </Stack>
-                </Box>
+                        <Grid item size={6}>
+                            <TextField
+                                onChange={handleChange}
+                                sx={{marginTop: '5px'}}
+                                label="Агрегат транспортного засобу"
+                                name="vehicleComponentId"
+                                select
+                                fullWidth
+                                value={repairComponent?.vehicleComponentId || ''}
+                            >
+                                {vehicle?.components.map((vehicleComponent) => (
+                                    <MenuItem key={vehicleComponent.id} value={vehicleComponent.id}>
+                                        {vehicleComponent.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item size={12}>
+                            <TextareaAutosize
+                                onChange={handleChange}
+                                maxRows={4}
+                                placeholder="Опис проведеної роботи ремонту"
+                                value={repairComponent?.workDescription || ''}
+                                name="workDescription"
+                                style={{
+                                    backgroundColor: colors.primary[500],
+                                    borderColor: colors.grey[600],
+                                    color: colors.grey[100],
+                                    fontSize: 16,
+                                    width: "100%",
+                                    height: "100px",
+                                    marginTop: '5px'
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                    {error && <Typography color="error">{error}</Typography>}
+                    <Box display={"flex"} justifyContent={'end'}>
+                        <Button type="submit" color={colors.primary[400]} variant="outlined"
+                                disabled={validateForm()}>
+                            Зберегти
+                        </Button>
+                    </Box>
+                </Stack>
             </Box>
         </Box>
     );

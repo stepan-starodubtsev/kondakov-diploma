@@ -28,6 +28,7 @@ import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
+import TopBar from "../global/TopBar.jsx";
 
 const MaintenanceForm = () => {
     const theme = useTheme();
@@ -73,11 +74,13 @@ const MaintenanceForm = () => {
 
     return (
         <Box m={"20px"}>
-            <Box>
-                {maintenanceId ? (<Header title={`ТЕХНІЧНЕ ОБСЛУГОВУВАННЯ №${maintenanceId}`}
-                                          subtitle={"Редагування ТО"}/>) :
-                    (<Header title={`НОВЕ ТЕХНІЧНЕ ОБСЛУГОВУВАННЯ`} subtitle={"Створення ТО"}/>)
-                }
+                <TopBar headerBox={<>
+                    {
+                        maintenanceId ? (<Header title={`ТЕХНІЧНЕ ОБСЛУГОВУВАННЯ №${maintenanceId}`}
+                                                 subtitle={"Редагування ТО"}/>) :
+                            (<Header title={`НОВЕ ТЕХНІЧНЕ ОБСЛУГОВУВАННЯ`} subtitle={"Створення ТО"}/>)
+                    }
+                </>}/>
                 <Box>
                     <Stack component="form" onSubmit={handleSubmit}
                            sx={{
@@ -184,7 +187,6 @@ const MaintenanceForm = () => {
                         </Box>
                     </Stack>
                 </Box>
-            </Box>
         </Box>
     );
 }

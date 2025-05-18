@@ -8,6 +8,7 @@ import unitsStore from "../../stores/unitsStore.js";
 import {observer} from "mobx-react-lite";
 import useError from "../../utils/useError.js";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
+import TopBar from "../global/TopBar.jsx";
 
 const Vehicles = () => {
     const theme = useTheme();
@@ -57,17 +58,17 @@ const Vehicles = () => {
 
     return (
         <Box sx={{maxWidth: "81vw", m: "20px"}}>
-            <Box>
+            <TopBar headerBox={(
                 <Header title={"ТРАНСПОРТНІ ЗАСОБИ"} subtitle={"Керування транспортними засобами"}/>
-                <Box>
-                    <CustomDataGrid columns={columns}
-                                    rows={vehiclesStore.vehicles}
-                                    addEntityUrl={"/vehicles/create-vehicle"}
-                                    editEntityUrl={"/vehicles/edit-vehicle"}
-                                    deleteHandler={vehiclesStore.removeVehicle.bind(vehiclesStore)}
+            )}/>
+            <Box>
+                <CustomDataGrid columns={columns}
+                                rows={vehiclesStore.vehicles}
+                                addEntityUrl={"/vehicles/create-vehicle"}
+                                editEntityUrl={"/vehicles/edit-vehicle"}
+                                deleteHandler={vehiclesStore.removeVehicle.bind(vehiclesStore)}
 
-                    ></CustomDataGrid>
-                </Box>
+                ></CustomDataGrid>
             </Box>
         </Box>
     )

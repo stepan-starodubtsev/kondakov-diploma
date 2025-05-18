@@ -7,6 +7,7 @@ import usersStore from "../../stores/usersStore.js";
 import {observer} from "mobx-react-lite";
 import useError from "../../utils/useError.js";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
+import TopBar from "../global/TopBar.jsx";
 
 const Users = () => {
     const theme = useTheme();
@@ -25,21 +26,21 @@ const Users = () => {
 
     return (
         <Box m={"20px"}>
-            <Box>
+            <TopBar headerBox={(
                 <Header title={"КОРИСТУВАЧІ"} subtitle={"Керування користувачами"}/>
-                <Box>
-                    <CustomDataGrid columns={columns}
-                                    rows={usersStore.users}
-                                    addEntityUrl={"/users/create-user"}
-                                    editEntityUrl={"/users/edit-user"}
-                                    deleteHandler={usersStore.removeUser.bind(usersStore)}
+            )}/>
+            <Box>
+                <CustomDataGrid columns={columns}
+                                rows={usersStore.users}
+                                addEntityUrl={"/users/create-user"}
+                                editEntityUrl={"/users/edit-user"}
+                                deleteHandler={usersStore.removeUser.bind(usersStore)}
 
-                    ></CustomDataGrid>
+                ></CustomDataGrid>
             </Box>
         </Box>
-</Box>
-)
-    ;
+    )
+        ;
 }
 
 export default observer(Users);

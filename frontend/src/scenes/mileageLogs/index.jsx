@@ -7,6 +7,7 @@ import useError from "../../utils/useError.js";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
 import mileageLogsStore from "../../stores/mileageLogsStore.js";
 import vehiclesStore from "../../stores/vehiclesStore.js";
+import TopBar from "../global/TopBar.jsx";
 
 const MileageLogs = () => {
     const theme = useTheme();
@@ -28,20 +29,20 @@ const MileageLogs = () => {
 
     return (
         <Box m={"20px"}>
-            <Box>
+            <TopBar headerBox={(
                 <Header title={"ЗВІТИ ПРО ПРОБІГ"} subtitle={"Керування звітами про пробіг транспортних засобів"}/>
-                <Box>
-                    <CustomDataGrid columns={columns}
-                                    rows={mileageLogsStore.mileageLogs}
-                                    addEntityUrl={"/mileage-logs/create-mileage-log"}
-                                    deleteHandler={mileageLogsStore.removeMileageLog.bind(mileageLogsStore)}
+            )}/>
+            <Box>
+                <CustomDataGrid columns={columns}
+                                rows={mileageLogsStore.mileageLogs}
+                                addEntityUrl={"/mileage-logs/create-mileage-log"}
+                                deleteHandler={mileageLogsStore.removeMileageLog.bind(mileageLogsStore)}
 
-                    ></CustomDataGrid>
+                ></CustomDataGrid>
             </Box>
         </Box>
-</Box>
-)
-    ;
+    )
+        ;
 }
 
 export default observer(MileageLogs);

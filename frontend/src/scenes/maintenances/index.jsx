@@ -8,6 +8,7 @@ import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
 import maintenancesStore from "../../stores/maintenancesStore.js";
 import vehiclesStore from "../../stores/vehiclesStore.js";
 import {MaintenanceTypes} from "../../utils/constants.js";
+import TopBar from "../global/TopBar.jsx";
 
 const Maintenances = () => {
     const theme = useTheme();
@@ -33,7 +34,9 @@ const Maintenances = () => {
     return (
         <Box m={"20px"}>
             <Box>
-                <Header title={"ТЕХНІЧНЕ ОБСЛУГОВУВАННЯ"} subtitle={"Керування ТО"}/>
+                <TopBar headerBox={(
+                    <Header title={"ТЕХНІЧНЕ ОБСЛУГОВУВАННЯ"} subtitle={"Керування ТО"}/>
+                )}/>
                 <Box>
                     <CustomDataGrid columns={columns}
                                     rows={maintenancesStore.maintenances}
@@ -42,11 +45,11 @@ const Maintenances = () => {
                                     deleteHandler={maintenancesStore.removeMaintenance.bind(maintenancesStore)}
 
                     ></CustomDataGrid>
+                </Box>
             </Box>
         </Box>
-</Box>
-)
-    ;
+    )
+        ;
 }
 
 export default observer(Maintenances);

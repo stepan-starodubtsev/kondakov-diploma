@@ -122,13 +122,6 @@ const CustomSidebar = () => {
 
                         <Item title="Календар" to="/calendar" icon={<CalendarTodayOutlinedIcon/>}/>
                         <Item title="Профіль" to="/profile" icon={<PersonOutlinedIcon/>}/>
-                        <Item title="FAQ" to="/faq" icon={<HelpOutlineOutlinedIcon/>}/>
-
-                        <SubMenu label="Графіки" icon={<BarChartOutlinedIcon/>}>
-                            <Item title="Bar" to="/bar" icon={<BarChartOutlinedIcon/>}/>
-                            <Item title="Pie" to="/pie" icon={<PieChartOutlineOutlinedIcon/>}/>
-                            <Item title="Line" to="/line" icon={<TimelineOutlinedIcon/>}/>
-                        </SubMenu>
                     </Box>
                 </Menu>
             </Sidebar>

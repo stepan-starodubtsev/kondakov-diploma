@@ -7,6 +7,7 @@ import useError from "../../utils/useError.js";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
 import unitsStore from "../../stores/unitsStore.js";
 import usersStore from "../../stores/usersStore.js";
+import TopBar from "../global/TopBar.jsx";
 
 const Units = () => {
     const theme = useTheme();
@@ -29,21 +30,21 @@ const Units = () => {
 
     return (
         <Box m={"20px"}>
-            <Box>
+            <TopBar headerBox={(
                 <Header title={"ПІДРОЗДІЛИ"} subtitle={"Керування підрозділами"}/>
-                <Box>
-                    <CustomDataGrid columns={columns}
-                                    rows={unitsStore.units}
-                                    addEntityUrl={"/units/create-unit"}
-                                    editEntityUrl={"/units/edit-unit"}
-                                    deleteHandler={unitsStore.removeUnit.bind(unitsStore)}
+            )}/>
+            <Box>
+                <CustomDataGrid columns={columns}
+                                rows={unitsStore.units}
+                                addEntityUrl={"/units/create-unit"}
+                                editEntityUrl={"/units/edit-unit"}
+                                deleteHandler={unitsStore.removeUnit.bind(unitsStore)}
 
-                    ></CustomDataGrid>
+                ></CustomDataGrid>
             </Box>
         </Box>
-</Box>
-)
-    ;
+    )
+        ;
 }
 
 export default observer(Units);

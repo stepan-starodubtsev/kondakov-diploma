@@ -2,13 +2,11 @@ import {ColorModeContext, useMode} from "./theme.js";
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import {Route, Routes} from "react-router-dom";
 
-import TopBar from "./scenes/global/TopBar";
 import CustomSideBar from "./scenes/global/CustomSidebar.jsx";
 import Dashboard from "./scenes/dashboard";
 import Users from "./scenes/users";
 import UserForm from "./scenes/users/UserForm.jsx";
 import Calendar from "./scenes/calendar";
-import FAQ from "./scenes/faq/index.jsx";
 import Units from "./scenes/units/index.jsx";
 import UnitForm from "./scenes/units/UnitForm.jsx";
 import Vehicles from "./scenes/vehicles/index.jsx";
@@ -33,7 +31,6 @@ function App() {
                 <div className="app">
                     <CustomSideBar/>
                     <main className="content">
-                        <TopBar/>
                         <Routes>
                             <Route path="/" element={<Dashboard/>}/>
                             <Route path="/units">
@@ -90,16 +87,8 @@ function App() {
                                 <Route path="create-mileage-log" element={<MileageLogForm/>}/>
                                 <Route path="edit-mileage-log/:mileageLogId" element={<MileageLogForm/>}/>
                             </Route>
-
-                            {/*<Route path="/maintenances" element={<Invoices/>}/>*/}
-                            {/*<Route path="/mileage-logs" element={<Invoices/>}/>*/}
                             <Route path="/calendar" element={<Calendar/>}/>
                             {/*<Route path="/profile" element={<Calendar/>}/>*/}
-                            <Route path="/faq" element={<FAQ/>}/>
-                            {/*<Route path="/bar" element={<Bar/>}/>*/}
-                            {/*<Route path="/line" element={<Line/>}/>*/}
-                            {/*<Route path="/pie" element={<Pie/>}/>*/}
-                            {/*<Route path="/geography" element={<Geography/>}/>*/}
                         </Routes>
                     </main>
                 </div>

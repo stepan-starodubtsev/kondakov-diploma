@@ -3,6 +3,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import authStore from '../../../stores/authStore';
 import { Box, CircularProgress, Typography } from '@mui/material';
+import AccessDeniedPage from "../AccessDeniedPage/AccessDeniedPage.jsx";
 
 const ProtectedRoute = observer(({ allowedRoles }) => {
     const location = useLocation();
@@ -24,10 +25,7 @@ const ProtectedRoute = observer(({ allowedRoles }) => {
         const userRole = authStore.userRole;
         if (!userRole || !allowedRoles.includes(userRole)) {
             return (
-                <Box sx={{ p: 3, textAlign: 'center' }}>
-                    <Typography variant="h5" color="error">Доступ заборонено</Typography>
-                    <Typography>У вас недостатньо прав для перегляду цієї сторінки.</Typography>
-                </Box>
+                <AccessDeniedPage/>
             );
         }
     }

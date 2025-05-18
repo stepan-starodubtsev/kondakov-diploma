@@ -25,6 +25,7 @@ import Calendar from "./scenes/calendar";
 import ProfileForm from "./scenes/profile/index.jsx";
 import LoginPage from './scenes/LoginPage/LoginPage.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute/ProtectedRoute.jsx';
+import NotFoundPage from "./components/auth/NotFoundPage/NotFoundPage.jsx";
 
 const App = observer(() => {
     const [theme, colorMode] = useMode();
@@ -36,7 +37,6 @@ const App = observer(() => {
                 <div className="app">
                     {authStore.isAuthenticated && <CustomSideBar/>}
                     <main className="content">
-                        {authStore.isAuthenticated && <Topbar/>}
                         <Routes>
                             <Route
                                 path="/login"
@@ -127,7 +127,7 @@ const App = observer(() => {
                             />
 
                             <Route path="*" element={authStore.isAuthenticated ?
-                                <Typography sx={{p: 3}}>Сторінку не знайдено (404)</Typography>
+                                <NotFoundPage/>
                                 : <Navigate to="/login" replace/>}/>
                         </Routes>
                     </main>

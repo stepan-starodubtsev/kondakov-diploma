@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
+import {ROLES} from "../../utils/constants.js";
 
 const defaultTheme = createTheme();
 
@@ -26,7 +27,6 @@ const LoginPage = observer(() => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -34,16 +34,23 @@ const LoginPage = observer(() => {
             authStore.error = "Ім'я користувача та пароль не можуть бути порожніми.";
             return;
         }
-        const success = await authStore.login(username, password);
-        if (success) {
-            navigate(from, { replace: true });
+        await authStore.login(username, password);
+        let destinationLocation;
+
+        if (authStore.user.role === ROLES.ADMIN) {
+            destinationLocation = '/users';
+        } else if (authStore.user.role === ROLES.DUTY_STAFF) {
+            destinationLocation = '/mileage-logs';
+        } else {
+            destinationLocation = '/';
         }
+        navigate(destinationLocation, {replace: true});
     };
 
     return (
         <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                <CssBaseline/>
                 <Paper elevation={6} sx={{
                     marginTop: 8,
                     display: 'flex',
@@ -51,13 +58,13 @@ const LoginPage = observer(() => {
                     alignItems: 'center',
                     padding: 4,
                 }}>
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
+                    <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                        <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Вхід в систему
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1, width: '100%'}}>
                         <TextField
                             margin="normal"
                             required
@@ -91,7 +98,7 @@ const LoginPage = observer(() => {
                             error={!!authStore.error && authStore.error.toLowerCase().includes("пароль")}
                         />
                         {authStore.error && (
-                            <Alert severity="error" sx={{ width: '100%', mt: 2, mb: 1 }}>
+                            <Alert severity="error" sx={{width: '100%', mt: 2, mb: 1}}>
                                 {authStore.error}
                             </Alert>
                         )}
@@ -99,10 +106,10 @@ const LoginPage = observer(() => {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{mt: 3, mb: 2}}
                             disabled={authStore.loading}
                         >
-                            {authStore.loading ? <CircularProgress size={24} color="inherit" /> : 'Увійти'}
+                            {authStore.loading ? <CircularProgress size={24} color="inherit"/> : 'Увійти'}
                         </Button>
                     </Box>
                 </Paper>

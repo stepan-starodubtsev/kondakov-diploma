@@ -10,7 +10,6 @@ class VehiclesStore {
 
     constructor() {
         makeAutoObservable(this);
-        this.loadVehicles()
         this.clearTempVehicle();
     }
 

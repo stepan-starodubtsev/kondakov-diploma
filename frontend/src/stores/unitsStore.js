@@ -15,7 +15,6 @@ class UnitsStore {
 
     constructor() {
         makeAutoObservable(this);
-        this.loadUnits()
     }
 
     async loadUnits() {

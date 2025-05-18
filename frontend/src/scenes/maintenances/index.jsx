@@ -9,6 +9,11 @@ import maintenancesStore from "../../stores/maintenancesStore.js";
 import vehiclesStore from "../../stores/vehiclesStore.js";
 import {MaintenanceTypes} from "../../utils/constants.js";
 import TopBar from "../global/TopBar.jsx";
+import {useEffect} from "react";
+import mileageLogsStore from "../../stores/mileageLogsStore.js";
+import unitsStore from "../../stores/unitsStore.js";
+import usersStore from "../../stores/usersStore.js";
+import repairsStore from "../../stores/repairsStore.js";
 
 const Maintenances = () => {
     const theme = useTheme();
@@ -28,6 +33,10 @@ const Maintenances = () => {
         {field: 'date', headerName: 'Дата проведення ТО'},
         {field: 'result', headerName: 'Опис робіт'},
     ];
+
+    useEffect(() => {
+        if (!maintenancesStore.maintenances.length && !maintenancesStore.loading) maintenancesStore.loadMaintenances();
+    }, []);
 
     useError();
 

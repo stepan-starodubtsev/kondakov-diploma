@@ -1,12 +1,15 @@
 import {ColorModeContext, useMode} from "./theme.js";
-import {CssBaseline, ThemeProvider} from "@mui/material";
-import {Route, Routes} from "react-router-dom";
-
+import {CssBaseline, ThemeProvider, Typography} from "@mui/material";
+import {Navigate, Route, Routes} from "react-router-dom";
+import {observer} from 'mobx-react-lite'; // Для спостереження за authStore
+import authStore from './stores/authStore'; // Імпортуємо authStore
+import {ROLES} from './utils/constants.js'; // Імпортуємо константи ролей з фронтенду
 import CustomSideBar from "./scenes/global/CustomSidebar.jsx";
+import Topbar from "./scenes/global/Topbar.jsx"; // Припускаю, що у вас є Topbar
 import Dashboard from "./scenes/dashboard";
 import Users from "./scenes/users";
 import UserForm from "./scenes/users/UserForm.jsx";
-import Calendar from "./scenes/calendar";
+// ... інші ваші імпорти сторінок ...
 import Units from "./scenes/units/index.jsx";
 import UnitForm from "./scenes/units/UnitForm.jsx";
 import Vehicles from "./scenes/vehicles/index.jsx";
@@ -19,9 +22,12 @@ import Maintenances from "./scenes/maintenances/index.jsx";
 import MaintenanceForm from "./scenes/maintenances/MaintenanceForm.jsx";
 import MileageLogs from "./scenes/mileageLogs/index.jsx";
 import MileageLogForm from "./scenes/mileageLogs/MileageLogForm.jsx";
+import Calendar from "./scenes/calendar"; // Календар доступний всім аутентифікованим
+import ProfileForm from "./scenes/profile/index.jsx"; // Профіль доступний всім аутентифікованим
+import LoginPage from './scenes/LoginPage/LoginPage.jsx';
+import ProtectedRoute from './components/auth/ProtectedRoute/ProtectedRoute.jsx';
 
-
-function App() {
+const App = observer(() => {
     const [theme, colorMode] = useMode();
 
     return (
@@ -29,72 +35,107 @@ function App() {
             <ThemeProvider theme={theme}>
                 <CssBaseline/>
                 <div className="app">
-                    <CustomSideBar/>
+                    {authStore.isAuthenticated && <CustomSideBar/>}
                     <main className="content">
+                        {authStore.isAuthenticated && <Topbar/>}
                         <Routes>
-                            <Route path="/" element={<Dashboard/>}/>
-                            <Route path="/units">
-                                <Route index element={<Units/>}/>
-                                <Route path="create-unit" element={<UnitForm/>}/>
-                                <Route path="edit-unit/:unitId" element={<UnitForm/>}/>
+                            <Route
+                                path="/login"
+                                element={!authStore.isAuthenticated ? <LoginPage/> : <Navigate to="/" replace/>}
+                            />
+
+                            {/* ADMIN Routes */}
+                            <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]}/>}>
+                                <Route path="/users" element={<Users/>}/>
+                                <Route path="/users/create-user" element={<UserForm/>}/>
+                                <Route path="/users/edit-user/:userId" element={<UserForm/>}/>
+
+                                <Route path="/units" element={<Units/>}/>
+                                <Route path="/units/create-unit" element={<UnitForm/>}/>
+                                <Route path="/units/edit-unit/:unitId" element={<UnitForm/>}/>
+                                <Route path="/profile" element={<ProfileForm/>}/>
                             </Route>
-                            <Route path="/users">
-                                <Route index element={<Users/>}/>
-                                <Route path="create-user" element={<UserForm/>}/>
-                                <Route path="edit-user/:userId" element={<UserForm/>}/>
+
+                            {/* DUTY_STAFF Routes */}
+                            <Route element={<ProtectedRoute allowedRoles={[ROLES.DUTY_STAFF]}/>}>
+                                <Route path="/mileage-logs" element={<MileageLogs/>}/>
+                                <Route path="/mileage-logs/create-mileage-log" element={<MileageLogForm/>}/>
+                                <Route path="/mileage-logs/edit-mileage-log/:mileageLogId" element={<MileageLogForm/>}/>
+                                <Route path="/profile" element={<ProfileForm/>}/>
                             </Route>
-                            <Route path="/vehicles">
-                                <Route index element={<Vehicles/>}/>
-                                <Route path="create-vehicle">
+
+                            {/* COMMANDER Routes */}
+                            <Route element={<ProtectedRoute allowedRoles={[ROLES.COMMANDER]}/>}>
+                                <Route path="/vehicles" element={<Vehicles/>}/>
+                                <Route path="/repairs" element={<Repairs/>}/>
+                                <Route path="/maintenances" element={<Maintenances/>}/>
+                                <Route path="/mileage-logs" element={<MileageLogs/>}/>
+                                <Route path="/" element={<Dashboard/>}/>
+                                <Route path="/calendar" element={<Calendar/>}/>
+                                <Route path="/profile" element={<ProfileForm/>}/>
+                            </Route>
+
+                            {/* UNIT_COMMANDER Routes */}
+                            <Route element={<ProtectedRoute allowedRoles={[ROLES.UNIT_COMMANDER]}/>}>
+                                <Route path="/vehicles" element={<Vehicles/>}/>
+                                <Route path="/vehicles/create-vehicle">
                                     <Route index element={<VehicleForm/>}/>
                                     <Route path="vehicle-components/create-component"
                                            element={<VehicleComponentForm/>}/>
                                     <Route path="vehicle-components/edit-component/:vehicleComponentId"
                                            element={<VehicleComponentForm/>}/>
                                 </Route>
-                                <Route path="edit-vehicle/:vehicleId">
+                                <Route path="/vehicles/edit-vehicle/:vehicleId">
                                     <Route index element={<VehicleForm/>}/>
                                     <Route path="vehicle-components/create-component"
                                            element={<VehicleComponentForm/>}/>
                                     <Route path="vehicle-components/edit-component/:vehicleComponentId"
                                            element={<VehicleComponentForm/>}/>
                                 </Route>
-                            </Route>
-                            <Route path="/repairs">
-                                <Route index element={<Repairs/>}/>
-                                <Route path="create-repair">
+
+                                <Route path="/repairs" element={<Repairs/>}/>
+                                <Route path="/repairs/create-repair">
                                     <Route index element={<RepairForm/>}/>
-                                    <Route path="repair-components/create-repair"
-                                           element={<RepairComponentForm/>}/>
+                                    <Route path="repair-components/create-repair" element={<RepairComponentForm/>}/>
                                     <Route path="repair-components/edit-repair/:repairComponentId"
                                            element={<RepairComponentForm/>}/>
                                 </Route>
-                                <Route path="edit-repair/:repairId">
+                                <Route path="/repairs/edit-repair/:repairId">
                                     <Route index element={<RepairForm/>}/>
-                                    <Route path="repair-components/create-repair"
-                                           element={<RepairComponentForm/>}/>
+                                    <Route path="repair-components/create-repair" element={<RepairComponentForm/>}/>
                                     <Route path="repair-components/edit-repair/:repairComponentId"
                                            element={<RepairComponentForm/>}/>
                                 </Route>
+
+                                <Route path="/maintenances" element={<Maintenances/>}/>
+                                <Route path="/maintenances/create-maintenance" element={<MaintenanceForm/>}/>
+                                <Route path="/maintenances/edit-maintenance/:maintenanceId"
+                                       element={<MaintenanceForm/>}/>
+                                <Route path="/mileage-logs" element={<MileageLogs/>}/>
+
+                                {!authStore.userRole || authStore.userRole !== ROLES.COMMANDER ? (
+                                    <>
+                                        <Route path="/" element={<Dashboard/>}/>
+                                        <Route path="/calendar" element={<Calendar/>}/>
+                                        <Route path="/profile" element={<ProfileForm/>}/>
+                                    </>
+                                ) : null}
                             </Route>
-                            <Route path="/maintenances">
-                                <Route index element={<Maintenances/>}/>
-                                <Route path="create-maintenance" element={<MaintenanceForm/>}/>
-                                <Route path="edit-maintenance/:maintenanceId" element={<MaintenanceForm/>}/>
-                            </Route>
-                            <Route path="/mileage-logs">
-                                <Route index element={<MileageLogs/>}/>
-                                <Route path="create-mileage-log" element={<MileageLogForm/>}/>
-                                <Route path="edit-mileage-log/:mileageLogId" element={<MileageLogForm/>}/>
-                            </Route>
-                            <Route path="/calendar" element={<Calendar/>}/>
-                            {/*<Route path="/profile" element={<Calendar/>}/>*/}
+
+                            <Route
+                                path="/login"
+                                element={!authStore.isAuthenticated ? <LoginPage/> : <Navigate to="/" replace/>}
+                            />
+
+                            <Route path="*" element={authStore.isAuthenticated ?
+                                <Typography sx={{p: 3}}>Сторінку не знайдено (404)</Typography>
+                                : <Navigate to="/login" replace/>}/>
                         </Routes>
                     </main>
                 </div>
             </ThemeProvider>
         </ColorModeContext.Provider>
-    )
-}
+    );
+});
 
-export default App
+export default App;

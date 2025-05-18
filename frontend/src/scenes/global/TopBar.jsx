@@ -37,9 +37,11 @@ const TopBar = ({headerBox}) => {
                     </Link>
                 </Tooltip>
                 <Tooltip title={'Профіль'}>
-                    <IconButton>
-                        <PersonOutlined/>
-                    </IconButton>
+                    <Link to={'/profile'}>
+                        <IconButton>
+                            <PersonOutlined/>
+                        </IconButton>
+                    </Link>
                 </Tooltip>
             </Stack>
         </Box>

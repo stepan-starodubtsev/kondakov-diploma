@@ -19,6 +19,9 @@ import RepairsThisMonthStat from "../../components/Charts/analytics/RepairsThisM
 import MaintenancesThisMonthStat from "../../components/Charts/analytics/MaintenancesThisMonthStat.jsx";
 import MonthlyMileageStat from "../../components/Charts/analytics/MonthlyMileageStat.jsx";
 import TopBar from "../global/TopBar.jsx";
+import mileageLogsStore from "../../stores/mileageLogsStore.js";
+import unitsStore from "../../stores/unitsStore.js";
+import usersStore from "../../stores/usersStore.js";
 
 const Dashboard = observer(() => {
     const theme = useTheme();
@@ -26,6 +29,9 @@ const Dashboard = observer(() => {
 
     useEffect(() => {
         if (!vehiclesStore.vehicles.length && !vehiclesStore.loading) vehiclesStore.loadVehicles();
+        if (!mileageLogsStore.mileageLogs.length && !mileageLogsStore.loading) mileageLogsStore.loadMileageLogs();
+        if (!unitsStore.units.length && !unitsStore.loading) unitsStore.loadUnits();
+        if (!usersStore.users.length && !usersStore.loading) usersStore.loadUsers();
         if (!repairsStore.repairs.length && !repairsStore.loading) repairsStore.loadRepairs();
         if (!maintenancesStore.maintenances.length && !maintenancesStore.loading) maintenancesStore.loadMaintenances();
     }, []);

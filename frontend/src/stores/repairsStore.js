@@ -11,7 +11,6 @@ class RepairsStore {
 
     constructor() {
         makeAutoObservable(this);
-        this.loadRepairs();
         this.clearTempRepair();
     }
 

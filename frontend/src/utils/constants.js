@@ -1,5 +1,11 @@
-const base_url = import.meta.env.VITE_BASE_URL;
-export const BASE_URL = base_url;
+export const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+export const ROLES = {
+    ADMIN: 'ADMIN',
+    COMMANDER: 'COMMANDER',
+    UNIT_COMMANDER: 'UNIT_COMMANDER',
+    DUTY_STAFF: 'DUTY_STAFF'
+};
 
 export const UserRoles = [
     {label: 'Адміністратор', value: 'ADMIN'},

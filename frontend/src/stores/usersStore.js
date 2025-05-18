@@ -15,7 +15,6 @@ class UsersStore {
 
     constructor() {
         makeAutoObservable(this);
-        this.loadUsers()
     }
 
     async loadUsers() {

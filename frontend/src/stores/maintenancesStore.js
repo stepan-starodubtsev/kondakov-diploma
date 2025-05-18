@@ -15,7 +15,6 @@ class MaintenancesStore {
 
     constructor() {
         makeAutoObservable(this);
-        this.loadMaintenances()
     }
 
     async loadMaintenances() {

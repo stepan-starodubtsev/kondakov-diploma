@@ -16,7 +16,6 @@ class MileageLogsStore {
 
     constructor() {
         makeAutoObservable(this);
-        this.loadMileageLogs()
     }
 
     async loadMileageLogs() {

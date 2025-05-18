@@ -9,6 +9,11 @@ import useError from "../../utils/useError.js";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
 import vehiclesStore from "../../stores/vehiclesStore.js";
 import TopBar from "../global/TopBar.jsx";
+import {useEffect} from "react";
+import mileageLogsStore from "../../stores/mileageLogsStore.js";
+import unitsStore from "../../stores/unitsStore.js";
+import usersStore from "../../stores/usersStore.js";
+import maintenancesStore from "../../stores/maintenancesStore.js";
 
 const Repairs = () => {
     const theme = useTheme();
@@ -29,6 +34,10 @@ const Repairs = () => {
             }
         },
     ];
+
+    useEffect(() => {
+        if (!repairsStore.repairs.length && !repairsStore.loading) repairsStore.loadRepairs();
+    }, []);
 
     useError();
 

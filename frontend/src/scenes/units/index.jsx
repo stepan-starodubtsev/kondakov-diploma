@@ -8,6 +8,11 @@ import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
 import unitsStore from "../../stores/unitsStore.js";
 import usersStore from "../../stores/usersStore.js";
 import TopBar from "../global/TopBar.jsx";
+import {useEffect} from "react";
+import vehiclesStore from "../../stores/vehiclesStore.js";
+import mileageLogsStore from "../../stores/mileageLogsStore.js";
+import repairsStore from "../../stores/repairsStore.js";
+import maintenancesStore from "../../stores/maintenancesStore.js";
 
 const Units = () => {
     const theme = useTheme();
@@ -25,6 +30,10 @@ const Units = () => {
             }
         }
     ];
+
+    useEffect(() => {
+        if (!unitsStore.units.length && !unitsStore.loading) unitsStore.loadUnits();
+    }, []);
 
     useError();
 

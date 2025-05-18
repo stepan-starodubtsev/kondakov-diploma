@@ -8,6 +8,11 @@ import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
 import mileageLogsStore from "../../stores/mileageLogsStore.js";
 import vehiclesStore from "../../stores/vehiclesStore.js";
 import TopBar from "../global/TopBar.jsx";
+import {useEffect} from "react";
+import unitsStore from "../../stores/unitsStore.js";
+import usersStore from "../../stores/usersStore.js";
+import repairsStore from "../../stores/repairsStore.js";
+import maintenancesStore from "../../stores/maintenancesStore.js";
 
 const MileageLogs = () => {
     const theme = useTheme();
@@ -24,6 +29,10 @@ const MileageLogs = () => {
         {field: 'mileage', headerName: 'Пробіг на момент запису'},
         {field: 'mileageDifference', headerName: 'Використаний ресурс'},
     ];
+
+    useEffect(() => {
+        if (!mileageLogsStore.mileageLogs.length && !mileageLogsStore.loading) mileageLogsStore.loadMileageLogs();
+    }, []);
 
     useError();
 

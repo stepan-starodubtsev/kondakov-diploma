@@ -8,6 +8,12 @@ import {observer} from "mobx-react-lite";
 import useError from "../../utils/useError.js";
 import CustomDataGrid from "../../components/CustomDataGrid/CustomDataGrid.jsx";
 import TopBar from "../global/TopBar.jsx";
+import {useEffect} from "react";
+import vehiclesStore from "../../stores/vehiclesStore.js";
+import mileageLogsStore from "../../stores/mileageLogsStore.js";
+import unitsStore from "../../stores/unitsStore.js";
+import repairsStore from "../../stores/repairsStore.js";
+import maintenancesStore from "../../stores/maintenancesStore.js";
 
 const Users = () => {
     const theme = useTheme();
@@ -22,6 +28,9 @@ const Users = () => {
         },
     ];
 
+    useEffect(() => {
+        if (!usersStore.users.length && !usersStore.loading) usersStore.loadUsers();
+    }, []);
     useError();
 
     return (

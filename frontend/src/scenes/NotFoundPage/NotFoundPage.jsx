@@ -1,5 +1,5 @@
 import {Box, Typography} from "@mui/material";
-import TopBar from "../../../scenes/global/TopBar.jsx";
+import TopBar from "../global/TopBar.jsx";
 
 const NotFoundPage = () => {
     return (

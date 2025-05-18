@@ -30,8 +30,6 @@ const Dashboard = observer(() => {
     useEffect(() => {
         if (!vehiclesStore.vehicles.length && !vehiclesStore.loading) vehiclesStore.loadVehicles();
         if (!mileageLogsStore.mileageLogs.length && !mileageLogsStore.loading) mileageLogsStore.loadMileageLogs();
-        if (!unitsStore.units.length && !unitsStore.loading) unitsStore.loadUnits();
-        if (!usersStore.users.length && !usersStore.loading) usersStore.loadUsers();
         if (!repairsStore.repairs.length && !repairsStore.loading) repairsStore.loadRepairs();
         if (!maintenancesStore.maintenances.length && !maintenancesStore.loading) maintenancesStore.loadMaintenances();
     }, []);

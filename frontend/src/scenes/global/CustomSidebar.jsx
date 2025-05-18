@@ -10,14 +10,12 @@ import CarRepairIcon from '@mui/icons-material/CarRepair';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import ApartmentIcon from '@mui/icons-material/Apartment';
+import {authStore} from "../../stores/authStore.js";
+import {ROLES} from "../../utils/constants.js";
 
 const Item = ({title, to, icon}) => {
     const {pathname} = useLocation();
@@ -108,25 +106,51 @@ const CustomSidebar = () => {
                     )}
 
                     <Box pl={isCollapsed ? 0 : "10%"}>
-                        <Item title="Головна" to="/" icon={<HomeOutlinedIcon/>}/>
+                        {((authStore.user?.role === ROLES.UNIT_COMMANDER) ||
+                            (authStore.user?.role === ROLES.COMMANDER))
+                            ? <Item title="Статистика" to="/" icon={<HomeOutlinedIcon/>}/>
+                            : null}
 
-                        <Item title="Користувачі" to="/users" icon={<PeopleOutlinedIcon/>}/>
-                        <Item title="Підрозділи" to="/units" icon={<ApartmentIcon/>}/>
+                        {(authStore.user?.role === ROLES.ADMIN)
+                            ? <Item title="Користувачі" to="/users" icon={<PeopleOutlinedIcon/>}/>
+                            : null}
 
-                        <SubMenu label="Про ТЗ" icon={<DirectionsCarIcon/>}>
-                            <Item title="Список ТЗ" to="/vehicles" icon={<DirectionsCarIcon/>}/>
-                            <Item title="Ремонти ТЗ" to="/repairs" icon={<CarRepairIcon/>}/>
-                            <Item title="ТО ТЗ" to="/maintenances" icon={<CarRentalIcon/>}/>
-                            <Item title="Облік пробігу" to="/mileage-logs" icon={<ScheduleIcon/>}/>
-                        </SubMenu>
+                        {((authStore.user?.role === ROLES.ADMIN) ||
+                            (authStore.user?.role === ROLES.COMMANDER))
+                            ? <Item title="Підрозділи" to="/units" icon={<ApartmentIcon/>}/>
+                            : null}
 
-                        <Item title="Календар" to="/calendar" icon={<CalendarTodayOutlinedIcon/>}/>
-                        <Item title="Профіль" to="/profile" icon={<PersonOutlinedIcon/>}/>
+                        {((authStore.user?.role === ROLES.UNIT_COMMANDER) ||
+                            (authStore.user?.role === ROLES.COMMANDER) ||
+                            authStore.user?.role === ROLES.DUTY_STAFF) ?
+                            (<SubMenu label="Про ТЗ" icon={<DirectionsCarIcon/>}>
+                                {((authStore.user?.role === ROLES.UNIT_COMMANDER) ||
+                                    (authStore.user?.role === ROLES.COMMANDER))
+                                    ? (<>
+                                        <Item title="Список ТЗ" to="/vehicles" icon={<DirectionsCarIcon/>}/>
+                                        <Item title="Ремонти ТЗ" to="/repairs" icon={<CarRepairIcon/>}/>
+                                        <Item title="ТО ТЗ" to="/maintenances" icon={<CarRentalIcon/>}/>
+                                    </>)
+                                    : null}
+                                {(authStore.user?.role !== ROLES.ADMIN)
+                                    ? <Item title="Облік пробігу" to="/mileage-logs" icon={<ScheduleIcon/>}/>
+                                    : null}
+                            </SubMenu>) : null}
+
+                        {((authStore.user?.role === ROLES.UNIT_COMMANDER) ||
+                            (authStore.user?.role === ROLES.COMMANDER))
+                            ? <Item title="Календар" to="/calendar" icon={<CalendarTodayOutlinedIcon/>}/>
+                            : null
+                        }
+
+                        {authStore.isAuthenticated &&
+                            <Item title="Профіль" to="/profile" icon={<PersonOutlinedIcon/>}/>}
                     </Box>
                 </Menu>
             </Sidebar>
         </Box>
-    );
+    )
+        ;
 };
 
 export default CustomSidebar;

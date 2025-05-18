@@ -4,6 +4,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import {observer} from 'mobx-react-lite';
 import authStore from './stores/authStore';
 import {ROLES} from './utils/constants.js';
+
 import CustomSideBar from "./scenes/global/CustomSidebar.jsx";
 import Topbar from "./scenes/global/Topbar.jsx";
 import Dashboard from "./scenes/dashboard";
@@ -25,10 +26,15 @@ import Calendar from "./scenes/calendar";
 import ProfileForm from "./scenes/profile/index.jsx";
 import LoginPage from './scenes/LoginPage/LoginPage.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute/ProtectedRoute.jsx';
-import NotFoundPage from "./components/auth/NotFoundPage/NotFoundPage.jsx";
+import NotFoundPage from "./scenes/NotFoundPage/NotFoundPage.jsx";
 
 const App = observer(() => {
     const [theme, colorMode] = useMode();
+
+
+    const allAuthenticatedRoles = Object.values(ROLES);
+    const commandRoles = [ROLES.COMMANDER, ROLES.UNIT_COMMANDER];
+    const commandAndDutyStaffRoles = [ROLES.COMMANDER, ROLES.UNIT_COMMANDER, ROLES.DUTY_STAFF];
 
     return (
         <ColorModeContext.Provider value={colorMode}>
@@ -37,46 +43,77 @@ const App = observer(() => {
                 <div className="app">
                     {authStore.isAuthenticated && <CustomSideBar/>}
                     <main className="content">
+                        {authStore.isAuthenticated && <Topbar/>}
                         <Routes>
                             <Route
                                 path="/login"
                                 element={!authStore.isAuthenticated ? <LoginPage/> : <Navigate to="/" replace/>}
                             />
 
-                            {/* ADMIN Routes */}
+
+                            <Route element={<ProtectedRoute allowedRoles={allAuthenticatedRoles}/>}>
+                                <Route path="/profile" element={<ProfileForm/>}/>
+                            </Route>
+
                             <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]}/>}>
                                 <Route path="/users" element={<Users/>}/>
                                 <Route path="/users/create-user" element={<UserForm/>}/>
                                 <Route path="/users/edit-user/:userId" element={<UserForm/>}/>
-
-                                <Route path="/units" element={<Units/>}/>
-                                <Route path="/units/create-unit" element={<UnitForm/>}/>
-                                <Route path="/units/edit-unit/:unitId" element={<UnitForm/>}/>
-                                <Route path="/profile" element={<ProfileForm/>}/>
                             </Route>
 
-                            {/* DUTY_STAFF Routes */}
-                            <Route element={<ProtectedRoute allowedRoles={[ROLES.DUTY_STAFF]}/>}>
+                            <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.COMMANDER]}/>}>
+                                <Route path="/units" element={<Units/>}/>
+                            </Route>
+                            <Route element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]}/>}>
+                                <Route path="/units/create-unit" element={
+                                    <UnitForm/>}/>
+                                <Route path="/units/edit-unit/:unitId" element={
+                                    <UnitForm/>}/>
+                            </Route>
+
+                            <Route element={<ProtectedRoute allowedRoles={commandAndDutyStaffRoles}/>}>
                                 <Route path="/mileage-logs" element={<MileageLogs/>}/>
+                            </Route>
+
+                            <Route element={<ProtectedRoute allowedRoles={[ROLES.DUTY_STAFF]}/>}>
                                 <Route path="/mileage-logs/create-mileage-log" element={<MileageLogForm/>}/>
                                 <Route path="/mileage-logs/edit-mileage-log/:mileageLogId" element={<MileageLogForm/>}/>
-                                <Route path="/profile" element={<ProfileForm/>}/>
                             </Route>
 
-                            {/* COMMANDER Routes */}
-                            <Route element={<ProtectedRoute allowedRoles={[ROLES.COMMANDER]}/>}>
-                                <Route path="/vehicles" element={<Vehicles/>}/>
-                                <Route path="/repairs" element={<Repairs/>}/>
+                            <Route element={<ProtectedRoute allowedRoles={commandRoles}/>}>
                                 <Route path="/maintenances" element={<Maintenances/>}/>
-                                <Route path="/mileage-logs" element={<MileageLogs/>}/>
-                                <Route path="/" element={<Dashboard/>}/>
-                                <Route path="/calendar" element={<Calendar/>}/>
-                                <Route path="/profile" element={<ProfileForm/>}/>
                             </Route>
 
-                            {/* UNIT_COMMANDER Routes */}
                             <Route element={<ProtectedRoute allowedRoles={[ROLES.UNIT_COMMANDER]}/>}>
+                                <Route path="/maintenances/create-maintenance" element={<MaintenanceForm/>}/>
+                                <Route path="/maintenances/edit-maintenance/:maintenanceId"
+                                       element={<MaintenanceForm/>}/>
+                            </Route>
+
+                            <Route element={<ProtectedRoute allowedRoles={commandRoles}/>}>
+                                <Route path="/repairs" element={<Repairs/>}/>
+                            </Route>
+
+                            <Route element={<ProtectedRoute allowedRoles={[ROLES.UNIT_COMMANDER]}/>}>
+                                <Route path="/repairs/create-repair">
+                                    <Route index element={<RepairForm/>}/>
+                                    <Route path="repair-components/create-repair" element={<RepairComponentForm/>}/>
+                                    <Route path="repair-components/edit-repair/:repairComponentId"
+                                           element={<RepairComponentForm/>}/>
+                                </Route>
+                                <Route path="/repairs/edit-repair/:repairId">
+                                    <Route index element={<RepairForm/>}/>
+                                    <Route path="repair-components/create-repair" element={<RepairComponentForm/>}/>
+                                    <Route path="repair-components/edit-repair/:repairComponentId"
+                                           element={<RepairComponentForm/>}/>
+                                </Route>
+                            </Route>
+
+                            <Route element={<ProtectedRoute allowedRoles={commandRoles}/>}>
                                 <Route path="/vehicles" element={<Vehicles/>}/>
+                            </Route>
+
+                            <Route element={<ProtectedRoute allowedRoles={[ROLES.UNIT_COMMANDER]}/>}>
                                 <Route path="/vehicles/create-vehicle">
                                     <Route index element={<VehicleForm/>}/>
                                     <Route path="vehicle-components/create-component"
@@ -91,44 +128,20 @@ const App = observer(() => {
                                     <Route path="vehicle-components/edit-component/:vehicleComponentId"
                                            element={<VehicleComponentForm/>}/>
                                 </Route>
-
-                                <Route path="/repairs" element={<Repairs/>}/>
-                                <Route path="/repairs/create-repair">
-                                    <Route index element={<RepairForm/>}/>
-                                    <Route path="repair-components/create-repair" element={<RepairComponentForm/>}/>
-                                    <Route path="repair-components/edit-repair/:repairComponentId"
-                                           element={<RepairComponentForm/>}/>
-                                </Route>
-                                <Route path="/repairs/edit-repair/:repairId">
-                                    <Route index element={<RepairForm/>}/>
-                                    <Route path="repair-components/create-repair" element={<RepairComponentForm/>}/>
-                                    <Route path="repair-components/edit-repair/:repairComponentId"
-                                           element={<RepairComponentForm/>}/>
-                                </Route>
-
-                                <Route path="/maintenances" element={<Maintenances/>}/>
-                                <Route path="/maintenances/create-maintenance" element={<MaintenanceForm/>}/>
-                                <Route path="/maintenances/edit-maintenance/:maintenanceId"
-                                       element={<MaintenanceForm/>}/>
-                                <Route path="/mileage-logs" element={<MileageLogs/>}/>
-
-                                {!authStore.userRole || authStore.userRole !== ROLES.COMMANDER ? (
-                                    <>
-                                        <Route path="/" element={<Dashboard/>}/>
-                                        <Route path="/calendar" element={<Calendar/>}/>
-                                        <Route path="/profile" element={<ProfileForm/>}/>
-                                    </>
-                                ) : null}
                             </Route>
 
-                            <Route
-                                path="/login"
-                                element={!authStore.isAuthenticated ? <LoginPage/> : <Navigate to="/" replace/>}
-                            />
 
-                            <Route path="*" element={authStore.isAuthenticated ?
-                                <NotFoundPage/>
-                                : <Navigate to="/login" replace/>}/>
+                            <Route element={<ProtectedRoute
+                                allowedRoles={commandRoles}/>}>
+                                <Route path="/" element={<Dashboard/>}/>
+                                <Route path="/calendar" element={<Calendar/>}/>
+                            </Route>
+
+                            <Route path="*" element={
+                                authStore.isAuthenticated
+                                    ? <NotFoundPage/>
+                                    : <Navigate to="/login" replace/>
+                            }/>
                         </Routes>
                     </main>
                 </div>

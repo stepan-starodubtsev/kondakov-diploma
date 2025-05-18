@@ -52,23 +52,50 @@ const denyNonAdmin = (req, res, next) => {
 }
 
 app.use('/api/users', denyNonAdmin, roleMiddleware(adminPermissions), userRouter);
-app.use('/api/units', denyNonAdmin, roleMiddleware(adminPermissions), unitRouter);
 
-
-// 2. DUTY_STAFF Routes
-const dutyStaffPermissions = {
-    [ROLES.DUTY_STAFF]: {methods: '*'}
+// 2. /api/units
+const unitsAccessPermissions = {
+    [ROLES.ADMIN]: {methods: '*'},
+    [ROLES.COMMANDER]: {methods: 'GET'},
 };
-const denyNonDutyStaffForMileage = (req, res, next) => {
-    if (req.user.user.role !== ROLES.DUTY_STAFF) {
-        return res.status(403).json({message: `Access Denied: Only DUTY_STAFF can access ${req.baseUrl}.`});
+
+const allowAdminAndCommanderForUnits = (req, res, next) => {
+    if (req.user.user.role === ROLES.UNIT_COMMANDER || req.user.user.role === ROLES.DUTY_STAFF) {
+        return res.status(403).json(
+            {message: `Access Denied: UNIT_COMMANDER or DUTY_STAFF cannot access ${req.baseUrl}.`});
     }
     next();
-}
-app.use('/api/mileage-logs', denyNonDutyStaffForMileage, roleMiddleware(dutyStaffPermissions), mileageLogRouter);
+};
+
+app.use('/api/units',
+    allowAdminAndCommanderForUnits,
+    roleMiddleware(unitsAccessPermissions),
+    unitRouter
+);
 
 
-// 3. COMMANDER Routes
+// 3. /api/mileage-logs
+const mileageLogAccessPermissions = {
+    [ROLES.UNIT_COMMANDER]: {methods: '*'},
+    [ROLES.COMMANDER]: {methods: 'GET'},
+    [ROLES.DUTY_STAFF]: {methods: '*'}
+};
+
+const allowNonAdminOnlyForMileageLogs = (req, res, next) => {
+    if (req.user.user.role === ROLES.ADMIN) {
+        return res.status(403).json({message: `Access Denied: ADMIN cannot access ${req.baseUrl}.`});
+    }
+    next();
+};
+
+app.use('/api/mileage-logs',
+    allowNonAdminOnlyForMileageLogs,
+    roleMiddleware(mileageLogAccessPermissions),
+    mileageLogRouter
+);
+
+
+// 4. COMMANDER Routes
 const commanderPermissions = {
     [ROLES.COMMANDER]: {
         methods: ['GET'],
@@ -88,7 +115,7 @@ const commanderRouteCheck = (req, res, next) => {
 };
 
 
-// 4. UNIT_COMMANDER Routes
+// 5. UNIT_COMMANDER Routes
 const unitCommanderPermissions = {
     [ROLES.UNIT_COMMANDER]: {
         methods: '*',
@@ -103,7 +130,6 @@ const unitCommanderRouteCheck = (req, res, next) => {
     }
     next();
 };
-
 
 
 const generalPermissions = {

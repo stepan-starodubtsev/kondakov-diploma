@@ -64,13 +64,13 @@ const Dashboard = observer(() => {
                         <VehicleTypePieChart/>
                     </Grid>
                     <Grid item size={3}>
+                        <VehicleOperationGroupPieChart/>
+                    </Grid>
+                    <Grid item size={3}>
                         <VehicleFuelTypePieChart/>
                     </Grid>
                     <Grid item size={3}>
                         <VehicleOilTypePieChart/>
-                    </Grid>
-                    <Grid item size={3}>
-                        <VehicleOperationGroupPieChart/>
                     </Grid>
                 </Grid>
             </Box>

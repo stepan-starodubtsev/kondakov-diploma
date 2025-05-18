@@ -1,15 +1,14 @@
 import {ColorModeContext, useMode} from "./theme.js";
 import {CssBaseline, ThemeProvider, Typography} from "@mui/material";
 import {Navigate, Route, Routes} from "react-router-dom";
-import {observer} from 'mobx-react-lite'; // Для спостереження за authStore
-import authStore from './stores/authStore'; // Імпортуємо authStore
-import {ROLES} from './utils/constants.js'; // Імпортуємо константи ролей з фронтенду
+import {observer} from 'mobx-react-lite';
+import authStore from './stores/authStore';
+import {ROLES} from './utils/constants.js';
 import CustomSideBar from "./scenes/global/CustomSidebar.jsx";
-import Topbar from "./scenes/global/Topbar.jsx"; // Припускаю, що у вас є Topbar
+import Topbar from "./scenes/global/Topbar.jsx";
 import Dashboard from "./scenes/dashboard";
 import Users from "./scenes/users";
 import UserForm from "./scenes/users/UserForm.jsx";
-// ... інші ваші імпорти сторінок ...
 import Units from "./scenes/units/index.jsx";
 import UnitForm from "./scenes/units/UnitForm.jsx";
 import Vehicles from "./scenes/vehicles/index.jsx";
@@ -22,8 +21,8 @@ import Maintenances from "./scenes/maintenances/index.jsx";
 import MaintenanceForm from "./scenes/maintenances/MaintenanceForm.jsx";
 import MileageLogs from "./scenes/mileageLogs/index.jsx";
 import MileageLogForm from "./scenes/mileageLogs/MileageLogForm.jsx";
-import Calendar from "./scenes/calendar"; // Календар доступний всім аутентифікованим
-import ProfileForm from "./scenes/profile/index.jsx"; // Профіль доступний всім аутентифікованим
+import Calendar from "./scenes/calendar";
+import ProfileForm from "./scenes/profile/index.jsx";
 import LoginPage from './scenes/LoginPage/LoginPage.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute/ProtectedRoute.jsx';
 

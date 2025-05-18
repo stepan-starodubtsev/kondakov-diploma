@@ -1,7 +1,7 @@
 const Repair = require('../models/Repair');
 const AppError = require("../errors/AppError");
 const {getRepairComponentsByRepairId, updateRepairComponent, updateRepairComponentsCategory} = require("./RepairComponentService");
-const sequelize = require("../settings/settingsDB");
+const sequelize = require("../config/settingsDB");
 const RepairComponent = require("../models/RepairComponent");
 const Vehicle = require("../models/Vehicle");
 const {getVehicleComponentsByVehicleId} = require("./VehicleComponentService");

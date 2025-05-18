@@ -4,7 +4,8 @@ export const BASE_URL = base_url;
 export const UserRoles = [
     {label: 'Адміністратор', value: 'ADMIN'},
     {label: 'Командир частини', value: 'COMMANDER'},
-    {label: 'Командир підрозділу', value: 'UNIT_COMMANDER'}
+    {label: 'Командир підрозділу', value: 'UNIT_COMMANDER'},
+    {label: 'Черговий парку', value: 'DUTY_STAFF'}
 ];
 export const VehicleTypes = [
     {label: 'Автомобіль', value: 'CAR'},

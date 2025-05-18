@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const MileageLogController = require('../controllers/mileageLogController');
-const catchErrorsAsync = require('../middlewares/catchErrorAsync');
+const catchErrorsAsync = require('../middleware/catchErrorAsync');
 
 router.get('/', catchErrorsAsync(MileageLogController.getAll));
 router.get('/:id', catchErrorsAsync(MileageLogController.getById));

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UnitController = require('../controllers/unitController');
-const catchErrorsAsync = require('../middlewares/catchErrorAsync');
+const catchErrorsAsync = require('../middleware/catchErrorAsync');
 
 router.get('/', catchErrorsAsync(UnitController.getAll));
 router.get('/:id', catchErrorsAsync(UnitController.getById));

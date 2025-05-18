@@ -4,7 +4,7 @@ const AppError = require("../errors/AppError");
 const {
     getVehicleComponentsByVehicleId, updateVehicleComponent, updateVehicleComponentsMileage
 } = require("./VehicleComponentService");
-const sequelize = require("../settings/settingsDB");
+const sequelize = require("../config/settingsDB");
 
     async function createVehicle(vehicleData) {
         const transaction = await  sequelize.transaction();

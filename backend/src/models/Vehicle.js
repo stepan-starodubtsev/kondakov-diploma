@@ -1,5 +1,5 @@
 const {DataTypes} = require('sequelize');
-const sequelize = require('../settings/settingsDB');
+const sequelize = require('../config/settingsDB');
 const Unit = require('./Unit');
 
 const Vehicle = sequelize.define('Vehicle', {

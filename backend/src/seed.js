@@ -1,4 +1,4 @@
-const sequelize = require('./settings/settingsDB');
+const sequelize = require('./config/settingsDB');
 
 
 

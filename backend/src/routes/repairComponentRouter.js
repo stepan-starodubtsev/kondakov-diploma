@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const RepairComponentController = require('../controllers/repairComponentController');
-const catchErrorsAsync = require('../middlewares/catchErrorAsync');
+const catchErrorsAsync = require('../middleware/catchErrorAsync');
 
 router.get('/', catchErrorsAsync(RepairComponentController.getAll));
 router.get('/:id', catchErrorsAsync(RepairComponentController.getById));

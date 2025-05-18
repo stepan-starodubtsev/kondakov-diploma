@@ -1,5 +1,5 @@
 const app = require('./app');
-const sequelize = require('./settings/settingsDB');
+const sequelize = require('./config/settingsDB');
 
 const PORT = 5001;
 

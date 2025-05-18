@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const VehicleController = require('../controllers/vehicleController');
-const catchErrorsAsync = require('../middlewares/catchErrorAsync');
+const catchErrorsAsync = require('../middleware/catchErrorAsync');
 
 router.get('/', catchErrorsAsync(VehicleController.getAll));
 router.get('/:id', catchErrorsAsync(VehicleController.getById));

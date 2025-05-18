@@ -1,6 +1,6 @@
 const VehicleComponent = require('../models/VehicleComponent');
 const AppError = require("../errors/AppError");
-const sequelize = require("../settings/settingsDB");
+const sequelize = require("../config/settingsDB");
 
 async function createVehicleComponent(vehicleComponentData) {
     const foundedVehicleComponent = await VehicleComponent.findOne(

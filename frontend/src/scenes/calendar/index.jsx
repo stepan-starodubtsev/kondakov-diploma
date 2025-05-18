@@ -1,135 +1,159 @@
-import {useState} from "react";
-import {formatDate} from "@fullcalendar/core";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import multiMonthPlugin from '@fullcalendar/multimonth'
-import interactionPlugin from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
-import {
-    Box,
-    List,
-    ListItem,
-    ListItemText,
-    Typography,
-    useTheme,
-} from "@mui/material";
+import React, {useState, useEffect, useMemo} from "react";
+import {Box, useTheme} from "@mui/material";
 import Header from "../../components/Header";
 import {tokens} from "../../theme";
 
-const Calendar = () => {
+import CalendarViewComponent from "./CalendarViewComponent";
+import EventModalComponent from "./EventModalComponent";
+
+import {observer} from 'mobx-react-lite';
+import {useNavigate} from 'react-router-dom';
+import repairsStore from '../../stores/repairsStore';
+import maintenancesStore from '../../stores/maintenancesStore';
+import vehiclesStore from '../../stores/vehiclesStore';
+import dayjs from 'dayjs';
+import 'dayjs/locale/uk';
+
+dayjs.locale('uk');
+
+const CalendarPage = observer(() => {
     const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
-    const [currentEvents, setCurrentEvents] = useState([]);
+    const colors = useMemo(() => tokens(theme.palette.mode), [theme.palette.mode]);
+    const navigate = useNavigate();
 
-    const handleDateClick = (selected) => {
-        const title = prompt("Please enter a new title for your event");
-        const calendarApi = selected.view.calendar;
-        calendarApi.unselect();
+    const [calendarEvents, setCalendarEvents] = useState([]);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [selectedEventData, setSelectedEventData] = useState(null);
 
-        if (title) {
-            calendarApi.addEvent({
-                id: `${selected.dateStr}-${title}`,
-                title,
-                start: selected.startStr,
-                end: selected.endStr,
-                allDay: selected.allDay,
-            });
+    useEffect(() => {
+        const getVehicleInfoString = (vehicleId) => {
+            if (!vehicleId) return 'ТЗ не вказано';
+            const vehicle = vehiclesStore.findVehicleById(vehicleId);
+            if (vehicle) {
+                return `${vehicle.name || 'Без назви'} (${vehicle.licensePlate || 'Без номера'})`;
+            }
+            return `ТЗ ID: ${vehicleId} (не знайдено)`;
+        };
+
+        const repairEvents = repairsStore.repairs.map(repair => {
+            const vehicleInfo = getVehicleInfoString(repair.vehicleId);
+            return {
+                id: `repair-${repair.id}`,
+                title: `Ремонт №${repair.id} (${vehicleInfo})`,
+                start: repair.date,
+                allDay: true,
+                color: colors.redAccent[500] || '#D32F2F',
+                borderColor: colors.redAccent[600] || '#B71C1C',
+                extendedProps: {originalId: repair.id, type: 'repair', originalData: repair}
+            };
+        });
+
+        const maintenanceEvents = maintenancesStore.maintenances.map(maintenance => {
+            const vehicleInfo = getVehicleInfoString(maintenance.vehicleId);
+            return {
+                id: `maintenance-${maintenance.id}`,
+                title: `ТО №${maintenance.id} (${vehicleInfo})`,
+                start: maintenance.date,
+                allDay: true,
+                color: colors.blueAccent[500] || '#1976D2',
+                borderColor: colors.blueAccent[600] || '#0D47A1',
+                extendedProps: {originalId: maintenance.id, type: 'maintenance', originalData: maintenance}
+            };
+        });
+
+        setCalendarEvents([...repairEvents, ...maintenanceEvents]);
+    }, [repairsStore.repairs, maintenancesStore.maintenances, vehiclesStore.vehicles, colors]);
+
+    const handleCalendarEventClick = (clickInfo) => {
+        const {start, extendedProps} = clickInfo.event;
+        const originalData = extendedProps.originalData || {};
+
+        let vehicleDisplayInfo = 'ТЗ не вказано';
+        if (originalData.vehicleId) {
+            const vehicle = vehiclesStore.findVehicleById(originalData.vehicleId);
+            if (vehicle) {
+                vehicleDisplayInfo = `${vehicle.name || 'Без назви'} (${vehicle.licensePlate || 'Без номера'})`;
+            } else {
+                vehicleDisplayInfo = `ТЗ ID: ${originalData.vehicleId} (дані не завантажено)`;
+            }
         }
+
+        setSelectedEventData({
+            title: clickInfo.event.title,
+            start: dayjs(start).format('DD.MM.YYYY'),
+            type: extendedProps.type,
+            originalId: extendedProps.originalId,
+            vehicleInfoForModal: vehicleDisplayInfo,
+            status: originalData.status,
+            workDescription: originalData.workDescription,
+            repairReasonText: originalData.repairReasonText,
+            maintenanceType: originalData.type,
+            notes: originalData.notes,
+        });
+        setModalOpen(true);
     };
 
-    const handleEventClick = (selected) => {
-        if (
-            window.confirm(
-                `Are you sure you want to delete the event '${selected.event.title}'`
-            )
-        ) {
-            selected.event.remove();
+    const handleCloseModal = () => {
+        setModalOpen(false);
+        setSelectedEventData(null);
+    };
+
+    const handleCalendarEventDrop = async (dropInfo) => {
+        const {originalId, type} = dropInfo.event.extendedProps;
+        const newStartDate = dropInfo.event.start;
+
+        if (!newStartDate) {
+            console.error("Помилка: нова дата не визначена після перетягування.");
+            dropInfo.revert();
+            return;
+        }
+        const newDateISO = dayjs(newStartDate).toISOString();
+
+        try {
+            if (type === 'repair') {
+                const repairToUpdate = repairsStore.repairs.find(r => r.id === originalId);
+                if (repairToUpdate) {
+                    const updatedData = {...repairToUpdate, date: newDateISO};
+                    repairsStore.setTempRepair(updatedData);
+                    await repairsStore.updateRepair(originalId);
+                } else {
+                    throw new Error(`Ремонт з ID ${originalId} не знайдено.`);
+                }
+            } else if (type === 'maintenance') {
+                const maintenanceToUpdate = maintenancesStore.maintenances.find(m => m.id === originalId);
+                if (maintenanceToUpdate) {
+                    const updatedData = {...maintenanceToUpdate, date: newDateISO};
+                    await maintenancesStore.updateMaintenance(originalId, updatedData);
+                } else {
+                    throw new Error(`ТО з ID ${originalId} не знайдено.`);
+                }
+            }
+        } catch (error) {
+            console.error("Помилка оновлення дати події:", error);
+            dropInfo.revert();
         }
     };
 
     return (
         <Box m="20px">
-            <Header title="Calendar" subtitle="Full Calendar Interactive Page"/>
-
+            <Header title="Календар" subtitle="Огляд Ремонтів та Технічних Обслуговувань"/>
             <Box display="flex" justifyContent="space-between">
-                {/* CALENDAR SIDEBAR */}
-                <Box
-                    flex="1 1 20%"
-                    backgroundColor={colors.primary[400]}
-                    p="15px"
-                    borderRadius="4px"
-                >
-                    <Typography variant="h5">Events</Typography>
-                    <List>
-                        {currentEvents.map((event) => (
-                            <ListItem
-                                key={event.id}
-                                sx={{
-                                    backgroundColor: colors.greenAccent[500],
-                                    margin: "10px 0",
-                                    borderRadius: "2px",
-                                }}
-                            >
-                                <ListItemText
-                                    primary={event.title}
-                                    secondary={
-                                        <Typography>
-                                            {formatDate(event.start, {
-                                                year: "numeric",
-                                                month: "short",
-                                                day: "numeric",
-                                            })}
-                                        </Typography>
-                                    }
-                                />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Box>
-
-                {/* CALENDAR */}
-                <Box flex="1 1 100%" ml="15px">
-                    <FullCalendar
-                        height="75vh"
-                        plugins={[
-                            dayGridPlugin,
-                            timeGridPlugin,
-                            multiMonthPlugin,
-                            interactionPlugin,
-                            listPlugin,
-                        ]}
-                        headerToolbar={{
-                            left: "prev,next today",
-                            center: "title",
-                            right: "multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay,listMonth",
-                        }}
-                        initialView="multiMonthYear"
-                        editable={true}
-                        selectable={true}
-                        selectMirror={true}
-                        dayMaxEvents={true}
-                        select={handleDateClick}
-                        eventClick={handleEventClick}
-                        eventsSet={(events) => setCurrentEvents(events)}
-                        initialEvents={[
-                            {
-                                id: "12315",
-                                title: "All-day event",
-                                date: "2025-04-07",
-                            },
-                            {
-                                id: "5123",
-                                title: "Ranged event",
-                                start: "2025-04-07",
-                                end: "2025-04-10",
-                            },
-                        ]}
-                    />
-                </Box>
+                <CalendarViewComponent
+                    events={calendarEvents}
+                    onEventClick={handleCalendarEventClick}
+                    onEventDrop={handleCalendarEventDrop}
+                />
             </Box>
+
+            <EventModalComponent
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                eventData={selectedEventData}
+                colors={colors}
+                navigate={navigate}
+            />
         </Box>
     );
-};
+});
 
-export default Calendar;
+export default CalendarPage;

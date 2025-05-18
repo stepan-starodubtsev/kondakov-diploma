@@ -1,14 +1,8 @@
-import {Box, IconButton, InputBase, Tooltip, useTheme} from "@mui/material";
+import {Box, IconButton, Tooltip, useTheme} from "@mui/material";
 import {ColorModeContext, tokens} from "../../theme.js";
 import {useContext} from "react";
-import SearchIcon from '@mui/icons-material/Search';
-import {
-    DarkModeOutlined,
-    LightModeOutlined,
-    NotificationsOutlined,
-    PersonOutlined,
-    SettingsOutlined
-} from '@mui/icons-material';
+
+import {DarkModeOutlined, LightModeOutlined, PersonOutlined} from '@mui/icons-material';
 import {Link} from "react-router-dom";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
@@ -35,7 +29,7 @@ const TopBar = () => {
                     </Link>
                 </Tooltip>
                 <Tooltip title={'Список ТЗ'}>
-                    <Link to={'/cars'}>
+                    <Link to={'/vehicles'}>
                         <IconButton>
                             <DirectionsCarIcon/>
                         </IconButton>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Typography, useTheme } from '@mui/material';
-import StatBox from '../../StatBox/StatBox.jsx';
+import StatBox from '../StatBox/StatBox.jsx';
 import SpeedIcon from '@mui/icons-material/Speed';
 import mileageLogsStore from '../../../stores/mileageLogsStore';
 import { isDateInCurrentMonth } from '../../../utils/chartsUtils.js';

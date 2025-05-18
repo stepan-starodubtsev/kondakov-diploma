@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Typography, useTheme } from '@mui/material';
-import StatBox from '../../StatBox/StatBox.jsx';
+import StatBox from '../StatBox/StatBox.jsx';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import vehiclesStore from '../../../stores/vehiclesStore';
 import { tokens } from "../../../theme";

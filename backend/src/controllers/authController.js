@@ -4,17 +4,17 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 exports.register = async (req, res) => {
-    const {email, password, role} = req.body;
+    const {username, password, role} = req.body;
 
     try {
-        let user = await User.findOne({where: {email}});
+        let user = await User.findOne({where: {username}});
         if (user) {
             return res.status(400).json({message: 'User already exists'});
         }
 
-        user = await User.create({email, password: bcrypt.hashSync(password, 10), role});
+        user = await User.create({username, password: bcrypt.hashSync(password, 10), role});
 
-        const payload = {user: {id: user.id, email: user.email, role: user.role}};
+        const payload = {user: {id: user.id, username: user.username, role: user.role}};
 
         jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION}, (err, token) => {
             if (err) throw err;
@@ -28,10 +28,10 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-    const {email, password} = req.body;
+    const {username, password} = req.body;
 
     try {
-        const user = await User.findOne({where: {email}});
+        const user = await User.findOne({where: {username}});
 
         if (!user) {
             return res.status(400).json({message: 'Invalid Credentials'});
@@ -43,7 +43,7 @@ exports.login = async (req, res) => {
             return res.status(400).json({message: 'Invalid Credentials'});
         }
 
-        const payload = {user: {id: user.id, email: user.email, role: user.role}};
+        const payload = {user: {id: user.id, username: user.username, role: user.role}};
 
         jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRATION}, (err, token) => {
             if (err) throw err;

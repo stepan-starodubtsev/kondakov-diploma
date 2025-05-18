@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import GenericPieChart from './GenericPieChart';
 import vehiclesStore from '../../stores/vehiclesStore';
-import { aggregateDataForPieChart } from '../../utils/chartsUtils.js'; // Припускаємо, що функція тут
+import { aggregateDataForPieChart } from '../../utils/chartsUtils.js';
 import { Typography } from '@mui/material';
 
 const VehicleTypePieChart = observer(() => {

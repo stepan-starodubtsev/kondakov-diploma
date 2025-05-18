@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react';
 import {observer} from 'mobx-react-lite';
 import Header from "../../components/Header.jsx";
-import {Box, Grid, Typography, useTheme, Paper, Stack} from "@mui/material";
+import {Box, Grid, useTheme} from "@mui/material";
 import {tokens} from "../../theme.js";
 
-// Імпорт сховищ (stores)
 import vehiclesStore from '../../stores/vehiclesStore.js';
 import repairsStore from '../../stores/repairsStore.js';
 import maintenancesStore from '../../stores/maintenancesStore.js';
@@ -20,8 +19,6 @@ import RepairsThisMonthStat from "../../components/Charts/analytics/RepairsThisM
 import MaintenancesThisMonthStat from "../../components/Charts/analytics/MaintenancesThisMonthStat.jsx";
 import MonthlyMileageStat from "../../components/Charts/analytics/MonthlyMileageStat.jsx";
 import TopBar from "../global/TopBar.jsx";
-// import MaintenancesOverview from '../../components/analytics/MaintenancesOverview.jsx'; // Якщо використовується
-// import RepairsByTypeChart from '../../components/charts/RepairsByTypeChart.jsx'; // Якщо використовується
 
 const Dashboard = observer(() => {
     const theme = useTheme();
@@ -62,7 +59,6 @@ const Dashboard = observer(() => {
                     </Grid>
                 </Grid>
 
-                {/* Рядок з діаграмами-пирогами по ТЗ */}
                 <Grid container spacing={3} mb={3}>
                     <Grid item size={3}>
                         <VehicleTypePieChart/>
@@ -77,24 +73,6 @@ const Dashboard = observer(() => {
                         <VehicleOperationGroupPieChart/>
                     </Grid>
                 </Grid>
-
-                {/* Інші діаграми та аналітика */}
-                {/*
-            <Grid container spacing={3}>
-                <Grid item xs={12} md={8}>
-                    // Приклад: Діаграма стану ТЗ (якщо актуально, можна залишити VehicleStatusChart)
-                    // <VehicleStatusChart />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    // Приклад: Ремонти за типом
-                    // <RepairsByTypeChart />
-                </Grid>
-                <Grid item xs={12}>
-                    // Огляд технічного обслуговування
-                    // <MaintenancesOverview />
-                </Grid>
-            </Grid>
-            */}
             </Box>
         </>
     );

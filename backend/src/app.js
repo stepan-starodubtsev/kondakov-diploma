@@ -59,11 +59,12 @@ app.use('/api/users',
 const unitsAccessPermissions = {
     [ROLES.ADMIN]: {methods: '*'},
     [ROLES.COMMANDER]: {methods: ['GET']},
+    [ROLES.UNIT_COMMANDER]: {methods: ['GET']},
 };
 
 const checkUnitsAccess = (req, res, next) => {
     const userRole = req.user.user.role;
-    if (userRole === ROLES.ADMIN || userRole === ROLES.COMMANDER) {
+    if (userRole !== ROLES.DUTY_STAFF) {
         return next();
     }
     return res.status(403).json({message: `Access Denied: Your role (${userRole}) cannot access ${req.baseUrl}.`});

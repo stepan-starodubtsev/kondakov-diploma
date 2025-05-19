@@ -7,6 +7,8 @@ import {
     deleteMileageLog,
 } from '../services/mileageLogService';
 import vehiclesStore from "./vehiclesStore.js";
+import {authStore} from "./authStore.js";
+import {ROLES} from "../utils/constants.js";
 
 class MileageLogsStore {
     mileageLogs = [];
@@ -22,9 +24,18 @@ class MileageLogsStore {
         this.loading = true;
         try {
             const data = await getMileageLogs();
+            let filteredData;
+            if (vehiclesStore.vehicles.length === 0) {
+                await vehiclesStore.loadVehicles();
+            }
+            if (authStore.user.role === ROLES.UNIT_COMMANDER) {
+                filteredData = data.filter((mileageLog) => {
+                    return !!vehiclesStore.findVehicleById(mileageLog.vehicleId);
+                });
+            }
             if (data) {
                 runInAction(() => {
-                    this.mileageLogs = data;
+                    this.mileageLogs = filteredData ?? data;
                 });
             }
         } catch (error) {

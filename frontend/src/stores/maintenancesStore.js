@@ -6,6 +6,10 @@ import {
     updateMaintenance,
     deleteMaintenance,
 } from '../services/maintenanceService';
+import {authStore} from "./authStore.js";
+import {ROLES} from "../utils/constants.js";
+import unitsStore from "./unitsStore.js";
+import vehiclesStore from "./vehiclesStore.js";
 
 class MaintenancesStore {
     maintenances = [];
@@ -21,9 +25,18 @@ class MaintenancesStore {
         this.loading = true;
         try {
             const data = await getMaintenances();
+            let filteredData;
+            if (vehiclesStore.vehicles.length === 0) {
+                await vehiclesStore.loadVehicles();
+            }
+            if (authStore.user.role === ROLES.UNIT_COMMANDER) {
+                filteredData = data.filter((maintenance) => {
+                    return !!vehiclesStore.findVehicleById(maintenance.vehicleId);
+                });
+            }
             if (data) {
                 runInAction(() => {
-                    this.maintenances = data;
+                    this.maintenances = filteredData ?? data;
                 });
             }
         } catch (error) {

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Menu, MenuItem, Sidebar, SubMenu,} from "react-pro-sidebar";
 import {Box, IconButton, Typography, useTheme} from "@mui/material";
 import {Link, useLocation} from "react-router-dom";
@@ -15,7 +15,8 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import {authStore} from "../../stores/authStore.js";
-import {ROLES} from "../../utils/constants.js";
+import {ROLES, UserRoles} from "../../utils/constants.js";
+import unitsStore from "../../stores/unitsStore.js";
 
 const Item = ({title, to, icon}) => {
     const {pathname} = useLocation();
@@ -30,12 +31,17 @@ const Item = ({title, to, icon}) => {
     );
 };
 
+
 const CustomSidebar = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState(false);
-    console.log("User: ", authStore.user)
-
+    useEffect(() => {
+        const fetchUnits = async () => {
+        if (!unitsStore.units.length && !unitsStore.loading) await unitsStore.loadUnits();
+        }
+        fetchUnits();
+    }, []);
     return (
         <Box>
             <Sidebar
@@ -101,6 +107,15 @@ const CustomSidebar = () => {
                                 </Typography>
                                 <Typography variant="h5" color={colors.greenAccent[500]}>
                                     {authStore.user?.username}
+                                </Typography>
+                                <Typography variant="h5" mt={1} color={colors.greenAccent[300]}>
+                                    {UserRoles
+                                        .filter(role => authStore.user.role === role.value)[0].label}
+                                </Typography>
+                                <Typography variant="h5" mt={1} color={colors.greenAccent[300]}>
+                                    {unitsStore.units.filter(unit =>
+                                        unit.commanderId === authStore.user.id
+                                    )[0]?.name}
                                 </Typography>
                             </Box>
                         </Box>

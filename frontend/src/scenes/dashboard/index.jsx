@@ -21,7 +21,6 @@ import MonthlyMileageStat from "../../components/Charts/analytics/MonthlyMileage
 import TopBar from "../global/TopBar.jsx";
 import mileageLogsStore from "../../stores/mileageLogsStore.js";
 import unitsStore from "../../stores/unitsStore.js";
-import usersStore from "../../stores/usersStore.js";
 
 const Dashboard = observer(() => {
     const theme = useTheme();

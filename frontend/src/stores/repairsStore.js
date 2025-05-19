@@ -1,6 +1,8 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import {createRepair, deleteRepair, getRepairById, getRepairs, updateRepair,} from '../services/repairService';
 import vehiclesStore from "./vehiclesStore.js";
+import {ROLES} from "../utils/constants.js";
+import {authStore} from "./authStore.js";
 
 class RepairsStore {
     repairs = [];
@@ -18,9 +20,18 @@ class RepairsStore {
         this.loading = true;
         try {
             const data = await getRepairs();
+            let filteredData;
+            if (vehiclesStore.vehicles.length === 0) {
+                await vehiclesStore.loadVehicles();
+            }
+            if (authStore.user.role === ROLES.UNIT_COMMANDER) {
+                filteredData = data.filter((repair) => {
+                    return !!vehiclesStore.findVehicleById(repair.vehicleId);
+                });
+            }
             if (data) {
                 runInAction(() => {
-                    this.repairs = data;
+                    this.repairs = filteredData ?? data;
                 });
             }
         } catch (error) {
@@ -125,7 +136,7 @@ class RepairsStore {
         return {componentRepairs, ...repair};
     }
 
-    updateVehicleCategory(){
+    updateVehicleCategory() {
         this.tempRepair.componentRepairs.forEach(componentRepair => {
             let newCategory;
             if (this.tempRepair.type === 'capital') {
@@ -134,7 +145,7 @@ class RepairsStore {
                 newCategory = '3';
             }
 
-            if (this.tempRepair.workDescription !== ''){
+            if (this.tempRepair.workDescription !== '') {
                 newCategory = '2';
             }
 

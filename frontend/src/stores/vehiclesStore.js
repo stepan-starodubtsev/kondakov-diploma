@@ -1,5 +1,8 @@
 import {makeAutoObservable, runInAction} from 'mobx';
 import {createVehicle, deleteVehicle, getVehicleById, getVehicles, updateVehicle,} from '../services/vehicleService';
+import {authStore} from "./authStore.js";
+import {ROLES} from "../utils/constants.js";
+import unitsStore from "./unitsStore.js";
 
 class VehiclesStore {
     vehicles = [];
@@ -17,9 +20,17 @@ class VehiclesStore {
         this.loading = true;
         try {
             const data = await getVehicles();
+            let filteredData;
+            if (unitsStore.units.length === 0) {
+                await unitsStore.loadUnits();
+            }
+            if (authStore.user.role === ROLES.UNIT_COMMANDER) {
+                const userUnit = unitsStore.units.find(unit => unit.commanderId === parseInt(authStore.user.id));
+                filteredData = data.filter(vehicle => vehicle.unitId === userUnit.id);
+            }
             if (data) {
                 runInAction(() => {
-                    this.vehicles = data;
+                    this.vehicles = filteredData ?? data;
                 });
             }
         } catch (error) {
@@ -110,7 +121,7 @@ class VehiclesStore {
 
     indexOfVehicleById(vehicleId) {
         return vehiclesStore.vehicles
-            .findIndex((vehicle)=> vehicle.id === parseInt(vehicleId));
+            .findIndex((vehicle) => vehicle.id === parseInt(vehicleId));
     }
 
     clearTempVehicle() {

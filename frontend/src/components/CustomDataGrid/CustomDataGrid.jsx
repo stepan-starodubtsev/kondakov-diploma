@@ -96,13 +96,11 @@ const CustomDataGrid = ({
                 rowSelectionModel={selectedRowId}
                 onRowSelectionModelChange={handleRowSelection}
                 slots={{
-                    toolbar: () => {
-                        return authStore.user.role === ROLES.UNIT_COMMANDER
-                            ? (<CustomToolbar handleAddButtonClick={handleAddButtonClick}
-                                              handleEditButtonClick={handleEditButtonClick}
-                                              handleDeleteButtonClick={handleDeleteButtonClick}
-                                              withoutEdit={!editEntityUrl}/>) : null
-                    }
+                    toolbar: () =>
+                        (<CustomToolbar handleAddButtonClick={handleAddButtonClick}
+                                        handleEditButtonClick={handleEditButtonClick}
+                                        handleDeleteButtonClick={handleDeleteButtonClick}
+                                        withoutEdit={!editEntityUrl}/>)
                 }}
             />
             <AlertDialog dialogText={`Видалити №${selectedRowId}?`} isOpen={open} onClose={handleCancelDelete}

@@ -89,22 +89,7 @@ const ProfileForm = () => {
                     />
                     <TextField
                         onChange={handleChange}
-                        sx={{marginTop: '5px'}}
-                        label="Роль"
-                        name="role"
-                        select
-                        fullWidth
-                        value={user?.role || ''}
-                    >
-                        {UserRoles.map((role) => (
-                            <MenuItem key={role.value} value={role.value}>
-                                {role.label}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        onChange={handleChange}
-                        sx={{marginTop: '5px'}}
+                        sx={{marginTop: '20px'}}
                         label="Логін"
                         autoComplete="username"
                         name="username"

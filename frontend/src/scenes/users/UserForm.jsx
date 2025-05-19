@@ -91,7 +91,7 @@ const UserForm = () => {
                        }}>
                     <TextField
                         onChange={handleChange}
-                        sx={{marginTop: '5px'}}
+                        sx={{marginTop: '20px'}}
                         label="ПІБ"
                         autoComplete="name"
                         name="name"

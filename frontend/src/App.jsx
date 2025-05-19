@@ -43,7 +43,6 @@ const App = observer(() => {
                 <div className="app">
                     {authStore.isAuthenticated && <CustomSideBar/>}
                     <main className="content">
-                        {authStore.isAuthenticated && <Topbar/>}
                         <Routes>
                             <Route
                                 path="/login"

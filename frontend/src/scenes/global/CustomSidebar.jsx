@@ -96,10 +96,10 @@ const CustomSidebar = () => {
                                     fontWeight="bold"
                                     sx={{m: "10px 0 0 0"}}
                                 >
-                                    Kyrylo Bydanov
+                                    {authStore.user?.name}
                                 </Typography>
                                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                                    admin@admin.com
+                                    {authStore.user?.username}
                                 </Typography>
                             </Box>
                         </Box>

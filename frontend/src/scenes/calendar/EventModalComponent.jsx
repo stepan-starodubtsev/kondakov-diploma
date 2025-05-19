@@ -1,6 +1,8 @@
 import React from 'react';
 import {Modal, Typography, Button, Paper, Box, IconButton} from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
+import {authStore} from "../../stores/authStore.js";
+import {ROLES} from "../../utils/constants.js";
 
 const EventModalComponent = ({isOpen, onClose, eventData, colors, navigate}) => {
     if (!eventData) {
@@ -37,8 +39,10 @@ const EventModalComponent = ({isOpen, onClose, eventData, colors, navigate}) => 
             <Paper sx={modalStyle}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                     <Typography id="event-details-modal-title" variant="h5" component="h2"
-                                sx={{color: eventData.type === 'repair' ? (colors.redAccent[400] || 'red')
-                                        : (colors.blueAccent[400] || 'blue')}}>
+                                sx={{
+                                    color: eventData.type === 'repair' ? (colors.redAccent[400] || 'red')
+                                        : (colors.blueAccent[400] || 'blue')
+                                }}>
                         {eventData.type === 'repair' ? 'Деталі Ремонту' : 'Деталі ТО'}
                     </Typography>
                     <IconButton onClick={onClose} size="small" sx={{color: colors.grey[100]}}>
@@ -74,7 +78,7 @@ const EventModalComponent = ({isOpen, onClose, eventData, colors, navigate}) => 
                 )}
 
                 <Box sx={{mt: 3, display: 'flex', justifyContent: 'flex-end', gap: 1}}>
-                    <Button
+                    {authStore.user.role === ROLES.UNIT_COMMANDER ? <Button
                         variant="contained"
                         sx={{
                             backgroundColor: eventData.type === 'repair' ? (colors.redAccent[500] || 'red')
@@ -87,7 +91,7 @@ const EventModalComponent = ({isOpen, onClose, eventData, colors, navigate}) => 
                         onClick={handleNavigateToEdit}
                     >
                         Редагувати
-                    </Button>
+                    </Button> : null}
                 </Box>
             </Paper>
         </Modal>

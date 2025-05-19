@@ -8,6 +8,8 @@ import {tokens} from "../../theme.js";
 import {useNavigate} from "react-router-dom";
 import AlertDialog from "../AlertDialog.jsx";
 import {autoWidthColumns} from "../../utils/autoWidthColumns.js";
+import {authStore} from "../../stores/authStore.js";
+import {ROLES} from "../../utils/constants.js";
 
 const CustomDataGrid = ({
                             rows,
@@ -94,10 +96,13 @@ const CustomDataGrid = ({
                 rowSelectionModel={selectedRowId}
                 onRowSelectionModelChange={handleRowSelection}
                 slots={{
-                    toolbar: () => (<CustomToolbar handleAddButtonClick={handleAddButtonClick}
-                                                   handleEditButtonClick={handleEditButtonClick}
-                                                   handleDeleteButtonClick={handleDeleteButtonClick}
-                                                   withoutEdit={!editEntityUrl}/>),
+                    toolbar: () => {
+                        return authStore.user.role === ROLES.UNIT_COMMANDER
+                            ? (<CustomToolbar handleAddButtonClick={handleAddButtonClick}
+                                              handleEditButtonClick={handleEditButtonClick}
+                                              handleDeleteButtonClick={handleDeleteButtonClick}
+                                              withoutEdit={!editEntityUrl}/>) : null
+                    }
                 }}
             />
             <AlertDialog dialogText={`Видалити №${selectedRowId}?`} isOpen={open} onClose={handleCancelDelete}

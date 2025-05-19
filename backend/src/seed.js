@@ -22,9 +22,9 @@ const generateRandomString = (length) => {
 const generateMilitaryLicensePlate = () => {
     const series = ['АА', 'АС', 'АК', 'ВС', 'ВН', 'ВК', 'СС', 'СН', 'СК', 'НС', 'НК'];
     const numbers = Math.floor(1000 + Math.random() * 9000);
-    return `${randomChoice(series)}${numbers}${randomChoice(series)}`;
+    const suffix = ['ЗСУ', 'НГУ', 'ДПСУ', 'СБУ', 'СЗРУ', 'МОУ'];
+    return `${randomChoice(series)}${numbers}${randomChoice(suffix)}`;
 };
-
 
 const randomChoice = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -80,7 +80,6 @@ const lastNames = [
     'Вовк', 'Заєць', 'Сорока', 'Шульга', 'Литвин', 'Гнатюк', 'Дяченко', 'Романенко', 'Сергієнко'
 ];
 
-
 const generateUkrainianName = () => {
     const firstName = randomChoice(firstNames);
     const middleName = randomChoice(middleNames);
@@ -111,14 +110,12 @@ const generateUnitName = (index) => {
     return `${prefix} ${type} (${index + 1})`;
 };
 
-
 const vehicleModels = {
     CAR: ['УАЗ-469', 'ЛуАЗ-1302', 'Нива (ВАЗ-2121)', 'Pickup Truck'],
     BUS: ['Богдан А092 (військова модифікація)', 'ПАЗ (військова модифікація)', 'КАВЗ (військова модифікація)'],
     TRUCK: ['КрАЗ-6322', 'КрАЗ-260', 'МАЗ-537', 'Урал-4320', 'ГАЗ-66', 'ЗІЛ-131',
         'КАМАЗ-4310', 'TATRA-815', 'M939 (Five-ton truck)'],
 };
-
 
 const getRealisticVehicleName = (type) => {
     const models = vehicleModels[type];
@@ -127,7 +124,6 @@ const getRealisticVehicleName = (type) => {
     }
     return randomChoice(models);
 };
-
 
 const seedDatabase = async () => {
     try {
@@ -204,14 +200,15 @@ const seedDatabase = async () => {
         const operationGroups = ['COMBAT', 'DRILL', 'TRAINING', 'RESERVE'];
         const currentYear = new Date().getFullYear();
 
+        const startOfManufactureRange = new Date('1980-01-01');
+        const endOfManufactureRange = new Date(currentYear - 2, 11, 31);
+
         for (let i = 1; i <= 20; i++) {
             const assignedUnit = units[i % 4];
             const vehicleType = randomChoice(vehicleTypes);
             const vehicleName = getRealisticVehicleName(vehicleType);
 
-            const manufacturedYear = randomInt(1980, currentYear - 2);
-            const manufacturedAt = `${manufacturedYear}-${randomInt(1, 12).toString().padStart(2, '0')}
-            -${randomInt(1, 28).toString().padStart(2, '0')}`;
+            const manufacturedAt = generateRandomDate(startOfManufactureRange, endOfManufactureRange);
 
             const vehicle = await Vehicle.create({
                 name: vehicleName,
@@ -240,11 +237,11 @@ const seedDatabase = async () => {
         const vehicleComponents = [];
         for (const vehicle of vehicles) {
             const vehicleManufactureDate = new Date(vehicle.manufacturedAt);
+            const manufacturedAt = generateRandomDate(vehicleManufactureDate, new Date());
+
             for (const componentType of componentTypes) {
-                const manufacturedAt = generateRandomDate(vehicleManufactureDate, new Date());
                 const mileageSinceManufactured = randomFloat(0, vehicle.mileageSinceManufactured * randomFloat(0.5, 1.1));
                 const mileageAfterLastRepair = randomFloat(0, Math.min(mileageSinceManufactured, randomFloat(1000, 30000)));
-
 
                 const component = await VehicleComponent.create({
                     name: componentTypeToName(componentType) + ' (' + vehicle.name.split(' ')[0] + ')',
@@ -266,13 +263,15 @@ const seedDatabase = async () => {
         console.log('Creating repairs...');
         const repairTypes = ['unplanned', 'current', 'medium', 'capital'];
         const repairs = [];
+        const startOfCurrentYear = new Date(currentYear, 0, 1);
+        const endOfCurrentYear = new Date(currentYear, 11, 31);
+
 
         for (const vehicle of vehicles) {
             const numRepairs = randomInt(1, 3);
-            const vehicleManufactureDate = new Date(vehicle.manufacturedAt);
 
             for (let i = 0; i < numRepairs; i++) {
-                const repairDate = generateRandomDate(vehicleManufactureDate, new Date());
+                const repairDate = generateRandomDate(startOfCurrentYear, endOfCurrentYear);
                 const repair = await Repair.create({
                     type: randomChoice(repairTypes),
                     date: repairDate,
@@ -286,12 +285,12 @@ const seedDatabase = async () => {
                 const componentsForVehicle = vehicleComponents.filter(comp => comp.vehicleId === vehicle.id);
                 const selectedComponents = [];
                 const componentsCopy = [...componentsForVehicle];
-                for (let j = 0; j < numRepairComponents && componentsCopy.length > 0; j++) {
+                for(let j = 0; j < numRepairComponents && componentsCopy.length > 0; j++) {
                     const randomIndex = randomInt(0, componentsCopy.length - 1);
                     selectedComponents.push(componentsCopy.splice(randomIndex, 1)[0]);
                 }
 
-                for (const component of selectedComponents) {
+                for(const component of selectedComponents) {
                     await RepairComponent.create({
                         workDescription: null,
                         repairId: repair.id,
@@ -306,10 +305,9 @@ const seedDatabase = async () => {
         const maintenanceTypes = ['TO1', 'TO2', 'SO'];
 
         for (const vehicle of vehicles) {
-            const vehicleManufactureDate = new Date(vehicle.manufacturedAt);
             for (const maintType of maintenanceTypes) {
                 for (let i = 0; i < 3; i++) {
-                    const maintenanceDate = generateRandomDate(vehicleManufactureDate, new Date());
+                    const maintenanceDate = generateRandomDate(startOfCurrentYear, endOfCurrentYear);
                     await Maintenance.create({
                         type: maintType,
                         date: maintenanceDate,
@@ -329,7 +327,6 @@ const seedDatabase = async () => {
             const logsForVehicle = [];
 
             for (let i = 0; i < numLogs; i++) {
-
                 const logDate = generateRandomDate(lastLogDate, new Date());
 
                 const mileageIncrease = randomFloat(10, 500);
@@ -361,7 +358,6 @@ const seedDatabase = async () => {
             await MileageLog.bulkCreate(logsForVehicle);
         }
         console.log('Mileage logs created.');
-
 
         console.log('Database seeding completed successfully!');
 

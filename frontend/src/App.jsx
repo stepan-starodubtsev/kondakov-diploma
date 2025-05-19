@@ -1,12 +1,11 @@
 import {ColorModeContext, useMode} from "./theme.js";
-import {CssBaseline, ThemeProvider, Typography} from "@mui/material";
+import {CssBaseline, ThemeProvider} from "@mui/material";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {observer} from 'mobx-react-lite';
 import authStore from './stores/authStore';
 import {ROLES} from './utils/constants.js';
 
 import CustomSideBar from "./scenes/global/CustomSidebar.jsx";
-import Topbar from "./scenes/global/Topbar.jsx";
 import Dashboard from "./scenes/dashboard";
 import Users from "./scenes/users";
 import UserForm from "./scenes/users/UserForm.jsx";

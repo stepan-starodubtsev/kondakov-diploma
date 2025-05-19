@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Typography, useTheme } from '@mui/material';
-import { tokens } from "../../../theme.js";
+import {Box, Typography, useTheme} from '@mui/material';
+import {tokens} from "../../../theme.js";
 
 const StatBox = ({ title, subtitle, value, icon, increase }) => {
     const theme = useTheme();

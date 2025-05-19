@@ -1,11 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {
-    getUnits,
-    getUnitById,
-    createUnit,
-    updateUnit,
-    deleteUnit,
-} from '../services/unitService';
+import {createUnit, deleteUnit, getUnitById, getUnits, updateUnit,} from '../services/UnitService.js';
 
 class UnitsStore {
     units = [];

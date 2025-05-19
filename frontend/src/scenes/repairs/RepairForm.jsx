@@ -6,7 +6,8 @@ import {
     Button,
     Grid,
     MenuItem,
-    Stack, TextareaAutosize,
+    Stack,
+    TextareaAutosize,
     TextField,
     Typography,
     useTheme
@@ -19,9 +20,7 @@ import * as React from "react";
 import {useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import useError from "../../utils/useError.js";
-import {
-    RepairTypes
-} from "../../utils/constants.js";
+import {RepairTypes} from "../../utils/constants.js";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";

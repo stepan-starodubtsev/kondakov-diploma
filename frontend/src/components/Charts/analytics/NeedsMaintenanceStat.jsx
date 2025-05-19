@@ -1,10 +1,10 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { Typography, useTheme } from '@mui/material';
+import {observer} from 'mobx-react-lite';
+import {Typography, useTheme} from '@mui/material';
 import StatBox from '../StatBox/StatBox.jsx';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import vehiclesStore from '../../../stores/vehiclesStore';
-import { tokens } from "../../../theme";
+import {tokens} from "../../../theme";
 
 const NeedsMaintenanceStat = observer(() => {
     const theme = useTheme();

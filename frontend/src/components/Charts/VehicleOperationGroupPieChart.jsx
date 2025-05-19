@@ -1,9 +1,9 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import GenericPieChart from './GenericPieChart';
 import vehiclesStore from '../../stores/vehiclesStore';
-import { aggregateDataForPieChart } from '../../utils/chartsUtils.js';
-import { Typography } from '@mui/material';
+import {aggregateDataForPieChart} from '../../utils/chartsUtils.js';
+import {Typography} from '@mui/material';
 import {OperationGroups} from "../../utils/constants.js";
 
 const VehicleOperationGroupPieChart = observer(() => {

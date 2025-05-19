@@ -1,11 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {
-    getMileageLogs,
-    getMileageLogById,
-    createMileageLog,
-    updateMileageLog,
-    deleteMileageLog,
-} from '../services/mileageLogService';
+import {createMileageLog, deleteMileageLog, getMileageLogById, getMileageLogs,} from '../services/MileageLogService.js';
 import vehiclesStore from "./vehiclesStore.js";
 import {authStore} from "./authStore.js";
 import {ROLES} from "../utils/constants.js";

@@ -1,11 +1,11 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { Typography, useTheme } from '@mui/material';
+import {observer} from 'mobx-react-lite';
+import {Typography, useTheme} from '@mui/material';
 import StatBox from '../StatBox/StatBox.jsx';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import repairsStore from '../../../stores/repairsStore';
-import { isDateInCurrentMonth } from '../../../utils/chartsUtils.js';
-import { tokens } from "../../../theme";
+import {isDateInCurrentMonth} from '../../../utils/chartsUtils.js';
+import {tokens} from "../../../theme";
 
 const RepairsThisMonthStat = observer(() => {
     const theme = useTheme();

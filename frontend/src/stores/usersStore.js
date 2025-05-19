@@ -1,11 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {
-    getUsers,
-    getUserById,
-    createUser,
-    updateUser,
-    deleteUser,
-} from '../services/userService';
+import {createUser, deleteUser, getUserById, getUsers, updateUser,} from '../services/UserService.js';
 
 class UsersStore {
     users = [];

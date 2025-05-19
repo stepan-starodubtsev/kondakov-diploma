@@ -1,5 +1,5 @@
 import {makeAutoObservable, runInAction} from 'mobx';
-import {createRepair, deleteRepair, getRepairById, getRepairs, updateRepair,} from '../services/repairService';
+import {createRepair, deleteRepair, getRepairById, getRepairs, updateRepair,} from '../services/RepairService.js';
 import vehiclesStore from "./vehiclesStore.js";
 import {ROLES} from "../utils/constants.js";
 import {authStore} from "./authStore.js";

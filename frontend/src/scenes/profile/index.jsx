@@ -3,8 +3,8 @@ import {
     Button,
     FormControl,
     IconButton,
-    InputAdornment, InputLabel,
-    MenuItem,
+    InputAdornment,
+    InputLabel,
     OutlinedInput,
     Stack,
     TextField,
@@ -19,7 +19,6 @@ import Header from "../../components/Header.jsx";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {UserRoles} from "../../utils/constants.js";
 import usersStore from "../../stores/usersStore.js";
 import useError from "../../utils/useError.js";
 import TopBar from "../global/TopBar.jsx";

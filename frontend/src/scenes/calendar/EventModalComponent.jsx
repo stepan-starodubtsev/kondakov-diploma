@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Typography, Button, Paper, Box, IconButton} from "@mui/material";
+import {Box, Button, IconButton, Modal, Paper, Typography} from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import {authStore} from "../../stores/authStore.js";
 import {ROLES} from "../../utils/constants.js";

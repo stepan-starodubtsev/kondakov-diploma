@@ -23,7 +23,8 @@ import {
     ConditionCategories,
     FuelTypes,
     OilTypes,
-    OperationGroups, VehicleComponentTypes,
+    OperationGroups,
+    VehicleComponentTypes,
     VehicleTypes
 } from "../../utils/constants.js";
 import unitsStore from "../../stores/unitsStore.js";

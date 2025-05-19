@@ -1,6 +1,6 @@
-import { flow, makeObservable, observable, computed, action, runInAction } from 'mobx';
-import apiClient, { configureApiClientAuth } from "../utils/apiClient.js";
-import { jwtDecode } from 'jwt-decode';
+import {action, computed, flow, makeObservable, observable, runInAction} from 'mobx';
+import apiClient, {configureApiClientAuth} from "../utils/apiClient.js";
+import {jwtDecode} from 'jwt-decode';
 
 class AuthStore {
     user = null;

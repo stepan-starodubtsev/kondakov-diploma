@@ -8,10 +8,10 @@ import vehiclesStore from '../../stores/vehiclesStore.js';
 import repairsStore from '../../stores/repairsStore.js';
 import maintenancesStore from '../../stores/maintenancesStore.js';
 
-import VehicleTypePieChart from '../../components/charts/VehicleTypePieChart.jsx';
-import VehicleFuelTypePieChart from '../../components/charts/VehicleFuelTypePieChart.jsx';
-import VehicleOilTypePieChart from '../../components/charts/VehicleOilTypePieChart.jsx';
-import VehicleOperationGroupPieChart from '../../components/charts/VehicleOperationGroupPieChart.jsx';
+import VehicleTypePieChart from '../../components/Charts/VehicleTypePieChart.jsx';
+import VehicleFuelTypePieChart from '../../components/Charts/VehicleFuelTypePieChart.jsx';
+import VehicleOilTypePieChart from '../../components/Charts/VehicleOilTypePieChart.jsx';
+import VehicleOperationGroupPieChart from '../../components/Charts/VehicleOperationGroupPieChart.jsx';
 import TotalVehiclesStat from "../../components/Charts/analytics/TotalVehiclesStat.jsx";
 import NeedsRepairStat from "../../components/Charts/analytics/NeedsRepairStat.jsx";
 import NeedsMaintenanceStat from "../../components/Charts/analytics/NeedsMaintenanceStat.jsx";
@@ -20,7 +20,6 @@ import MaintenancesThisMonthStat from "../../components/Charts/analytics/Mainten
 import MonthlyMileageStat from "../../components/Charts/analytics/MonthlyMileageStat.jsx";
 import TopBar from "../global/TopBar.jsx";
 import mileageLogsStore from "../../stores/mileageLogsStore.js";
-import unitsStore from "../../stores/unitsStore.js";
 
 const Dashboard = observer(() => {
     const theme = useTheme();

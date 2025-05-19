@@ -23,6 +23,7 @@ import {UserRoles} from "../../utils/constants.js";
 import usersStore from "../../stores/usersStore.js";
 import useError from "../../utils/useError.js";
 import TopBar from "../global/TopBar.jsx";
+import {authStore} from "../../stores/authStore.js";
 
 const ProfileForm = () => {
     const theme = useTheme();
@@ -42,11 +43,7 @@ const ProfileForm = () => {
         if (validateForm()) {
             setError("");
         }
-        if (userId) {
-            await usersStore.updateUser(parseInt(userId), user);
-        } else {
-            await usersStore.addUser(user);
-        }
+        await usersStore.updateUser(authStore.user.id, user);
         navigate('/profile');
     };
 
@@ -55,17 +52,12 @@ const ProfileForm = () => {
     };
 
     const validateForm = () => {
-        if (userId) {
-            return !user.name || !user.username || !user.role;
-        }
-        return !user.name || !user.username || !user.password || !user.role;
+        return !user.name || !user.username || !user.role;
     };
 
     useEffect(() => {
-        if (userId) {
-            const founderUser = usersStore.users.find(user => user.id === parseInt(userId));
-            setUser(founderUser);
-        }
+        console.log(authStore.user);
+        setUser(authStore.user);
     }, []);
 
     useError();
@@ -74,9 +66,7 @@ const ProfileForm = () => {
         <Box m={"20px"}>
             <TopBar headerBox={(
                 <>
-                    {userId ? (<Header title={`КОРИСТУВАЧ №${userId}`} subtitle={"Редагування користувача"}/>) :
-                        (<Header title={`НОВИЙ КОРИСТУВАЧ`} subtitle={"Створення користувача"}/>)
-                    }
+                    <Header title={`ОСОБИСТИЙ КАБІНЕТ`} subtitle={"Редагування профілю користувача"}/>
                 </>
             )}/>
             <Box>

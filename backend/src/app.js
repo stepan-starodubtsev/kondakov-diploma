@@ -40,110 +40,76 @@ app.use(authMiddleware);
 
 // --- Role-Based Access ---
 
-// 1. ADMIN Routes
-const adminPermissions = {
-    [ROLES.ADMIN]: {methods: '*'}
-};
-const denyNonAdmin = (req, res, next) => {
-    if (req.user.user.role !== ROLES.ADMIN) {
-        return res.status(403).json({message: `Access Denied: Only ADMIN can access ${req.baseUrl}.`});
-    }
-    next();
-}
 
-app.use('/api/users', denyNonAdmin, roleMiddleware(adminPermissions), userRouter);
+// 1. /api/users
+const adminOnlyUserOperationsPermissions = {
+    [ROLES.ADMIN]: {methods: '*'},
+    [ROLES.COMMANDER]: {methods: 'PUT'},
+    [ROLES.UNIT_COMMANDER]: {methods: 'PUT'},
+    [ROLES.DUTY_STAFF]: {methods: 'PUT'},
+};
+
+app.use('/api/users',
+    roleMiddleware(adminOnlyUserOperationsPermissions),
+    userRouter
+);
+
 
 // 2. /api/units
 const unitsAccessPermissions = {
     [ROLES.ADMIN]: {methods: '*'},
-    [ROLES.COMMANDER]: {methods: 'GET'},
+    [ROLES.COMMANDER]: {methods: ['GET']},
 };
 
-const allowAdminAndCommanderForUnits = (req, res, next) => {
-    if (req.user.user.role === ROLES.UNIT_COMMANDER || req.user.user.role === ROLES.DUTY_STAFF) {
-        return res.status(403).json(
-            {message: `Access Denied: UNIT_COMMANDER or DUTY_STAFF cannot access ${req.baseUrl}.`});
+const checkUnitsAccess = (req, res, next) => {
+    const userRole = req.user.user.role;
+    if (userRole === ROLES.ADMIN || userRole === ROLES.COMMANDER) {
+        return next();
     }
-    next();
+    return res.status(403).json({message: `Access Denied: Your role (${userRole}) cannot access ${req.baseUrl}.`});
 };
-
-app.use('/api/units',
-    allowAdminAndCommanderForUnits,
-    roleMiddleware(unitsAccessPermissions),
-    unitRouter
-);
+app.use('/api/units', checkUnitsAccess, roleMiddleware(unitsAccessPermissions), unitRouter);
 
 
 // 3. /api/mileage-logs
 const mileageLogAccessPermissions = {
     [ROLES.UNIT_COMMANDER]: {methods: '*'},
-    [ROLES.COMMANDER]: {methods: 'GET'},
+    [ROLES.COMMANDER]: {methods: '*'},
     [ROLES.DUTY_STAFF]: {methods: '*'}
 };
-
 const allowNonAdminOnlyForMileageLogs = (req, res, next) => {
     if (req.user.user.role === ROLES.ADMIN) {
         return res.status(403).json({message: `Access Denied: ADMIN cannot access ${req.baseUrl}.`});
     }
     next();
 };
-
 app.use('/api/mileage-logs',
     allowNonAdminOnlyForMileageLogs,
     roleMiddleware(mileageLogAccessPermissions),
     mileageLogRouter
 );
 
-
-// 4. COMMANDER Routes
-const commanderPermissions = {
+// 4. COMMANDER & UNIT_COMMANDER
+const generalPermissions = {
     [ROLES.COMMANDER]: {
         methods: ['GET'],
         forbiddenRoutes: ['/api/users', '/api/units']
-    }
-};
-const commanderRouteCheck = (req, res, next) => {
-    if (req.user.user.role === ROLES.COMMANDER) {
-        if (req.baseUrl === '/api/users' || req.baseUrl === '/api/units') {
-            return res.status(403).json({message: `Access Denied: COMMANDER cannot access ${req.baseUrl}.`});
-        }
-        if (req.method !== 'GET') {
-            return res.status(403).json({message: `Access Denied: COMMANDER can only perform GET requests on ${req.baseUrl}.`});
-        }
-    }
-    next();
-};
-
-
-// 5. UNIT_COMMANDER Routes
-const unitCommanderPermissions = {
+    },
     [ROLES.UNIT_COMMANDER]: {
         methods: '*',
         forbiddenRoutes: ['/api/users', '/api/units']
     }
 };
-const unitCommanderRouteCheck = (req, res, next) => {
-    if (req.user.user.role === ROLES.UNIT_COMMANDER) {
-        if (req.baseUrl === '/api/users' || req.baseUrl === '/api/units') {
-            return res.status(403).json({message: `Access Denied: UNIT_COMMANDER cannot access ${req.baseUrl}.`});
-        }
-    }
-    next();
-};
 
-
-const generalPermissions = {
-    [ROLES.COMMANDER]: commanderPermissions[ROLES.COMMANDER],
-    [ROLES.UNIT_COMMANDER]: unitCommanderPermissions[ROLES.UNIT_COMMANDER],
-};
-
-app.use([
+const generalRoutes = [
     '/api/maintenance',
     '/api/repair-components',
     '/api/repairs',
     '/api/vehicles',
     '/api/vehicle-components'
-], roleMiddleware(generalPermissions));
+];
+
+app.use(generalRoutes, roleMiddleware(generalPermissions));
 
 app.use('/api/maintenance', maintenanceRouter);
 app.use('/api/repair-components', repairComponentRouter);
@@ -155,13 +121,13 @@ app.use('/api/vehicle-components', vehicleComponentRouter);
 app.get('/api', (req, res) => res.send('API is running... (Authenticated)'));
 
 app.use((error, req, res, next) => {
-    console.error("Error Handler:", error);
+    console.error("Error Handler:", error.name, error.message, error.stack);
     const statusCode = error.statusCode || 500;
     const message = error.message || "Internal Server Error";
     res.status(statusCode).json({
         status: statusCode,
         message: message,
-        ...(process.env.NODE_ENV === 'development' && {stack: error.stack}) // Додаємо стек в режимі розробки
+        ...(process.env.NODE_ENV === 'development' && {stack: error.stack})
     });
 });
 

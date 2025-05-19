@@ -24,6 +24,7 @@
     "@mui/x-data-grid": "^7.28.3",
     "@mui/x-date-pickers": "^8.1.0",
     "axios": "^1.8.4",
+    "bcrypt": "^6.0.0",
     "dayjs": "^1.11.13",
     "mobx": "^6.13.7",
     "mobx-react-lite": "^4.1.0",

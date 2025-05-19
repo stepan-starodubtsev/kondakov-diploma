@@ -8,6 +8,7 @@ import {Link} from "react-router-dom";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import {authStore} from "../../stores/authStore.js";
+import {ROLES} from "../../utils/constants.js";
 
 const TopBar = ({headerBox}) => {
     const theme = useTheme();
@@ -31,20 +32,22 @@ const TopBar = ({headerBox}) => {
                             <LightModeOutlined/> : <DarkModeOutlined/>}
                     </IconButton>
                 </Tooltip>
-                <Tooltip title={'Календаря'}>
-                    <Link to={'/calendar'}>
-                        <IconButton>
-                            <CalendarTodayOutlinedIcon/>
-                        </IconButton>
-                    </Link>
-                </Tooltip>
-                <Tooltip title={'Список ТЗ'}>
+                {(authStore.user.role === ROLES.UNIT_COMMANDER || authStore.user.role === ROLES.COMMANDER) ?
+                    (<Tooltip title={'Календар'}>
+                        <Link to={'/calendar'}>
+                            <IconButton>
+                                <CalendarTodayOutlinedIcon/>
+                            </IconButton>
+                        </Link>
+                    </Tooltip>) : null}
+                {(authStore.user.role === ROLES.UNIT_COMMANDER || authStore.user.role === ROLES.COMMANDER) ?
+                    (<Tooltip title={'Список ТЗ'}>
                     <Link to={'/vehicles'}>
                         <IconButton>
                             <DirectionsCarIcon/>
                         </IconButton>
                     </Link>
-                </Tooltip>
+                </Tooltip>) : null}
                 <Tooltip title={'Профіль'}>
                     <Link to={'/profile'}>
                         <IconButton>

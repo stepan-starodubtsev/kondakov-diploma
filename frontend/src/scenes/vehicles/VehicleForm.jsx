@@ -61,7 +61,7 @@ const VehicleForm = () => {
         {field: 'remainingAnnualResource', headerName: 'Залишилося ресурсу в цьому році'},
         {field: 'remainingResourceToNextRepair', headerName: 'Залишилося ресурсу до наступного капітального ремонту'},
         {field: 'maxResource', headerName: 'Максимальний можливий ресурс'},
-        {field: 'needsMaintenance', headerName: 'Потребує поточного ремонту', type: 'boolean'},
+        {field: 'needsMaintenance', headerName: 'Потребує ТО', type: 'boolean'},
         {field: 'needsCapitalRepair', headerName: 'Потребує капітального ремонту', type: 'boolean'},
         {
             field: 'vehicleId', headerName: 'Транспортний засіб', renderCell: () => {
@@ -114,9 +114,6 @@ const VehicleForm = () => {
                 vehiclesStore.clearTempVehicle();
             }
         }
-
-        //todo зробити дамп бд та згенерувати тестові дані
-        //todo завернути в контейнер
     }, []);
 
     useError();

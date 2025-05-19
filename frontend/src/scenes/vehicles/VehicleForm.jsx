@@ -114,6 +114,12 @@ const VehicleForm = () => {
                 vehiclesStore.clearTempVehicle();
             }
         }
+
+        //todo стилізувати все під світлу тему
+        //todo обмежити командиру підрозділу тільки інфу про його підрозділ
+        //todo прибрати з профілю  ролі
+        //todo зробити дамп бд та згенерувати тестові дані
+        //todo завернути в контейнер
     }, []);
 
     useError();
@@ -331,22 +337,28 @@ const VehicleForm = () => {
                             </TextField>
                         </Grid>
                         <Grid item size={12}>
-                            <Accordion sx={{
-                                bgcolor: colors.primary[500],
-                            }}>
-                                <AccordionSummary expandIcon={<ExpandMore/>}>
-                                    <Typography color={colors.grey[200]} variant={"h5"}>
+                            <Accordion
+                                sx={{
+                                    backgroundColor: theme.palette.mode === 'dark' ? colors.primary[500]
+                                        : theme.palette.grey[100],
+                                }}
+                            >
+                                <AccordionSummary
+                                    expandIcon={<ExpandMore/>}
+                                >
+                                    <Typography>
                                         Агрегати транспортного засобу
                                     </Typography>
                                 </AccordionSummary>
-                                <AccordionDetails>
-                                    <CustomDataGrid columns={vehicleComponentsColumns}
-                                                    rows={vehiclesStore.tempVehicle.components}
-                                                    addEntityUrl={"vehicle-components/create-component"}
-                                                    editEntityUrl={"vehicle-components/edit-component"}
-                                                    deleteHandler={vehiclesStore.removeVehicleComponent
-                                                        .bind(vehiclesStore)}
-                                    ></CustomDataGrid>
+                                <AccordionDetails
+                                >
+                                    <CustomDataGrid
+                                        columns={vehicleComponentsColumns}
+                                        rows={vehiclesStore.tempVehicle.components}
+                                        addEntityUrl={"vehicle-components/create-component"}
+                                        editEntityUrl={"vehicle-components/edit-component"}
+                                        deleteHandler={vehiclesStore.removeVehicleComponent.bind(vehiclesStore)}
+                                    />
                                 </AccordionDetails>
                             </Accordion>
                         </Grid>

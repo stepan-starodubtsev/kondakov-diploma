@@ -184,9 +184,11 @@ const RepairForm = () => {
                                 value={repairsStore.tempRepair?.repairReasonText || ''}
                                 name="repairReasonText"
                                 style={{
-                                    backgroundColor: colors.primary[500],
+                                    backgroundColor: theme.palette.mode === 'dark' ? colors.primary[500]
+                                        : theme.palette.grey[100],
                                     borderColor: colors.grey[600],
-                                    color: colors.grey[100],
+                                    color: theme.palette.mode === 'dark' ? theme.palette.grey[100]
+                                        : colors.primary[500],
                                     fontSize: 16,
                                     width: "100%",
                                     height: "100px",
@@ -202,9 +204,11 @@ const RepairForm = () => {
                                 value={repairsStore.tempRepair?.workDescription || ''}
                                 name="workDescription"
                                 style={{
-                                    backgroundColor: colors.primary[500],
+                                    backgroundColor: theme.palette.mode === 'dark' ? colors.primary[500]
+                                        : theme.palette.grey[100],
                                     borderColor: colors.grey[600],
-                                    color: colors.grey[100],
+                                    color: theme.palette.mode === 'dark' ? theme.palette.grey[100]
+                                        : colors.primary[500],
                                     fontSize: 16,
                                     width: "100%",
                                     height: "100px",
@@ -213,9 +217,12 @@ const RepairForm = () => {
                             />
                         </Grid>
                         <Grid item size={12}>
-                            <Accordion sx={{
-                                bgcolor: colors.primary[500],
-                            }}>
+                            <Accordion
+                                sx={{
+                                    backgroundColor: theme.palette.mode === 'dark' ? colors.primary[500]
+                                        : theme.palette.grey[100],
+                                }}
+                            >
                                 <AccordionSummary expandIcon={<ExpandMore/>}>
                                     <Typography color={colors.grey[200]} variant={"h5"}>
                                         Агрегати, що підлягають ремонту

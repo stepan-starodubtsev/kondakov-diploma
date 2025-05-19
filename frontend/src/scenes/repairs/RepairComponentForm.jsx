@@ -130,9 +130,11 @@ const VehicleForm = () => {
                                 value={repairComponent?.workDescription || ''}
                                 name="workDescription"
                                 style={{
-                                    backgroundColor: colors.primary[500],
+                                    backgroundColor: theme.palette.mode === 'dark' ? colors.primary[500]
+                                        : theme.palette.grey[100],
                                     borderColor: colors.grey[600],
-                                    color: colors.grey[100],
+                                    color: theme.palette.mode === 'dark' ? theme.palette.grey[100]
+                                        : colors.primary[500],
                                     fontSize: 16,
                                     width: "100%",
                                     height: "100px",

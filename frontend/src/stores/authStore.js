@@ -1,6 +1,16 @@
 import {action, computed, flow, makeObservable, observable, runInAction} from 'mobx';
 import apiClient, {configureApiClientAuth} from "../utils/apiClient.js";
 import {jwtDecode} from 'jwt-decode';
+import vehiclesStore from "./vehiclesStore.js";
+import maintenances from "../scenes/maintenances/index.jsx";
+import maintenancesStore from "./maintenancesStore.js";
+import repairs from "../scenes/repairs/index.jsx";
+import repairsStore from "./repairsStore.js";
+import mileageLogs from "../scenes/mileageLogs/index.jsx";
+import mileageLogsStore from "./mileageLogsStore.js";
+import unitsStore from "./unitsStore.js";
+import users from "../scenes/users/index.jsx";
+import usersStore from "./usersStore.js";
 
 class AuthStore {
     user = null;
@@ -164,7 +174,12 @@ class AuthStore {
 
     logout() {
         this.clearAuthData();
-        console.log("User logged out.");
+        vehiclesStore.vehicles = [];
+        maintenancesStore.maintenances = [];
+        repairsStore.repairs = [];
+        mileageLogsStore.mileageLogs = [];
+        unitsStore.units = [];
+        usersStore.users = [];
     }
 
     get userRole() {

@@ -21,7 +21,7 @@ export const VehicleTypes = [
 export const OperationGroups = [
     {label: 'Бойова', value: 'COMBAT'},
     {label: 'Стройова', value: 'DRILL'},
-    {label: 'Тренувальна', value: 'TRUCK'},
+    {label: 'Тренувальна', value: 'TRAINING'},
     {label: 'Резерв', value: 'RESERVE'}
 ];
 export const ConditionCategories = [
@@ -71,5 +71,5 @@ export const RepairTypes = [
 export const MaintenanceTypes = [
     {label: 'TO1', value: 'TO1'},
     {label: 'TO2', value: 'TO2'},
-    {label: 'Сезонне', value: 'SO'},
+    {label: 'Сезонне', value: 'SO'}
 ]

@@ -29,6 +29,7 @@ const Units = () => {
 
     useEffect(() => {
         if (!unitsStore.units.length && !unitsStore.loading) unitsStore.loadUnits();
+        if (!usersStore.users.length && !usersStore.loading) usersStore.loadUsers();
     }, []);
 
     useError();
